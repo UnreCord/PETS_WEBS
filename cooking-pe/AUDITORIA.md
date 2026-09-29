@@ -2,7 +2,7 @@
 
 **Base del análisis:** HTML guardado de https://cooking.pe/ (WordPress 7.1.2, Elementor 4.2.4 + Elementor Pro, tema Astra Pro y 4 plugins propios `rblweb-*`) y captura de la sección de puntos de venta. El sitio en vivo no se pudo cargar desde el entorno de trabajo, así que no se midieron tiempos de carga reales (Core Web Vitals); los hallazgos de rendimiento salen del código.
 
-**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~740 KB con ilustraciones y renders 3D incluidos; solo carga aparte Google Fonts y las imágenes de marca desde cooking.pe).
+**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~620 KB con íconos, fotos y renders incluidos; solo carga aparte Google Fonts y las imágenes de marca desde cooking.pe).
 
 ---
 
@@ -48,21 +48,27 @@
 
 ## 4. Qué resuelve la propuesta
 
-La propuesta mantiene el mundo visual de la marca: melocotón y crema, el marrón del logo y el naranja CooKing, "El Rey de la *Cocina Nutricional*" en serif y script, y olas entre secciones. Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
+La propuesta mantiene el mundo visual de la marca, que es minimalista y fotográfico:
 
-- **Hero en la línea del original:**
-  - Titular de marca, subrayado que se dibuja al cargar y la línea de bolsas que sube desde una ola.
-  - Ingredientes en 3D que flotan y reaccionan al mouse.
-  - Perro y gato con corona ("El Rey"). Llevan a las recetas y al mapa.
-- **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones.
+- **Paleta y tipografía:** melocotón y crema, el marrón del logo y el naranja CooKing, con "El Rey de la *Cocina Nutricional*" en serif y script.
+- **Imágenes:** las fotos reales de la marca (los chefs, el perro y el gato con gorro, la olla, los ingredientes).
+- **Íconos:** de línea blancos sobre círculos mostaza, como en "Beneficios funcionales".
+- **Estructura:** olas entre secciones.
+
+Encima de eso suma movimiento con propósito y todo el contenido real del sitio. No usa emojis ni ilustraciones genéricas.
+
+- **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado de "Cocina Nutricional" se dibuja al cargar y las bolsas suben desde una ola.
+- **Cinta de ingredientes en movimiento** (solo texto) con los ingredientes reales de las composiciones.
+- **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
+- **"¡Los ingredientes marcan la diferencia!"**, como en el sitio actual: la olla con los ingredientes, que gira suavemente al hacer scroll, y la franja fotográfica de ingredientes frescos.
 - **El plato de croquetas, restaurado y mejorado:**
   - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.
   - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Arriba hay una franja de vegetales.
   - Tiene 4 puntos interactivos con las tarjetas marrones del original. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
-  - Sin numeración falsa: cada punto lleva el ícono de lo que explica.
-- **Beneficios en órbita** alrededor del perro y el gato: las 8 características en un solo bloque, en lugar de los tres bloques repetidos.
+  - Sin numeración falsa: cada punto lleva el ícono de línea de lo que explica.
+- **Beneficios en órbita** alrededor del perro y el gato: las 8 características en un solo bloque, en lugar de los tres bloques repetidos, con íconos mostaza al estilo de la marca.
 - **Recetas con pestañas Perros / Gatos:**
-  - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero). Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
+  - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero), con croquetas 3D flotando alrededor. Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
   - Barras animadas de proteína, grasa y fibra, más ceniza, kcal y formatos.
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
 - **Guía de cambio de alimento en 7 días** con 4 platos en 3D que muestran la mezcla real: croquetas CooKing en naranja y alimento anterior en marrón. Una barra se llena con el porcentaje de cada paso. Aquí la secuencia es real.
@@ -95,5 +101,5 @@ La propuesta mantiene el mundo visual de la marca: melocotón y crema, el marró
 4. **Conectar el formulario.** Completa `CONFIG.formEndpoint`. Mientras esté vacío, el formulario abre el correo del visitante con el mensaje listo para `marketingpets@solvet.com.pe`.
 5. **Implementación en WordPress:** la página puede montarse como plantilla HTML personalizada, o rehacerse en Elementor usando este archivo como especificación. El mapa funciona por sí solo dentro de un widget HTML.
 6. **Datos del mapa:** INEI 2007 vía [peru-geojson](https://github.com/juaneladio/peru-geojson) (MPL-2.0). En esa fuente, Santa Anita y La Punta no tienen polígono propio, y Breña se corrigió a mano porque venía incompleta.
-7. **Ilustraciones 3D:** los ingredientes y las mascotas son de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licencia MIT, uso comercial permitido; la licencia está en `img/3d/`). Los platos y croquetas son renders 3D propios (en `img/render/`), con el logo tomado de una captura del sitio. Si se entrega el logo en vector, se vuelven a generar más nítidos. Todo va incluido dentro del HTML y también queda en archivos sueltos para subirlos a WordPress.
-8. **Fondo original del hero** (los chefs perro y gato): su imagen está definida en un CSS de Elementor (`post-14.css`) que no venía en el HTML guardado. Si se quiere recuperar, basta con pasar la URL de esa imagen para usarla como fondo del hero.
+7. **Imágenes de marca tomadas de capturas:** el perro y el gato chefs del hero y la franja de ingredientes están definidos en los CSS de Elementor, así que no tienen URL pública. Para la propuesta los recorté de las capturas del sitio (`img/marca/`). Al publicar, conviene reemplazarlos por los archivos originales en alta resolución, con el mismo nombre.
+8. **Renders 3D e íconos:** los platos y croquetas son renders 3D propios (`img/render/`), con el logo tomado de una captura. Si se entrega el logo en vector, se regeneran más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más un ícono propio de estrellas para "Hecho en Europa".
