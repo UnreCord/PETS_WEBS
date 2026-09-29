@@ -2,7 +2,7 @@
 
 **Base del análisis:** HTML guardado de https://cooking.pe/ (WordPress 7.1.2, Elementor 4.2.4 + Elementor Pro, tema Astra Pro y 4 plugins propios `rblweb-*`) y captura de la sección de puntos de venta. El sitio en vivo no se pudo cargar desde el entorno de trabajo, así que no se midieron tiempos de carga reales (Core Web Vitals); los hallazgos de rendimiento salen del código.
 
-**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~450 KB con las ilustraciones incluidas; solo carga aparte Google Fonts y las imágenes de marca desde cooking.pe).
+**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~740 KB con ilustraciones y renders 3D incluidos; solo carga aparte Google Fonts y las imágenes de marca desde cooking.pe).
 
 ---
 
@@ -56,8 +56,8 @@ La propuesta mantiene el mundo visual de la marca: melocotón y crema, el marró
   - Perro y gato con corona ("El Rey"). Llevan a las recetas y al mapa.
 - **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones.
 - **El plato de croquetas, restaurado y mejorado:**
-  - Está dibujado a mano (sin depender de una imagen) con el logo en el bowl.
-  - Las croquetas salen disparadas al entrar en pantalla y hay una franja de vegetales arriba.
+  - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.
+  - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Arriba hay una franja de vegetales.
   - Tiene 4 puntos interactivos con las tarjetas marrones del original. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
   - Sin numeración falsa: cada punto lleva el ícono de lo que explica.
 - **Beneficios en órbita** alrededor del perro y el gato: las 8 características en un solo bloque, en lugar de los tres bloques repetidos.
@@ -65,7 +65,7 @@ La propuesta mantiene el mundo visual de la marca: melocotón y crema, el marró
   - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero). Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
   - Barras animadas de proteína, grasa y fibra, más ceniza, kcal y formatos.
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
-- **Guía de cambio de alimento en 7 días** con platitos que se llenan de croquetas nuevas paso a paso. Aquí la secuencia es real.
+- **Guía de cambio de alimento en 7 días** con 4 platos en 3D que muestran la mezcla real: croquetas CooKing en naranja y alimento anterior en marrón. Una barra se llena con el porcentaje de cada paso. Aquí la secuencia es real.
 - **Mapa interactivo de Lima Metropolitana:**
   - Distritos con puntos de venta como azulejos dorados, mar con textura de olas y pines de la marca.
   - Buscador, "Cerca de mí", distrito sin tienda → la más cercana, "Cómo llegar" a Google Maps y enlaces compartibles (`?tienda=…`, `?distrito=…`).
@@ -95,5 +95,5 @@ La propuesta mantiene el mundo visual de la marca: melocotón y crema, el marró
 4. **Conectar el formulario.** Completa `CONFIG.formEndpoint`. Mientras esté vacío, el formulario abre el correo del visitante con el mensaje listo para `marketingpets@solvet.com.pe`.
 5. **Implementación en WordPress:** la página puede montarse como plantilla HTML personalizada, o rehacerse en Elementor usando este archivo como especificación. El mapa funciona por sí solo dentro de un widget HTML.
 6. **Datos del mapa:** INEI 2007 vía [peru-geojson](https://github.com/juaneladio/peru-geojson) (MPL-2.0). En esa fuente, Santa Anita y La Punta no tienen polígono propio, y Breña se corrigió a mano porque venía incompleta.
-7. **Ilustraciones 3D:** son de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licencia MIT, uso comercial permitido; la licencia está en `img/3d/`). Van incluidas dentro del HTML y también quedan como archivos sueltos en `img/3d/` para subirlas a WordPress.
+7. **Ilustraciones 3D:** los ingredientes y las mascotas son de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licencia MIT, uso comercial permitido; la licencia está en `img/3d/`). Los platos y croquetas son renders 3D propios (en `img/render/`), con el logo tomado de una captura del sitio. Si se entrega el logo en vector, se vuelven a generar más nítidos. Todo va incluido dentro del HTML y también queda en archivos sueltos para subirlos a WordPress.
 8. **Fondo original del hero** (los chefs perro y gato): su imagen está definida en un CSS de Elementor (`post-14.css`) que no venía en el HTML guardado. Si se quiere recuperar, basta con pasar la URL de esa imagen para usarla como fondo del hero.
