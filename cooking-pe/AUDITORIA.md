@@ -2,7 +2,7 @@
 
 **Base del análisis:** HTML guardado de https://cooking.pe/ (WordPress 7.1.2, Elementor 4.2.4 + Elementor Pro, tema Astra Pro y 4 plugins propios `rblweb-*`) y captura de la sección de puntos de venta. El sitio en vivo no se pudo cargar desde el entorno de trabajo, así que no se midieron tiempos de carga reales (Core Web Vitals); los hallazgos de rendimiento salen del código.
 
-**Propuesta:** `cooking-pe/index.html` (un solo archivo, ~99 KB, sin dependencias salvo Google Fonts).
+**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~450 KB con las ilustraciones incluidas; solo carga aparte Google Fonts y las imágenes de marca desde cooking.pe).
 
 ---
 
@@ -48,26 +48,35 @@
 
 ## 4. Qué resuelve la propuesta
 
-- **Mapa interactivo de Lima Metropolitana** (lo principal):
-  - Muestra los 47 distritos con límites del INEI. Los distritos con puntos de venta resaltan como azulejos y cada tienda tiene su pin.
-  - Se puede tocar una tienda o un distrito. Un distrito sin tienda muestra la más cercana y a qué distancia está.
-  - Incluye buscador por distrito, tienda o calle, botón "Cerca de mí" (ordena por distancia), zoom con botones, arrastre, pellizco y teclado, y la vista "Ver toda Lima".
-  - Cada tienda tiene "Cómo llegar" a Google Maps con la dirección exacta. La vista queda en la URL (`?tienda=…`, `?distrito=…`) para compartirla.
-  - Funciona sin API key ni costos de terceros.
-- **Recetas como estantería comparable:**
-  - Las 7 recetas tienen nombre en español ("Esterilizado con pollo"), para quién es y el nombre del empaque para ubicarlo en tienda.
-  - Proteína, grasa, fibra, ceniza, kcal y formatos quedan a la vista y alineados entre recetas.
-  - La composición completa se despliega sin modal.
-- **Un solo bloque de atributos** ("Lo que hay en el plato") en lugar de tres, más los nutrientes funcionales que sí aparecen en la composición.
-- **Guía de cambio de alimento en 7 días.** Ayuda a quien migra desde otra marca; es aquí donde la numeración sí tiene sentido, porque es una secuencia real.
+La propuesta mantiene el mundo visual de la marca: melocotón y crema, el marrón del logo y el naranja CooKing, "El Rey de la *Cocina Nutricional*" en serif y script, y olas entre secciones. Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
+
+- **Hero en la línea del original:**
+  - Titular de marca, subrayado que se dibuja al cargar y la línea de bolsas que sube desde una ola.
+  - Ingredientes en 3D que flotan y reaccionan al mouse.
+  - Perro y gato con corona ("El Rey"). Llevan a las recetas y al mapa.
+- **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones.
+- **El plato de croquetas, restaurado y mejorado:**
+  - Está dibujado a mano (sin depender de una imagen) con el logo en el bowl.
+  - Las croquetas salen disparadas al entrar en pantalla y hay una franja de vegetales arriba.
+  - Tiene 4 puntos interactivos con las tarjetas marrones del original. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
+  - Sin numeración falsa: cada punto lleva el ícono de lo que explica.
+- **Beneficios en órbita** alrededor del perro y el gato: las 8 características en un solo bloque, en lugar de los tres bloques repetidos.
+- **Recetas con pestañas Perros / Gatos:**
+  - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero). Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
+  - Barras animadas de proteína, grasa y fibra, más ceniza, kcal y formatos.
+  - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
+- **Guía de cambio de alimento en 7 días** con platitos que se llenan de croquetas nuevas paso a paso. Aquí la secuencia es real.
+- **Mapa interactivo de Lima Metropolitana:**
+  - Distritos con puntos de venta como azulejos dorados, mar con textura de olas y pines de la marca.
+  - Buscador, "Cerca de mí", distrito sin tienda → la más cercana, "Cómo llegar" a Google Maps y enlaces compartibles (`?tienda=…`, `?distrito=…`).
 - **SEO:** H1 real, `title` y `description` útiles, Open Graph y datos estructurados de la organización.
 - **Accesibilidad:**
-  - Enlace para saltar al contenido y foco visible en todo.
-  - Etiquetas reales, errores en línea y `aria-live` en estados.
-  - Movimiento reducido respetado; contraste AA verificado en la paleta.
+  - Enlace para saltar al contenido y foco visible en todo el recorrido con teclado.
+  - Pestañas y puntos del plato con los roles ARIA correctos, errores en línea en el formulario.
+  - Si el usuario pide menos movimiento en su sistema, todas las animaciones se desactivan y el contenido se muestra completo.
 - **Formulario:** Empresa y RUC aparecen solo para negocios; tipos `tel`/`email`, `autocomplete` y validación de RUC de 11 dígitos.
-- **Rendimiento:** sin jQuery; 2 familias tipográficas; imágenes con dimensiones, `lazy` y `fetchpriority`.
-- **Compatibilidad:** se mantienen las anclas actuales (`#conocenos`, `#cat`, `#dog`, `#comprar`, `#contactanos`), así que los enlaces y códigos QR existentes siguen funcionando.
+- **Rendimiento:** sin jQuery ni Elementor; imágenes con dimensiones, `lazy` y `fetchpriority`; las animaciones usan solo `transform` y `opacity`.
+- **Compatibilidad:** se mantienen las anclas actuales (`#conocenos`, `#cat`, `#dog`, `#comprar`, `#contactanos`); `#cat` y `#dog` abren la pestaña correspondiente.
 
 ## 5. Pendientes antes de publicar
 
@@ -86,3 +95,5 @@
 4. **Conectar el formulario.** Completa `CONFIG.formEndpoint`. Mientras esté vacío, el formulario abre el correo del visitante con el mensaje listo para `marketingpets@solvet.com.pe`.
 5. **Implementación en WordPress:** la página puede montarse como plantilla HTML personalizada, o rehacerse en Elementor usando este archivo como especificación. El mapa funciona por sí solo dentro de un widget HTML.
 6. **Datos del mapa:** INEI 2007 vía [peru-geojson](https://github.com/juaneladio/peru-geojson) (MPL-2.0). En esa fuente, Santa Anita y La Punta no tienen polígono propio, y Breña se corrigió a mano porque venía incompleta.
+7. **Ilustraciones 3D:** son de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licencia MIT, uso comercial permitido; la licencia está en `img/3d/`). Van incluidas dentro del HTML y también quedan como archivos sueltos en `img/3d/` para subirlas a WordPress.
+8. **Fondo original del hero** (los chefs perro y gato): su imagen está definida en un CSS de Elementor (`post-14.css`) que no venía en el HTML guardado. Si se quiere recuperar, basta con pasar la URL de esa imagen para usarla como fondo del hero.
