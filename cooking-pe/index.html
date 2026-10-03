@@ -808,7 +808,7 @@ html{scroll-padding-top:72px}
   .ingr__band{flex:none;height:clamp(96px,18svh,220px);margin-top:min(10px,1svh)}
 
   /* plato: card beside the bowl, so the bowl keeps its size */
-  .bowl{max-width:min(820px,calc((100svh - 452px) / .582),calc((100vw - 2 * var(--gutter) - 690px) / .56));padding-top:clamp(28px,5svh,60px)}
+  .bowl{max-width:min(820px,calc((100svh - 470px) / .582),calc((100vw - 2 * var(--gutter) - 690px) / .56));padding-top:clamp(34px,6svh,66px)}
   .chips{margin-top:min(22px,2svh)}
   .bowl__toss{margin-top:4px}
 
@@ -1661,7 +1661,7 @@ function initBowl() {
   const K = [];
   for (let i = 0; i < 16; i++) {
     const a = (-172 + i * (164 / 15) + (R() * 8 - 4)) * Math.PI / 180, rad = .9 + R() * .55, deck = deckMQ.matches;
-    K.push({ hx: 50 + Math.cos(a) * (deck ? 41 : 38) * rad, hy: (deck ? 11 : 8) + Math.sin(a) * (deck ? 8 : 23) * rad, w: 3.6 + R() * 3.4, rot0: R() * 300 - 150, k: 1 + (i % 10), blur: R() > .8 ? 1.2 : 0,
+    K.push({ hx: 50 + Math.cos(a) * (deck ? 41 : 38) * rad, hy: (deck ? 13 : 8) + Math.sin(a) * (deck ? 7 : 23) * rad, w: 3.6 + R() * 3.4, rot0: R() * 300 - 150, k: 1 + (i % 10), blur: R() > .8 ? 1.2 : 0,
       d: (i % 5) * .07 + R() * .18, ph: R() * 6.28, mode: "in", x: 0, y: 0, vx: 0, vy: 0, r: 0, vr: 0, s: .3, o: 0, t: 0 });
   }
   fly.innerHTML = K.map(k => `<span class="kib" style="--w:${k.w.toFixed(1)}%;--b:${k.blur}px"><img src="${RENDERS["kibble-" + k.k]}" alt="" width="120" height="120" draggable="false"></span>`).join("");
