@@ -63,7 +63,15 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - El teclado (Av Pág, flechas), la barra de desplazamiento y los enlaces del menú también caen al inicio de cada sección.
   - Las listas con scroll propio, como la de tiendas, se recorren primero.
   - En pantallas bajas se ocultan detalles secundarios (el SKU del empaque, algunos subtítulos) para que todo siga entrando.
-  - En celulares y tablets las secciones conservan su altura natural, porque varias son más largas que la pantalla. El inicio de cada una se acomoda solo cuando el scroll se detiene cerca.
+  - **En celulares** (hasta 767 px de ancho) también es una sección por pantalla y cada deslizamiento lleva a la siguiente. Probado en 390×844, 412×915, 375×667 y 360×640. Lo que no entra a lo alto se mueve hacia los costados:
+    - las recetas en carrusel;
+    - los filtros, los ingredientes y los puntos del plato en filas deslizables;
+    - la calculadora en dos paneles, "Tu mascota" y "Su plan", con el botón "Ver su plan →";
+    - el mapa con el selector "Mapa | Lista de tiendas"; al tocar una tienda de la lista se abre en el mapa.
+  - En celular, "Conócenos" no repite el segundo párrafo, que ya aparece en "Los ingredientes".
+  - El contacto tiene dos paradas: primero el formulario y después los datos de Solpet con el pie de página.
+  - En celulares bajos (667 px de alto o menos) se ocultan detalles secundarios. Por ejemplo, el cambio en gramos dentro de la calculadora, que igual se explica en la sección siguiente.
+  - En tablets las secciones conservan su altura natural y el inicio de cada una se acomoda solo cuando el scroll se detiene cerca.
 
 - **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras. Las bolsas suben desde una ola.
 - **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, patata, legumbres, zanahoria, habas, frutos rojos, manzana, romero, cítricos y achicoria.

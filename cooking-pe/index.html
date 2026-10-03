@@ -763,7 +763,7 @@ main{overflow-x:clip}
 /* Desktop and laptops: each section fits the screen under the header and the scroll snaps from one to the next.
    Phones and very short windows: sections keep their natural height and only their start gently snaps into place. */
 html{scroll-padding-top:72px}
-@media (max-width:1023px),(max-height:599px){
+@media (min-width:768px) and (max-width:1023px),(min-width:768px) and (max-height:599px){
   html{scroll-snap-type:y proximity}
   .hero,.sec{scroll-snap-align:start}
 }
@@ -772,7 +772,7 @@ html{scroll-padding-top:72px}
   /* the header keeps one height so every section lands in the same place */
   .hdr__in,.hdr.is-scrolled .hdr__in{height:72px}
   .logo img,.hdr.is-scrolled .logo img{height:58px}
-  .hdr{scroll-snap-align:start}
+  .hero{scroll-snap-align:start}
   .sec{scroll-snap-align:start;scroll-snap-stop:always}
   .footer{scroll-snap-align:end}
   .sec{min-height:calc(100svh - 72px);padding-block:clamp(32px,5.4svh,56px) clamp(26px,4svh,46px);display:flex;flex-direction:column;justify-content:center}
@@ -958,6 +958,262 @@ html{scroll-padding-top:72px}
   .form{gap:8px 16px}
   .field label{font-size:var(--fs-xs)}
   .formcard .h2{font-size:clamp(1.6rem,4svh,2.2rem)}
+}
+
+/* phone-only controls are hidden elsewhere */
+.plan__tabs,.planf__go,.planr__note,.mapviews{display:none}
+
+/* ============ Phones: one section per screen ============ */
+/* Each section fills the screen under the header and one swipe moves to the next one.
+   What does not fit vertically moves sideways: recipes carousel, plan in two panels, map or list. */
+@media (max-width:767px){
+  html{scroll-snap-type:y mandatory}
+  .hero{scroll-snap-align:start}
+  .sec{min-height:calc(100svh - 72px);scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding-block:clamp(20px,3.6svh,34px) clamp(16px,2.8svh,28px)}
+  .footer{scroll-snap-align:end}
+  .wave{height:clamp(16px,2.6svh,26px)}
+  .h2{font-size:clamp(1.55rem,min(7.4vw,4.5svh),2.15rem)}
+  .h2 .script{font-size:1.08em}
+  .lead{margin-top:min(8px,1.2svh);font-size:clamp(.86rem,min(3.9vw,2.1svh),1rem);line-height:1.5}
+
+  /* hero + ribbon = first screen */
+  .hero{height:calc(100svh - 72px - 44px);min-height:420px;display:flex;flex-direction:column;padding-top:clamp(10px,2.4svh,26px)}
+  .hero__title{flex:none}
+  .hero__kicker{font-size:clamp(1.6rem,min(8.4vw,4.8svh),2.3rem)}
+  .hero__script{font-size:clamp(2.3rem,min(13.2vw,8.2svh),3.6rem)}
+  .hero__lead{margin-top:min(8px,1svh);font-size:clamp(.86rem,2.1svh,1rem)}
+  .hero__ctas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:min(16px,2svh)}
+  .hero__ctas .btn{min-height:44px;padding:.45em .5em;font-size:.86rem}
+  .hero__ctas .btn--orange{grid-column:1/-1}
+  .hero__stage{flex:1;height:auto;min-height:110px;margin-top:min(10px,1.2svh);container-type:size}
+  .hero__bags{width:min(96vw,190cqh);bottom:5cqh}
+
+  /* conócenos (its second paragraph repeats in "Los ingredientes", so it is shown there) */
+  .know{gap:min(14px,1.8svh)}
+  .know__art{width:min(68vw,29svh,300px);max-width:none}
+  .arch{outline-width:6px}
+  .badge-rot{width:clamp(64px,19vw,92px)}
+  .know__copy .lead + .lead{display:none}
+  .facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:min(14px,1.8svh)}
+  .fact{flex-direction:column;align-items:center;text-align:center;gap:4px;padding:10px 6px;border-radius:16px}
+  .fact .badge-ico{width:32px;height:32px}
+  .fact .badge-ico svg{width:17px;height:17px}
+  .fact b{font-size:1.1rem}
+  .fact span{font-size:11px}
+  .know__copy .btn{margin-top:min(14px,1.8svh);min-height:44px}
+
+  /* ingredientes */
+  .ingr > .wrap{margin-block:auto}
+  .ingr__grid{gap:min(10px,1.4svh)}
+  .ingr__copy .lead{font-size:clamp(.82rem,1.95svh,.95rem)}
+  .ingr__list{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:min(10px,1.4svh) calc(-1 * var(--gutter)) 0;padding:0 var(--gutter) 2px;scrollbar-width:none}
+  .ingr__list::-webkit-scrollbar{display:none}
+  .ingr__list li{flex:none;padding:4px 11px;font-size:12px}
+  .ingr__pan{width:min(70vw,29svh,300px)}
+  .ingr__hint{font-size:12px;margin-top:0}
+  .ingr__band{flex:none;height:clamp(64px,10svh,110px);margin-top:2px}
+
+  /* plato: point chips in one swipeable row, card under the bowl keeps its space */
+  .bowl{padding-top:clamp(30px,5svh,50px);max-width:min(100%,calc((100svh - 72px - 400px) / .582))}
+  .claim{margin-top:6px;padding:12px 14px}
+  .claim[hidden]{display:block;visibility:hidden}
+  .claim__icon{display:none}
+  .claim h3{font-size:1.1rem}
+  .claim p{font-size:12.5px;margin-top:4px;line-height:1.45}
+  .claim__close{width:32px;height:32px;right:6px;top:6px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:6px;margin:min(10px,1.4svh) calc(-1 * var(--gutter)) 0;padding:0 var(--gutter) 2px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;min-height:40px;font-size:12.5px;padding:4px 12px 4px 5px}
+  .chip .ico{width:28px;height:28px;padding:5px}
+  .bowl__toss{margin-top:2px;min-height:40px}
+
+  /* beneficios: image + 2×4 compact list */
+  .orbit{gap:10px 12px;margin-top:min(12px,1.6svh)}
+  .orbit__pets{width:min(46vw,23svh,210px);padding:6%;margin-bottom:2px}
+  .perk{flex-direction:row;align-items:flex-start;gap:8px;text-align:left}
+  .perk__ico{width:40px;height:40px;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.7),0 10px 18px -12px rgba(58,40,28,.6)}
+  .perk__ico .ico{width:20px;height:20px}
+  .perk .perk__txt{text-align:left;align-items:flex-start;gap:2px}
+  .perk b{font-size:.88rem;line-height:1.15}
+  .perk__txt span{font-size:11px;line-height:1.3}
+
+  /* recetas */
+  .rbar{display:flex;flex-direction:column;gap:8px;margin-top:min(12px,1.6svh)}
+  .tabs{margin:0}
+  .tab{min-height:42px;padding:0 18px;font-size:.92rem}
+  .tab .ico{width:22px;height:22px}
+  .rfilters{flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:16px;overflow-x:auto;margin:0 calc(-1 * var(--gutter));padding:0 var(--gutter);scrollbar-width:none}
+  .rfilters::-webkit-scrollbar{display:none}
+  .rfilter{flex-direction:row;align-items:center;gap:6px;flex:none}
+  .rfilter__opts{flex-wrap:nowrap;overflow:visible;margin:0;padding:0;max-width:none}
+  .rfilter__label{font-size:12px}
+  .fopt{min-height:34px;padding:0 11px;font-size:12px}
+  .rcount{margin-top:0;font-size:12px;min-height:0}
+  .rgrid,.rgrid--3{margin-top:min(10px,1.2svh);padding-bottom:8px}
+  .rcard{flex-basis:80%;padding:8px 8px 6px;border-radius:22px}
+  .rcard__stage{aspect-ratio:auto;height:clamp(84px,15svh,160px);border-radius:16px}
+  .rcard__bag{width:auto;height:86%;bottom:7%}
+  .rcard__bag svg{width:auto;height:100%}
+  .rcard h3{font-size:1.08rem;margin-top:8px}
+  .rcard__for{font-size:12px;margin-top:2px}
+  .bars{gap:3px;margin-top:6px}
+  .bar{font-size:12px}
+  .rcard__meta{font-size:12px;margin-top:6px}
+  .rcard__sku{display:none}
+  .rcard details{margin-top:4px}
+  .rcard summary{min-height:34px;font-size:.9rem}
+  .swipe-hint{font-size:12px;margin-top:2px}
+
+  /* su plan: two panels side by side, swipe or tap to switch */
+  .plan .h2 .script{display:inline;margin-left:.2em}
+  .plan .sec__head .lead{display:none}
+  .opts--stack .opt__box small{display:none}
+  .plan__tabs{display:flex;justify-content:center;gap:6px;margin-top:min(12px,1.6svh)}
+  .plan__tabs button{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid rgba(255,248,239,.25);background:none;color:var(--crema);font-weight:700;font-size:12.5px;cursor:pointer}
+  .plan__tabs button span{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:rgba(255,248,239,.15);font-size:11px}
+  .plan__tabs button.is-on{background:var(--mostaza);border-color:var(--mostaza);color:var(--cacao)}
+  .plan__tabs button.is-on span{background:var(--cacao);color:var(--mostaza)}
+  .plan__grid{display:flex;align-items:flex-start;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;margin:min(10px,1.4svh) calc(-1 * var(--gutter)) 0;padding:0 var(--gutter) 4px;scrollbar-width:none}
+  .plan__grid::-webkit-scrollbar{display:none}
+  .plan__grid > .planf,.plan__grid > .planr{flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always}
+  .plan__grid > .plan__note{display:none}
+  .planf{gap:8px}
+  .planf__q{padding:10px 12px 12px;border-radius:18px}
+  .planf__q legend,.planf__lbl{font-size:1rem;margin-bottom:8px}
+  .planf__n{width:24px;height:24px;font-size:.78rem}
+  .opts--big{gap:8px}
+  .opts--big .opt__box{flex-direction:row;gap:10px;min-height:clamp(44px,6.5svh,58px);font-size:1.1rem}
+  .opts--big .ico{width:26px;height:26px}
+  .opts--stack{flex-wrap:nowrap}
+  .opts--stack .opt{flex:1}
+  .opts--stack .opt__box{height:100%;padding:6px 10px}
+  .opt__box{min-height:40px;font-size:13px}
+  .kg{min-height:0;gap:10px}
+  .kg__pet{width:44px;height:44px}
+  .kg__pet .ico{width:calc(var(--s,48px) * .7);height:calc(var(--s,48px) * .7)}
+  .kg output{font-size:1.8rem;padding-bottom:2px}
+  .range{margin-top:2px}
+  .planf__hint{font-size:11px;margin-top:6px}
+  .planf__go{display:flex;width:100%;min-height:48px;margin-top:2px}
+  .planr__card{padding:12px;border-radius:24px}
+  .planr__top{grid-template-columns:clamp(84px,24vw,120px) minmax(0,1fr);gap:12px}
+  .planr__stage{width:auto;margin:0}
+  .planr__kicker{font-size:10.5px}
+  .planr__name{font-size:1.2rem}
+  .planr__for{font-size:12px;margin-top:2px}
+  .planr__why{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-top:6px}
+  .planr__why::-webkit-scrollbar{display:none}
+  .planr__why li{flex:none;font-size:11px;padding:2px 8px 2px 2px}
+  .planr__why .ico{width:18px;height:18px;padding:3px}
+  .planr__alt{font-size:12px;margin-top:4px}
+  .planr__stats{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px}
+  .stat{padding:10px 12px;border-radius:16px}
+  .stat__label{font-size:11px}
+  .stat__big{font-size:2rem;margin-top:4px}
+  .stat__big small{font-size:.38em}
+  .stat__sub{font-size:11px}
+  .pile{display:none}
+  .bags{gap:6px;margin-top:8px}
+  .bags li{grid-template-columns:36px minmax(0,1fr);gap:2px 8px}
+  .bags__kg{grid-row:auto;height:28px;border-radius:8px;font-size:11px}
+  .bags__days{font-size:1.05rem}
+  .bags__bar{display:none}
+  .planr__switch{margin-top:8px}
+  .sw7{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px}
+  .sw7__day{font-size:10px}
+  .sw7 p{font-size:10px;line-height:1.25}
+  .sw7 p b{font-size:.95rem}
+  .planr__ctas{margin-top:10px;gap:8px;flex-wrap:nowrap}
+  .planr__ctas .btn{flex:1;min-height:44px;padding:.4em .5em;font-size:.88rem}
+  .planr__note{display:block;margin-top:8px;font-size:11px;color:var(--cacao-2);line-height:1.4}
+  .planr__note button{background:none;border:0;padding:2px 0;font-weight:700;color:var(--cacao);text-decoration:underline;text-decoration-color:var(--naranja);cursor:pointer;font-size:inherit}
+  .plan__peek{display:none!important}
+
+  /* cambio: animation on top, the 4 steps in one row */
+  .pour{margin-top:min(10px,1.4svh)}
+  .ppill{padding:4px 10px 9px;border-radius:14px;font-size:10px}
+  .ppill b{font-size:1.15rem}
+  .pour__stage{aspect-ratio:auto;height:clamp(220px,calc(100svh - 72px - 335px),400px)}
+  .steps{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
+  .tl{padding:6px 4px 10px;border-radius:14px;gap:0}
+  .tl img{display:none}
+  .tl__day{font-size:.82rem;margin:0}
+  .tl .mix{width:90%;height:7px;margin-top:4px}
+  .tl__txt{margin-top:4px;font-size:0;line-height:1.2}
+  .tl__txt b{font-size:10.5px}
+  .tl[aria-current="step"]{transform:translateY(-2px)}
+  .tl[aria-current="step"]::after{left:10px;right:10px;bottom:4px}
+  .switch__legend{display:none}
+  .switch__note{font-size:12px;margin-top:8px;line-height:1.45}
+
+  /* mapa: search on top, then the map or the list */
+  .map__grid{display:flex;flex-direction:column;gap:8px;height:calc(100svh - 72px - 200px);min-height:340px;margin-top:min(12px,1.6svh)}
+  .panel-list{order:-1;flex:none;padding:10px 12px;border-radius:20px}
+  .panel-list > label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .panel-list input{min-height:44px}
+  .geo{min-height:44px;padding:0 12px;font-size:.88rem}
+  .mapviews{display:flex;gap:6px;margin-top:8px}
+  .mapviews button{flex:1;min-height:36px;border-radius:999px;border:1.5px solid var(--linea);background:var(--crema);color:var(--cacao);font-weight:700;font-size:12.5px;cursor:pointer}
+  .mapviews button[aria-pressed="true"]{background:var(--cacao);border-color:var(--cacao);color:var(--crema)}
+  .status{margin-top:6px;min-height:0;font-size:12px}
+  .fchip{margin-top:6px}
+  .panel-list .list,.panel-list .online{display:none}
+  .map{flex:1;height:auto;min-height:0;border-radius:20px}
+  .map-sec.is-list .map{display:none}
+  .map-sec.is-list .panel-list{flex:1;min-height:0}
+  .map-sec.is-list .list{display:block;flex:1;min-height:0;overflow-y:auto}
+  .map-sec.is-list .online{display:block;margin-top:6px;padding-top:8px}
+  .card{left:8px;right:8px;bottom:8px;width:auto;padding:14px 14px 12px}
+  .card__title{font-size:1.2rem}
+  .map__note{font-size:11px;margin-top:6px}
+
+  /* contacto: the form fills the screen; Solpet's details are the next stop */
+  .formcard{padding:16px 14px;border-radius:24px}
+  .formcard .h2{font-size:clamp(1.4rem,4svh,1.8rem)}
+  .formcard .lead{font-size:clamp(.8rem,1.9svh,.9rem);margin-top:4px}
+  .form{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 10px;margin-top:12px}
+  .field label{font-size:12px}
+  .field input,.field select{min-height:42px;padding:6px 10px;border-radius:12px}
+  .field textarea{min-height:clamp(60px,10svh,110px)}
+  .form__foot .btn{width:100%}
+  .side{scroll-snap-align:start;scroll-margin-top:72px;min-height:calc(100svh - 72px - 40px);display:flex;flex-direction:column;justify-content:center;padding-top:20px}
+  .side__pets{width:min(64vw,34svh,300px)}
+}
+/* short phones (e.g. 375×667, 360×640) */
+@media (max-width:767px) and (max-height:700px){
+  .know__art{width:min(56vw,24svh)}
+  .know__copy .lead{font-size:.82rem}
+  .fact .badge-ico{display:none}
+  .fact span{font-size:10px}
+  .rcard__for,.swipe-hint{display:none}
+  .rcard__stage{height:12svh}
+  .rcount{display:none}
+  .planf__hint{display:none}
+  .planf__q{padding:8px 10px 10px}
+  .planf__q legend,.planf__lbl{font-size:.92rem;margin-bottom:6px}
+  .opts--big .opt__box{min-height:42px}
+  .kg__pet{display:none}
+  .kg output{font-size:1.5rem}
+  .planr__for,.planr__alt{display:none}
+  .stat__big{font-size:1.7rem}
+  .switch__note{display:none}
+  .orbit__pets{width:min(40vw,20svh)}
+  .planr__switch,.planr__why{display:none}
+  .planr__note{margin-top:6px}
+  /* the four questions as a 2×2 grid */
+  .planf{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}
+  .planf__go{grid-column:1/-1}
+  .opts--big{grid-template-columns:1fr 1fr;gap:6px}
+  .opts--big .opt__box{flex-direction:column;gap:2px;min-height:48px;font-size:.92rem;padding:4px}
+  .opts--big .ico{width:20px;height:20px}
+  .opts--stack{flex-wrap:wrap;gap:6px}
+  .opts--stack .opt{flex:1 1 auto}
+  .opts .opt__box{min-height:34px;padding:4px 10px;font-size:12px}
+  .kg{gap:6px}
+  .kg__scale{display:none}
+  .formcard .lead{display:none}
+  .field textarea{min-height:50px}
+  .form{margin-top:8px}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -1168,7 +1424,8 @@ html{scroll-padding-top:72px}
         <h2 class="h2" id="plan-title">Arma su plan CooKing<span class="script">en 30 segundos</span></h2>
         <p class="lead">Te decimos qué receta le va mejor, cuánto le toca al día y cuánto le dura cada bolsa.</p>
       </div>
-      <div class="plan__grid">
+      <div class="plan__tabs" aria-hidden="true"><button type="button" data-panel="0" class="is-on" tabindex="-1"><span>1</span>Tu mascota</button><button type="button" data-panel="1" tabindex="-1"><span>2</span>Su plan</button></div>
+      <div class="plan__grid" id="plan-grid">
         <form class="planf" id="plan-form" aria-label="Datos de tu mascota">
           <fieldset class="planf__q">
             <legend><span class="planf__n" aria-hidden="true">1</span>¿Para quién es?</legend>
@@ -1192,6 +1449,7 @@ html{scroll-padding-top:72px}
             <div class="opts" id="plan-cond"></div>
             <p class="planf__hint">Solo cambia la receta recomendada, no la cantidad.</p>
           </fieldset>
+          <button class="btn btn--orange planf__go" type="button" data-panel="1">Ver su plan<span aria-hidden="true">→</span></button>
         </form>
         <div class="planr">
           <article class="planr__card" id="plan-card" aria-labelledby="plan-name">
@@ -1227,6 +1485,7 @@ html{scroll-padding-top:72px}
               <a class="btn btn--orange" href="#comprar">Encuentra tu tienda</a>
               <button class="btn btn--light" type="button" id="plan-see">Ver la receta</button>
             </div>
+            <p class="planr__note">Estimación orientativa. Compárala con la tabla del empaque y ajústala con tu veterinario. <button type="button" data-panel="0">Cambiar datos</button></p>
           </article>
           <p class="sr" id="plan-live" aria-live="polite"></p>
           <div class="plan__peek" id="plan-peek" aria-hidden="true"><p><b id="plan-peek-name"></b><span id="plan-peek-g"></span></p><a class="btn btn--orange" href="#plan-card" tabindex="-1">Ver su plan</a></div>
@@ -1317,6 +1576,7 @@ html{scroll-padding-top:72px}
             <input id="map-search" type="search" placeholder="Ej.: Miraflores…" autocomplete="off" spellcheck="false" enterkeyhint="search">
             <button class="geo" id="geo" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.2" fill="currentColor"/><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 1v2.5M10 16.5V19M1 10h2.5M16.5 10H19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Cerca de mí</span></button>
           </div>
+          <div class="mapviews" role="group" aria-label="Vista"><button type="button" data-view="map" aria-pressed="true">Mapa</button><button type="button" data-view="list" aria-pressed="false">Lista de tiendas</button></div>
           <button class="fchip" id="map-chip" type="button" hidden><span></span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
           <p class="status" id="map-status" role="status" aria-live="polite"></p>
           <ul class="list" id="map-list" aria-label="Puntos de venta"></ul>
@@ -1473,6 +1733,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const deckMQ = window.matchMedia("(min-width: 1024px) and (min-height: 600px)"); // one section per screen
+const phoneMQ = window.matchMedia("(max-width: 767px)");
 const nf1 = new Intl.NumberFormat("es-PE", { maximumFractionDigits: 1 });
 const nf0 = new Intl.NumberFormat("es-PE", { maximumFractionDigits: 0 });
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
@@ -1660,7 +1921,7 @@ function initBowl() {
   const still = reduceMotion.matches;
   const K = [];
   for (let i = 0; i < 16; i++) {
-    const a = (-172 + i * (164 / 15) + (R() * 8 - 4)) * Math.PI / 180, rad = .9 + R() * .55, deck = deckMQ.matches;
+    const a = (-172 + i * (164 / 15) + (R() * 8 - 4)) * Math.PI / 180, rad = .9 + R() * .55, deck = deckMQ.matches || phoneMQ.matches;
     K.push({ hx: 50 + Math.cos(a) * (deck ? 41 : 38) * rad, hy: (deck ? 13 : 8) + Math.sin(a) * (deck ? 7 : 23) * rad, w: 3.6 + R() * 3.4, rot0: R() * 300 - 150, k: 1 + (i % 10), blur: R() > .8 ? 1.2 : 0,
       d: (i % 5) * .07 + R() * .18, ph: R() * 6.28, mode: "in", x: 0, y: 0, vx: 0, vy: 0, r: 0, vr: 0, s: .3, o: 0, t: 0 });
   }
@@ -2175,6 +2436,18 @@ function initPlan() {
     if (b) document.dispatchEvent(new CustomEvent("cooking:receta", { detail: { id: b.dataset.recipe } }));
   });
   renderInputs(); syncRange(); update();
+  // phones: "Tu mascota" and "Su plan" are two panels side by side
+  const grid = $("#plan-grid"), tabs = $$(".plan__tabs button");
+  const panels = [form, $(".planr", grid)];
+  const goPanel = i => {
+    const g = grid.getBoundingClientRect(), r = panels[i].getBoundingClientRect();
+    grid.scrollTo({ left: grid.scrollLeft + (r.left - g.left) - (g.width - r.width) / 2, behavior: reduceMotion.matches ? "instant" : "smooth" });
+  };
+  $("#plan").addEventListener("click", e => { const b = e.target.closest("[data-panel]"); if (b) goPanel(+b.dataset.panel); });
+  grid.addEventListener("scroll", () => {
+    const i = grid.scrollLeft > (panels[1].offsetLeft - panels[0].offsetLeft) / 2 ? 1 : 0;
+    tabs.forEach((t, k) => t.classList.toggle("is-on", k === i));
+  }, { passive: true });
   const peek = $("#plan-peek"), seen = { form: false, card: false };
   const io = new IntersectionObserver(es => {
     es.forEach(en => { seen[en.target === form ? "form" : "card"] = en.isIntersecting; });
@@ -2274,11 +2547,11 @@ function initSteps() {
     bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - SH * (narrow ? .1 : .01), s: bw / 900 };
     Object.assign(bowlImg.style, { left: bowl.x + "px", top: bowl.y + "px", width: bw + "px" });
     const [rlx] = toStage(...RIM[RIM.length - 1]), [rrx] = toStage(...RIM[0]), [, rty] = toStage(...proj(0, .8, -.955));
-    const w = SW * (narrow ? .22 : .135), h = w * 236 / 170;
+    const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135, h = w * 236 / 170;
     for (const k of ["old", "ck"]) {
       const sgn = k === "old" ? -1 : 1;
       Object.assign(bag[k], { w, h,
-        rest: { x: SW / 2 + sgn * (narrow ? SW * .33 : SW * .3), y: (narrow ? SH * .2 : SH * .3) + h * .5 },
+        rest: { x: SW / 2 + sgn * (narrow ? SW * .33 : SW * .3), y: (narrow ? Math.max(SH * .2, 64) : SH * .3) + h * .5 },
         pourMouth: { x: SW / 2 + sgn * (rrx - rlx) * .3, y: rty - SH * (narrow ? .1 : .17) } });
       bagEl[k].style.width = w + "px";
       pill[k].style.left = (k === "old" ? (narrow ? 2 : 7) : (narrow ? 70 : 77)) + "%";
@@ -2626,6 +2899,7 @@ function initMap() {
       highlight: id => { Object.values(pathEls).forEach(p => p.classList.remove("is-selected")); if (id && pathEls[id]) { pathEls[id].classList.add("is-selected"); gD.appendChild(pathEls[id]); } },
       me: o => { me = o ? (([x, y]) => ({ x, y }))(project(o.lng, o.lat)) : null; mePin.hidden = !me; render(); },
       refresh: render,
+      resize: () => measure(false),
       destroy: () => {
         live = false; ro.disconnect(); cancelAnimationFrame(anim);
         el.removeEventListener("pointerdown", onDown); el.removeEventListener("pointermove", onMove);
@@ -2809,6 +3083,7 @@ function initMap() {
           highlight,
           me: o => { me = o; mePin.hidden = !o; placePins(); },
           refresh: placePins,
+          resize: () => { map.resize(); placePins(); },
           destroy: () => map.remove()
         });
       });
@@ -2909,6 +3184,7 @@ function initMap() {
     const t = e.target.closest("[data-select]");
     if (t) {
       const fromList = !!t.closest(".list");
+      if (fromList && sec.classList.contains("is-list")) { showPane("map"); requestAnimationFrame(() => selectLocation(t.dataset.select, { scroll: false })); return; }
       selectLocation(t.dataset.select, { scroll: !fromList });
       if (fromList) { const r = el.getBoundingClientRect(); if (r.top < 0 || r.bottom > innerHeight) el.scrollIntoView({ block: "start", behavior: reduceMotion.matches ? "instant" : "smooth" }); }
       return;
@@ -2946,6 +3222,14 @@ function initMap() {
       statusEl.textContent = err.code === 1 ? "No tenemos permiso para ver tu ubicación. Actívalo en tu navegador o busca tu distrito." : "No pudimos obtener tu ubicación. Inténtalo de nuevo o busca tu distrito.";
     }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
   });
+  // phones: map or list, one at a time
+  const sec = $("#comprar"), paneBtns = $$(".mapviews button");
+  function showPane(v) {
+    sec.classList.toggle("is-list", v === "list");
+    paneBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === v)));
+    if (v === "map" && view && view.resize) view.resize();
+  }
+  paneBtns.forEach(b => b.addEventListener("click", () => showPane(b.dataset.view)));
   $$(".ctrl").forEach(b => b.addEventListener("click", () => { const z = b.dataset.zoom; if (z === "in") view.zoom(1); else if (z === "out") view.zoom(-1); else view.toggle(); }));
 
   // restore the selection on whichever renderer is active (deep links and after switching to the street map)
