@@ -243,7 +243,7 @@ main{overflow-x:clip}
 .veg__row img{width:clamp(70px,9vw,130px);height:auto;margin:0 -10px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.28));transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
 .veg .wave{color:var(--crema)}
 .plate__head{margin-top:0}
-.bowl{position:relative;max-width:820px;margin:clamp(8px,1.5vw,20px) auto 0;padding-top:clamp(96px,19%,170px)}
+.bowl{position:relative;max-width:820px;margin:clamp(8px,1.5vw,20px) auto 0;padding-top:clamp(220px,26%,230px)}
 .bowl::before{content:"";position:absolute;left:8%;right:8%;top:6%;bottom:4%;border-radius:50%;background:radial-gradient(closest-side,rgba(248,94,43,.14),rgba(248,94,43,0));pointer-events:none}
 .bowl__art{position:relative}
 .bowl__img{width:100%;height:auto;display:block;position:relative;z-index:1}
@@ -266,12 +266,14 @@ main{overflow-x:clip}
 .hot .ico{width:24px;height:24px}
 .hot[aria-expanded="true"]{background:var(--naranja-texto)}
 .hot:hover{scale:1.1}
-.claim{position:absolute;z-index:6;width:min(330px,86%);background:var(--canela);color:var(--blanco);border-radius:20px;padding:20px 20px 18px;text-align:center;box-shadow:0 20px 40px -18px rgba(58,40,28,.8);transition:opacity .25s,translate .25s}
+.claim{position:absolute;z-index:8;width:min(340px,86%);background:var(--canela);color:var(--blanco);border-radius:20px;padding:16px 20px 16px;text-align:center;box-shadow:0 20px 40px -18px rgba(58,40,28,.8);transition:opacity .25s,translate .25s}
+/* dashed connector from the card's pointer down to the point it explains: the card always sits above every point */
+.claim::before{content:"";position:absolute;left:var(--arrow,50%);top:calc(100% + 11px);height:var(--link,0px);border-left:2px dashed rgba(140,115,75,.7);translate:-1px 0;pointer-events:none}
 .claim[hidden]{display:block;opacity:0;translate:0 10px;pointer-events:none}
 .claim::after{content:"";position:absolute;left:var(--arrow,50%);bottom:-11px;width:22px;height:22px;background:var(--canela);transform:translateX(-50%) rotate(45deg);border-radius:4px}
-.claim__icon{width:64px;height:64px;margin:0 auto 8px;border-radius:50%;border:2px solid rgba(255,255,255,.85);display:grid;place-items:center;color:var(--blanco)}
-.claim__icon .ico{width:32px;height:32px}
-.claim h3{font-family:var(--f-display);font-size:1.45rem;line-height:1.15}
+.claim__icon{width:50px;height:50px;margin:0 auto 6px;border-radius:50%;border:2px solid rgba(255,255,255,.85);display:grid;place-items:center;color:var(--blanco)}
+.claim__icon .ico{width:26px;height:26px}
+.claim h3{font-family:var(--f-display);font-size:1.32rem;line-height:1.15}
 .claim p{margin-top:8px;font-size:var(--fs-sm);line-height:1.5;color:#FFF4E6}
 .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:clamp(18px,3vw,30px)}
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:6px 16px 6px 8px;border-radius:999px;border:1.5px solid var(--linea);background:var(--blanco);font-weight:600;font-size:var(--fs-sm);cursor:pointer;transition:background-color .2s,border-color .2s,transform .2s}
@@ -280,8 +282,9 @@ main{overflow-x:clip}
 .chip:hover{transform:translateY(-2px)}
 .chip[aria-pressed="true"]{background:var(--mostaza);border-color:var(--mostaza-2)}
 @media (max-width:699px){
+  .bowl{padding-top:clamp(64px,20%,110px)}
   .claim{position:relative;left:auto!important;top:auto!important;bottom:auto!important;width:100%;margin-top:14px}
-  .claim::after{display:none}
+  .claim::after,.claim::before{display:none}
   .claim[hidden]{display:none}
   .hot{width:40px;height:40px;margin:-20px 0 0 -20px;border-width:2px}
   .hot::before{inset:-5px}
@@ -409,9 +412,116 @@ main{overflow-x:clip}
   .fopt{flex:none}
 }
 
+/* ============ Su plan CooKing ============ */
+.plan{background:var(--cacao);color:var(--crema);overflow:hidden}
+.plan::before{content:"";position:absolute;inset:0;background:radial-gradient(42% 50% at 12% 28%,rgba(230,181,68,.15),rgba(230,181,68,0) 70%),radial-gradient(36% 46% at 92% 72%,rgba(248,94,43,.13),rgba(248,94,43,0) 70%);pointer-events:none}
+.plan .wave--top{color:var(--crema)}
+.plan .h2{color:var(--crema)}
+.plan .h2 .script{color:var(--mostaza)}
+.plan .lead{color:#E7D6C4}
+.plan__grid{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(18px,3vw,40px);margin-top:clamp(28px,4vw,48px);align-items:start}
+.planf{display:grid;gap:14px}
+.planf__q{border:1px solid rgba(255,248,239,.12);background:rgba(255,248,239,.05);border-radius:24px;padding:16px 18px 18px;margin:0;min-width:0}
+.planf__q legend,.planf__lbl{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:1.22rem;line-height:1.2;padding:0;margin-bottom:12px}
+.planf__q legend{float:left;width:100%}
+.planf__q legend + *{clear:both}
+.planf__n{width:28px;height:28px;flex:none;border-radius:50%;background:var(--mostaza);color:var(--cacao);display:grid;place-items:center;font-family:var(--f-text);font-weight:800;font-size:.85rem}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;display:block}
+.opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.opt__box{display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 16px;border-radius:999px;border:1.5px solid rgba(255,248,239,.24);color:var(--crema);font-weight:600;font-size:var(--fs-sm);line-height:1.2;transition:background-color .2s,border-color .2s,color .2s,transform .2s cubic-bezier(.3,1.6,.5,1)}
+.opt__box small{display:block;font-weight:500;opacity:.75;font-size:var(--fs-xs)}
+.opt:hover .opt__box{border-color:var(--mostaza)}
+.opt input:checked + .opt__box{background:var(--mostaza);border-color:var(--mostaza);color:var(--cacao)}
+.opt input:focus-visible + .opt__box{outline:3px solid var(--mostaza);outline-offset:3px}
+.opts--big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts--big .opt__box{flex-direction:column;justify-content:center;gap:6px;min-height:104px;border-radius:22px;font-family:var(--f-display);font-size:1.3rem;font-weight:400}
+.opts--big .ico{width:42px;height:42px}
+.opts--big input:checked + .opt__box .ico{animation:hop .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hop{40%{transform:translateY(-8px) rotate(-8deg)}}
+.opts--stack .opt__box{border-radius:16px;flex-direction:column;align-items:flex-start;justify-content:center;gap:0;padding:8px 14px}
+.kg{display:flex;align-items:flex-end;gap:14px;min-height:92px}
+.kg__pet{display:grid;place-items:end center;width:84px;height:84px;color:var(--mostaza)}
+.kg__pet .ico{width:var(--s,48px);height:var(--s,48px);transition:width .25s cubic-bezier(.3,1.5,.5,1),height .25s cubic-bezier(.3,1.5,.5,1)}
+.kg output{font-family:var(--f-display);font-size:clamp(2.2rem,2vw + 1.2rem,2.8rem);line-height:1;padding-bottom:6px}
+.range{width:100%;height:34px;margin:6px 0 0;appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;--p:20%}
+.range::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,var(--mostaza) var(--p),rgba(255,248,239,.2) var(--p))}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-10px;border-radius:50%;background:var(--crema);border:5px solid var(--mostaza);box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.range::-moz-range-track{height:8px;border-radius:999px;background:rgba(255,248,239,.2)}
+.range::-moz-range-progress{height:8px;border-radius:999px;background:var(--mostaza)}
+.range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--crema);border:5px solid var(--mostaza)}
+.range:focus-visible{outline:3px solid var(--mostaza);outline-offset:4px;border-radius:10px}
+.kg__scale{display:flex;justify-content:space-between;font-size:var(--fs-xs);color:#CDB9A5}
+.planr{position:sticky;top:calc(var(--hdr) + 12px)}
+.planr__card{background:var(--crema);color:var(--cacao);border-radius:32px;padding:clamp(16px,2.2vw,26px);box-shadow:0 34px 60px -30px rgba(0,0,0,.7)}
+.planr__top{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:clamp(14px,2vw,22px);align-items:center}
+.planr__stage{position:relative;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:radial-gradient(circle at 50% 42%,var(--c3) 0 38%,var(--c2) 70%);perspective:700px;transition:background .4s}
+.planr__stage::after{content:"";position:absolute;left:20%;right:20%;bottom:8%;height:7%;border-radius:50%;background:rgba(58,40,28,.22);filter:blur(6px)}
+.planr__bag{position:absolute;left:21%;bottom:12%;width:58%;z-index:2;transform-style:preserve-3d}
+.planr__bag svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 10px rgba(58,40,28,.3))}
+.planr__stage .rcard__kib{z-index:3}
+.planr__kicker{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--naranja-texto)}
+.planr__kicker .ico{width:16px;height:16px}
+.planr__name{font-family:var(--f-display);font-size:clamp(1.5rem,1.1vw + 1rem,2rem);line-height:1.1;margin-top:4px}
+.planr__for{margin-top:6px;color:var(--cacao-2);font-size:var(--fs-sm);line-height:1.45}
+.planr__why{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.planr__why li{display:inline-flex;align-items:center;gap:6px;padding:4px 11px 4px 4px;border-radius:999px;background:var(--blanco);border:1px solid var(--linea);font-size:var(--fs-xs);font-weight:700;animation:pop .45s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i) * 70ms)}
+.planr__why .ico{width:24px;height:24px;padding:4px;border-radius:50%;background:var(--mostaza-2);color:var(--blanco)}
+@keyframes pop{from{opacity:0;transform:scale(.7)}}
+.planr__alt{margin-top:10px;font-size:var(--fs-sm);color:var(--cacao-2)}
+.planr__alt button{background:none;border:0;padding:4px 2px;font-weight:700;color:var(--cacao);text-decoration:underline;text-decoration-color:var(--naranja);text-decoration-thickness:2px;text-underline-offset:.25em;cursor:pointer}
+.planr__alt[hidden]{display:none}
+.planr__stats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:18px}
+.stat{background:var(--blanco);border-radius:22px;padding:16px 18px;min-width:0}
+.stat__label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:var(--fs-xs);font-weight:800;color:var(--cacao-2)}
+.stat__label a{font-weight:700;color:var(--cacao);text-decoration-color:var(--naranja);text-decoration-thickness:2px}
+.stat__big{font-family:var(--f-display);font-size:clamp(2.6rem,2.4vw + 1.2rem,3.4rem);line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
+.stat__big small{font-size:.42em;margin-left:4px}
+.stat__sub{font-size:var(--fs-sm);color:var(--cacao-2);margin-top:6px}
+.pile{position:relative;height:64px;margin-top:8px}
+.pile img{position:absolute;bottom:var(--y);left:var(--x);width:22px;height:auto;rotate:var(--r);filter:drop-shadow(0 4px 3px rgba(58,40,28,.25));animation:kdrop .55s cubic-bezier(.3,1.35,.5,1) both;animation-delay:var(--d)}
+.pile img.is-old{animation:none}
+@keyframes kdrop{from{translate:0 -70px;opacity:0}}
+.bags{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}
+.bags li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 10px;align-items:center}
+.bags__kg{grid-row:span 2;display:grid;place-items:center;height:48px;border-radius:14px;background:var(--melocoton);font-weight:800;font-size:var(--fs-sm)}
+.bags__days{font-family:var(--f-display);font-size:1.25rem;line-height:1.1}
+.bags__days small{font-family:var(--f-text);font-size:var(--fs-xs);color:var(--cacao-2);margin-left:4px}
+.bags__bar{height:8px;border-radius:999px;background:#F3E7DA;overflow:hidden}
+.bags__bar i{display:block;height:100%;border-radius:inherit;background:var(--c,var(--mostaza-2));width:var(--w,0);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.planr__switch{margin-top:12px}
+.sw7{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sw7 li{min-width:0}
+.sw7 .mix{display:block;width:100%;margin-top:6px}
+.sw7 .mix span{transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.sw7 p{margin-top:6px;font-size:var(--fs-xs);color:var(--cacao-2);line-height:1.3}
+.sw7 p b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.25rem;color:var(--naranja-texto)}
+.sw7__day{font-weight:800;font-size:var(--fs-xs)}
+.planr__ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.plan__peek{display:none}
+@media (max-width:999px){
+  /* phones: while answering, a floating summary shows the result without scrolling down */
+  .plan__peek{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:55;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 16px;border-radius:20px;background:var(--crema);color:var(--cacao);box-shadow:0 18px 40px -12px rgba(0,0,0,.55);opacity:0;translate:0 120%;pointer-events:none;transition:opacity .3s,translate .4s cubic-bezier(.3,1.3,.5,1)}
+  .plan__peek.is-on{opacity:1;translate:0 0;pointer-events:auto}
+  .plan__peek p{flex:1;min-width:0;font-size:var(--fs-sm);line-height:1.3}
+  .plan__peek b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plan__peek .btn{min-height:44px;padding:.4em 1em;font-size:var(--fs-sm);flex:none}
+}
+.plan__note{position:relative;margin-top:22px;font-size:var(--fs-xs);color:#CDB9A5;max-width:90ch;line-height:1.55}
+.rcard.is-pick{animation:pick 2.4s ease-out}
+@keyframes pick{0%,60%{box-shadow:0 0 0 4px var(--mostaza),0 22px 44px -30px rgba(58,40,28,.7)}100%{box-shadow:0 22px 44px -30px rgba(58,40,28,.7)}}
+@media (max-width:999px){.plan__grid{grid-template-columns:minmax(0,1fr)}.planr{position:static}}
+@media (max-width:599px){
+  .planr__top{grid-template-columns:minmax(0,1fr)}
+  .planr__stage{width:min(240px,70%);margin:0 auto}
+  .planr__stats{grid-template-columns:minmax(0,1fr)}
+  .sw7{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 /* ============ Cambio 7 días ============ */
 .switch{background:var(--melocoton)}
-.switch .wave--top,.switch .wave--bottom{color:var(--crema)}
+.switch .wave--bottom{color:var(--crema)}
+.switch .wave--top{color:var(--cacao)}
 .pour{margin-top:clamp(20px,3vw,40px)}
 .pour__stage{position:relative;width:min(100%,980px);margin:0 auto;aspect-ratio:980/560}
 .pour__stage::before{content:"";position:absolute;left:22%;right:22%;bottom:0;height:62%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,248,239,.95),rgba(255,248,239,0));pointer-events:none}
@@ -419,14 +529,25 @@ main{overflow-x:clip}
 .pour__cv{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 .pour__heap{z-index:2;transition:opacity .45s}
 .pour__heap.is-fading{opacity:0}
+.pour__heap.is-mixing{animation:stir .8s cubic-bezier(.4,0,.2,1)}
+@keyframes stir{20%{transform:rotate(-2.2deg) translateX(-4px)}45%{transform:rotate(2deg) translateX(4px)}70%{transform:rotate(-1deg)}100%{transform:none}}
+.pour__mix{position:absolute;z-index:5;left:74%;bottom:20%;translate:0 8px;display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:var(--cacao);color:var(--crema);font-size:var(--fs-sm);font-weight:700;opacity:0;transition:opacity .3s,translate .4s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.pour__mix .ico{width:18px;height:18px;color:var(--mostaza)}
+.pour__mix.is-on{opacity:1;translate:0 0}
+@media (max-width:699px){.pour__mix{left:50%;bottom:auto;top:3%;translate:-50% 8px}.pour__mix.is-on{translate:-50% 0}}
+.pour__mix.is-on .ico{animation:spin 1s linear infinite}
 .pour__fly{z-index:4}
 .pbag{position:absolute;z-index:3;left:0;top:0;filter:drop-shadow(0 18px 14px rgba(58,40,28,.28));will-change:transform;transition:opacity .4s}
 .pbag__rot{transform-origin:50% 55%;will-change:transform}
 .pbag svg{width:100%;height:auto;display:block}
 .pbag.is-idle{opacity:.38}
-.ppill{position:absolute;z-index:5;top:2%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 16px;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 10px 22px -16px rgba(58,40,28,.6);font-size:var(--fs-xs);font-weight:600;color:var(--cacao-2);text-align:center;line-height:1.2;transition:opacity .3s}
+.ppill{position:absolute;z-index:5;top:2%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 16px 12px;overflow:hidden;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 10px 22px -16px rgba(58,40,28,.6);font-size:var(--fs-xs);font-weight:600;color:var(--cacao-2);text-align:center;line-height:1.2;transition:opacity .3s}
 .ppill b{font-family:var(--f-display);font-weight:400;font-size:clamp(1.3rem,1.2vw + .9rem,1.9rem);line-height:1;color:var(--cacao)}
 .ppill--ck b{color:var(--naranja-texto)}
+/* fills while that bag is pouring: longer pour, more food */
+.ppill::after{content:"";position:absolute;left:12px;right:12px;bottom:5px;height:4px;border-radius:2px;background:#7A5B40;transform:scaleX(var(--fill,0));transform-origin:left}
+.ppill::before{content:"";position:absolute;left:12px;right:12px;bottom:5px;height:4px;border-radius:2px;background:rgba(122,91,64,.15)}
+.ppill--ck::after{background:var(--naranja-texto)}
 .ppill.is-zero{opacity:.55}
 .pour__head{position:absolute;z-index:5;left:50%;top:2%;translate:-50% 0;display:flex;align-items:center;gap:10px}
 .pour__day{font-family:var(--f-display);font-size:clamp(1.4rem,1.4vw + 1rem,2.1rem);white-space:nowrap}
@@ -437,11 +558,13 @@ main{overflow-x:clip}
 .pour__play svg{width:20px;height:20px}
 .pour__play[hidden]{display:none}
 .steps{list-style:none;margin:clamp(14px,2vw,22px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.4vw,18px)}
-.tl{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 8px 14px;border-radius:24px;border:2px solid transparent;background:rgba(255,255,255,.4);cursor:pointer;text-align:center;transition:background-color .3s,border-color .3s,box-shadow .3s,transform .35s cubic-bezier(.3,1.5,.5,1)}
+.tl{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 8px 14px;border-radius:24px;border:2px solid transparent;background:rgba(255,255,255,.4);cursor:pointer;text-align:center;transition:background-color .3s,border-color .3s,box-shadow .3s,transform .35s cubic-bezier(.3,1.5,.5,1)}
 .tl:hover{background:rgba(255,255,255,.75)}
 .tl img{width:min(150px,84%);height:auto;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
 .tl[aria-current="step"]{background:var(--blanco);border-color:var(--mostaza);box-shadow:0 18px 30px -22px rgba(58,40,28,.7);transform:translateY(-4px)}
 .tl[aria-current="step"] img{transform:scale(1.06)}
+/* progress of the current step, so the loop reads as an automatic sequence */
+.tl[aria-current="step"]::after{content:"";position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:var(--mostaza-2);transform:scaleX(var(--prog,0));transform-origin:left}
 .tl__day{font-family:var(--f-display);font-size:clamp(1.1rem,.8vw + .8rem,1.4rem);margin-top:2px}
 .mix{width:min(160px,80%);height:10px;border-radius:999px;background:#7A5B40;overflow:hidden;margin-top:6px;box-shadow:inset 0 1px 2px rgba(0,0,0,.2)}
 .mix span{display:block;height:100%;width:var(--p);border-radius:inherit;background:linear-gradient(90deg,#E07A45,#C9542A)}
@@ -660,6 +783,7 @@ main{overflow-x:clip}
         <li><a href="#conocenos">Conócenos</a></li>
         <li><a href="#dog">Para perros</a></li>
         <li><a href="#cat">Para gatos</a></li>
+        <li><a href="#plan">Su plan CooKing</a></li>
         <li><a href="#comprar">Dónde comprar</a></li>
         <li><a href="#contactanos">Contáctanos</a></li>
       </ul>
@@ -805,7 +929,7 @@ main{overflow-x:clip}
     <div class="wrap">
       <div class="sec__head">
         <h2 class="h2" id="recipes-title">Recetas completas y balanceadas</h2>
-        <p class="lead">Siete recetas sin cereales, una para cada etapa. Compara su análisis y elige la de tu mascota.</p>
+        <p class="lead">Siete recetas sin cereales, una para cada etapa. Compara su análisis y elige la de tu mascota, o <a href="#plan">arma su plan en 30 segundos</a>.</p>
       </div>
       <div class="tabs-wrap">
         <div class="tabs" role="tablist" aria-label="Recetas por especie" data-active="0">
@@ -822,6 +946,81 @@ main{overflow-x:clip}
       <div class="panel" role="tabpanel" id="panel-perro" aria-labelledby="tab-perro"><ul class="rgrid" data-grid="perro"></ul><p class="rempty" hidden></p></div>
       <div class="panel" role="tabpanel" id="panel-gato" aria-labelledby="tab-gato" hidden><ul class="rgrid rgrid--3" data-grid="gato"></ul><p class="rempty" hidden></p></div>
       <p class="swipe-hint">Desliza para ver más recetas</p>
+    </div>
+  </section>
+
+  <!-- SU PLAN -->
+  <section class="sec plan" id="plan" aria-labelledby="plan-title">
+    <svg class="wave wave--top" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,44 C250,86 520,14 790,46 C1050,76 1250,70 1440,36 L1440,100 L0,100 Z" fill="currentColor"/></svg>
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 class="h2" id="plan-title">Arma su plan CooKing<span class="script">en 30 segundos</span></h2>
+        <p class="lead">Cuéntanos de tu mascota: te decimos qué receta le va mejor, cuánto le toca al día, cuánto le dura cada bolsa y cómo hacer el cambio.</p>
+      </div>
+      <div class="plan__grid">
+        <form class="planf" id="plan-form" aria-label="Datos de tu mascota">
+          <fieldset class="planf__q">
+            <legend><span class="planf__n" aria-hidden="true">1</span>¿Para quién es?</legend>
+            <div class="opts opts--big">
+              <label class="opt"><input type="radio" name="plan-sp" value="perro" checked><span class="opt__box"><span class="ico" data-icon="dog"></span>Perro</span></label>
+              <label class="opt"><input type="radio" name="plan-sp" value="gato"><span class="opt__box"><span class="ico" data-icon="cat"></span>Gato</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="planf__q">
+            <legend><span class="planf__n" aria-hidden="true">2</span>¿Qué edad tiene?</legend>
+            <div class="opts opts--stack" id="plan-age"></div>
+          </fieldset>
+          <div class="planf__q">
+            <label class="planf__lbl" for="plan-kg"><span class="planf__n" aria-hidden="true">3</span>¿Cuánto pesa?</label>
+            <div class="kg"><span class="kg__pet" id="plan-pet" aria-hidden="true"></span><output id="plan-kg-out" for="plan-kg">12 kg</output></div>
+            <input class="range" id="plan-kg" type="range" min="1" max="70" step="0.5" value="12">
+            <div class="kg__scale" aria-hidden="true"><span id="plan-kg-min">1 kg</span><span id="plan-kg-max">70 kg</span></div>
+          </div>
+          <fieldset class="planf__q">
+            <legend><span class="planf__n" aria-hidden="true">4</span>¿Algo más que debamos saber?</legend>
+            <div class="opts" id="plan-cond"></div>
+          </fieldset>
+        </form>
+        <div class="planr">
+          <article class="planr__card" id="plan-card" aria-labelledby="plan-name">
+            <div class="planr__top">
+              <div class="planr__stage" id="plan-stage" aria-hidden="true">
+                <div class="planr__bag" id="plan-bag"></div>
+              </div>
+              <div>
+                <p class="planr__kicker"><span class="ico" data-icon="sparkles"></span>Su receta ideal</p>
+                <h3 class="planr__name" id="plan-name">Adulto con cordero</h3>
+                <p class="planr__for" id="plan-for"></p>
+                <ul class="planr__why" id="plan-why" aria-label="Por qué esta receta"></ul>
+                <p class="planr__alt" id="plan-alt" hidden></p>
+              </div>
+            </div>
+            <div class="planr__stats">
+              <div class="stat">
+                <p class="stat__label">Ración diaria estimada</p>
+                <p class="stat__big"><span id="plan-g">0</span><small>g al día</small></p>
+                <p class="stat__sub" id="plan-meals"></p>
+                <div class="pile" id="plan-pile" aria-hidden="true"></div>
+              </div>
+              <div class="stat">
+                <p class="stat__label">Cada bolsa le dura</p>
+                <ul class="bags" id="plan-bags"></ul>
+              </div>
+            </div>
+            <div class="stat planr__switch">
+              <p class="stat__label"><span>Su cambio en 7 días, en gramos de CooKing</span><a href="#cambio">Ver cómo</a></p>
+              <ol class="sw7" id="plan-switch"></ol>
+            </div>
+            <div class="planr__ctas">
+              <a class="btn btn--orange" href="#comprar">Encuentra tu tienda</a>
+              <button class="btn btn--light" type="button" id="plan-see">Ver la receta</button>
+            </div>
+          </article>
+          <p class="sr" id="plan-live" aria-live="polite"></p>
+          <div class="plan__peek" id="plan-peek" aria-hidden="true"><p><b id="plan-peek-name"></b><span id="plan-peek-g"></span></p><a class="btn btn--orange" href="#plan-card" tabindex="-1">Ver su plan</a></div>
+        </div>
+      </div>
+      <p class="plan__note">Cálculo orientativo: usamos la energía de cada receta (kcal por kilo) y la fórmula de requerimiento energético que usan los veterinarios (70 × peso<sup>0,75</sup>, ajustada por edad y actividad). Cada mascota es distinta: toma como referencia la tabla del empaque y ajusta la ración con tu veterinario según su peso y condición.</p>
     </div>
   </section>
 
@@ -1011,6 +1210,7 @@ main{overflow-x:clip}
         <ul>
           <li><a href="#dog">Para perros</a></li>
           <li><a href="#cat">Para gatos</a></li>
+          <li><a href="#plan">Calcula su ración</a></li>
           <li><a href="#cambio">Cómo cambiar su alimento</a></li>
         </ul>
       </div>
@@ -1356,11 +1556,15 @@ function initBowl() {
     if (window.innerWidth >= 700) {
       const SW = stage.clientWidth, SH = stage.clientHeight;
       const hx = art.offsetLeft + c.x / 100 * art.clientWidth, hy = art.offsetTop + c.y / 100 * art.clientHeight, cw = card.offsetWidth;
+      // the card goes above the highest point (with its pulse ring), so no point ever covers the text
+      const hotTop = art.offsetTop + Math.min(...CLAIMS.map(x => x.y)) / 100 * art.clientHeight - 36;
+      const cardBottom = hotTop - 14;
       const left = Math.min(Math.max(hx - cw / 2, 0), SW - cw);
       card.style.left = left + "px";
       card.style.top = "auto";
-      card.style.bottom = (SH - hy + 44) + "px";
+      card.style.bottom = (SH - cardBottom) + "px";
       card.style.setProperty("--arrow", Math.min(Math.max(hx - left, 24), cw - 24) + "px");
+      card.style.setProperty("--link", Math.max(0, hy - 36 - (cardBottom + 11)) + "px");
     } else {
       card.style.left = card.style.bottom = "";
     }
@@ -1589,6 +1793,17 @@ function initRecipes() {
     renderFilters(); applyFilters({ animate: false });
     if (focus) tabs[idx].focus();
   }
+  // "Ver la receta" from the plan: open the right tab, clear filters, bring the card into view and highlight it
+  document.addEventListener("cooking:receta", e => {
+    const r = RECIPES.find(x => x.id === e.detail.id); if (!r) return;
+    filt.edad = filt.bolsa = "";
+    select(r.species === "gato" ? 1 : 0);
+    requestAnimationFrame(() => {
+      const li = $(`.rcard[data-id="${r.id}"]`); if (!li) return;
+      li.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "center", inline: "center" });
+      $$(".rcard.is-pick").forEach(x => x.classList.remove("is-pick")); void li.offsetWidth; li.classList.add("is-pick");
+    });
+  });
   new ResizeObserver(() => equalize()).observe($("#recetas"));
   document.fonts && document.fonts.ready.then(equalize);
   renderFilters(); applyFilters({ animate: false });
@@ -1604,6 +1819,141 @@ function initRecipes() {
   });
   if (location.hash === "#cat") select(1);
   onView($("#recetas"), () => $$(".panel:not([hidden])").forEach(p => p.classList.add("is-in")), 0.15);
+}
+
+/* ---------- Su plan CooKing ---------- */
+// Reasons come from each recipe's own description.
+const PLAN_WHY = {
+  puppy: [["sparkles", "Omega 3 para su desarrollo"], ["dumbbell", "Alta en proteína para crecer"], ["shield-check", "Refuerza sus defensas"]],
+  lamb: [["beef", "Cordero y pollo frescos"], ["leaf", "Buena digestión"], ["shield-check", "Defensas fuertes"]],
+  "dog-salmon": [["fish", "Salmón fresco"], ["bone", "Mejillón verde para sus articulaciones"], ["leaf", "Prebióticos y probióticos"]],
+  senior: [["leaf", "Más fibra, menos grasa"], ["bone", "Cuida sus articulaciones"], ["shield-check", "Probióticos para su digestión"]],
+  kitten: [["sparkles", "Omega 3 para su desarrollo"], ["dumbbell", "Alta en proteína"], ["bone", "Músculos y articulaciones"]],
+  "cat-salmon": [["fish", "Salmón fresco"], ["shield-check", "Cardo mariano para su hígado"], ["dumbbell", "Proteína de alto valor"]],
+  sterilized: [["leaf", "Reducida en grasa"], ["drumstick", "Pollo para paladares exigentes"], ["shield-check", "Pensada para gatos esterilizados"]]
+};
+const PLAN_ALT = { lamb: "dog-salmon", "dog-salmon": "lamb", "cat-salmon": "sterilized", sterilized: "cat-salmon" };
+function initPlan() {
+  const form = $("#plan-form"), ageBox = $("#plan-age"), condBox = $("#plan-cond"), kg = $("#plan-kg"), kgOut = $("#plan-kg-out"), pet = $("#plan-pet");
+  const O = { stage: $("#plan-stage"), bag: $("#plan-bag"), name: $("#plan-name"), for: $("#plan-for"), why: $("#plan-why"), alt: $("#plan-alt"), g: $("#plan-g"), meals: $("#plan-meals"), pile: $("#plan-pile"), bags: $("#plan-bags"), sw: $("#plan-switch"), live: $("#plan-live"), see: $("#plan-see") };
+  const AGES = {
+    perro: [["cachorro", "Cachorro", "hasta 12 meses"], ["adulto", "Adulto", "de 1 a 7 años"], ["senior", "Senior", "más de 7 años"]],
+    gato: [["cachorro", "Gatito", "hasta 12 meses"], ["adulto", "Adulto", "desde 1 año"]]
+  };
+  const CONDS = {
+    perro: [["", "Nada en especial"], ["esterilizado", "Esterilizado"], ["sobrepeso", "Con sobrepeso"], ["activo", "Muy activo"], ["piel", "Cuidar piel y pelaje"]],
+    gato: [["", "Nada en especial"], ["esterilizado", "Esterilizado"], ["sobrepeso", "Con sobrepeso"]]
+  };
+  const KG = { perro: { min: 1, max: 70, step: .5, def: 12 }, gato: { min: 1, max: 10, step: .1, def: 4 } };
+  const st = { species: "perro", age: "adulto", kg: 12, cond: "" };
+  const radios = (name, list, val) => list.map(([v, t, sub]) =>
+    `<label class="opt"><input type="radio" name="${name}" value="${v}"${v === val ? " checked" : ""}><span class="opt__box">${esc(t)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></label>`).join("");
+  function renderInputs() {
+    if (!AGES[st.species].some(a => a[0] === st.age)) st.age = "adulto";
+    if (!CONDS[st.species].some(c => c[0] === st.cond)) st.cond = "";
+    ageBox.innerHTML = radios("plan-age", AGES[st.species], st.age);
+    condBox.innerHTML = radios("plan-cond", CONDS[st.species], st.cond);
+    const k = KG[st.species];
+    Object.assign(kg, { min: k.min, max: k.max, step: k.step }); kg.value = st.kg = k.def;
+    $("#plan-kg-min").textContent = `${k.min} kg`; $("#plan-kg-max").textContent = `${k.max} kg`;
+    pet.innerHTML = icon(st.species === "gato" ? "cat" : "dog");
+  }
+  // recommendation from the real catalog
+  function pick() {
+    if (st.species === "gato") return st.age === "cachorro" ? "kitten" : (st.cond === "esterilizado" || st.cond === "sobrepeso") ? "sterilized" : "cat-salmon";
+    if (st.age === "cachorro") return "puppy";
+    if (st.age === "senior" || st.cond === "sobrepeso") return "senior";
+    return st.cond === "piel" ? "dog-salmon" : "lamb";
+  }
+  // maintenance energy = 70 × kg^0.75 × factor (usual veterinary factors by life stage and activity)
+  function factor() {
+    if (st.age === "cachorro") return 2.5;
+    if (st.species === "gato") return st.cond === "sobrepeso" ? 1 : st.cond === "esterilizado" ? 1.2 : 1.4;
+    if (st.cond === "sobrepeso") return 1.2;
+    if (st.cond === "activo") return 2.2;
+    if (st.age === "senior") return st.cond === "esterilizado" ? 1.3 : 1.4;
+    return st.cond === "esterilizado" ? 1.5 : 1.7;
+  }
+  const round5 = v => Math.max(5, Math.round(v / 5) * 5);
+  function tween(el, to) {
+    const from = +el.dataset.v || 0; el.dataset.v = to;
+    if (reduceMotion.matches || !from) { el.textContent = nf0.format(to); return; }
+    const t0 = performance.now(), d = 520;
+    const tick = now => { const k = Math.min(1, (now - t0) / d), e = 1 - Math.pow(1 - k, 3); el.textContent = nf0.format(Math.round(from + (to - from) * e)); if (k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
+  let shownId = null, pileN = 0, liveT = 0;
+  function swapBag(r) {
+    const k = COLORS[r.protein];
+    const paint = () => {
+      O.bag.innerHTML = bagSVG({ ...r, id: "plan-" + r.id });
+      O.stage.style.cssText = `--c:${k.c};--c2:${k.c2};--c3:${k.c3}`;
+      $$(".rcard__kib", O.stage).forEach(n => n.remove());
+      O.stage.insertAdjacentHTML("beforeend", [["a", 1], ["b", 5], ["c", 8]].map(([c, i]) => `<img class="rcard__kib rcard__kib--${c}" src="${RENDERS["kibble-" + i]}" alt="" width="120" height="120">`).join(""));
+    };
+    if (reduceMotion.matches || !shownId || !O.bag.animate) { paint(); return; }
+    O.bag.animate([{ transform: "rotateY(0) translateY(0)" }, { transform: "rotateY(90deg) translateY(-10px)" }], { duration: 180, easing: "ease-in" }).finished
+      .then(() => { paint(); return O.bag.animate([{ transform: "rotateY(-90deg) translateY(-10px)" }, { transform: "rotateY(0) translateY(0)" }], { duration: 320, easing: "cubic-bezier(.3,1.4,.5,1)" }).finished; })
+      .catch(() => paint());
+  }
+  function renderPile(g) {
+    const n = Math.min(28, Math.max(3, Math.round(g / 9)));
+    if (n === pileN) return;
+    const R = seeded(5), rows = [9, 7, 6, 4, 2], spots = [];
+    rows.forEach((cap, row) => { for (let j = 0; j < cap; j++) spots.push({ x: 50 + (j - (cap - 1) / 2) * 9.4 + (R() - .5) * 3, y: row * 12 + (R() - .5) * 3, r: Math.round(R() * 360) }); });
+    O.pile.innerHTML = spots.slice(0, n).map((p, i) => `<img${i < pileN ? ' class="is-old"' : ""} src="${RENDERS["kibble-" + (1 + i % 10)]}" alt="" width="120" height="120" style="--x:calc(${p.x.toFixed(1)}% - 11px);--y:${p.y.toFixed(0)}px;--r:${p.r}deg;--d:${((i - pileN) * 28)}ms">`).join("");
+    pileN = n;
+  }
+  function update() {
+    const id = pick(), r = RECIPES.find(x => x.id === id), k = COLORS[r.protein];
+    const kcal = 70 * Math.pow(st.kg, .75) * factor(), g = round5(kcal / (r.kcal / 1000));
+    const meals = st.age === "cachorro" ? 3 : 2;
+    if (id !== shownId) {
+      swapBag(r);
+      O.name.textContent = r.name; O.for.textContent = r.for;
+      O.why.innerHTML = PLAN_WHY[id].map(([ic, t], i) => `<li style="--i:${i}">${icon(ic)}${esc(t)}</li>`).join("");
+      const alt = PLAN_ALT[id] && RECIPES.find(x => x.id === PLAN_ALT[id]);
+      O.alt.hidden = !alt;
+      if (alt) O.alt.innerHTML = `También le puede gustar: <button type="button" data-recipe="${alt.id}">${esc(alt.name)}</button>`;
+      O.see.dataset.recipe = id;
+      shownId = id;
+    }
+    tween(O.g, g);
+    O.meals.innerHTML = `en ${meals} comidas de unos ${nf0.format(round5(g / meals))}&nbsp;g · ${nf0.format(Math.round(kcal))}&nbsp;kcal${st.cond === "sobrepeso" ? "<br>Para bajar de peso, pide a tu veterinario su peso ideal." : ""}`;
+    renderPile(g);
+    const days = r.formats.map(f => Math.round(f * 1000 / g)), maxD = Math.max(...days);
+    O.bags.innerHTML = r.formats.map((f, i) => `<li><span class="bags__kg">${f}&nbsp;kg</span><span class="bags__days">≈ ${nf0.format(days[i])}<small>días${days[i] >= 60 ? ` · ${nf1.format(days[i] / 30)} meses` : ""}</small></span><span class="bags__bar" style="--c:${k.c}"><i style="--w:0%"></i></span></li>`).join("");
+    requestAnimationFrame(() => requestAnimationFrame(() => $$(".bags__bar i", O.bags).forEach((b, i) => b.style.setProperty("--w", Math.max(8, days[i] / maxD * 100).toFixed(0) + "%"))));
+    O.sw.innerHTML = STEPS.map(s => {
+      const ck = round5(g * s.ck / 100), old = 100 - s.ck;
+      const rest = old ? `y ${old === 75 ? "¾" : old === 50 ? "½" : "¼"} de su ración actual` : "solo CooKing";
+      return `<li><span class="sw7__day">${s.day}</span><span class="mix" aria-hidden="true"><span style="width:${s.ck}%"></span></span><p><b>${nf0.format(ck)}&nbsp;g</b>${rest}</p></li>`;
+    }).join("");
+    $("#plan-peek-name").textContent = r.name; $("#plan-peek-g").innerHTML = `${nf0.format(g)}&nbsp;g al día · ${nf1.format(st.kg)}&nbsp;kg`;
+    clearTimeout(liveT);
+    liveT = setTimeout(() => { O.live.textContent = `Receta recomendada: ${r.name}. Ración estimada: ${g} gramos al día, en ${meals} comidas.`; }, 700);
+  }
+  const syncRange = () => { const k = KG[st.species], p = (st.kg - k.min) / (k.max - k.min); kg.style.setProperty("--p", (p * 100).toFixed(1) + "%"); kgOut.textContent = `${nf1.format(st.kg)} kg`; pet.style.setProperty("--s", Math.round(34 + p * 50) + "px"); };
+  form.addEventListener("submit", e => e.preventDefault());
+  form.addEventListener("change", e => {
+    const t = e.target;
+    if (t.name === "plan-sp") { st.species = t.value; renderInputs(); syncRange(); }
+    else if (t.name === "plan-age") st.age = t.value;
+    else if (t.name === "plan-cond") st.cond = t.value;
+    update();
+  });
+  kg.addEventListener("input", () => { st.kg = +kg.value; syncRange(); update(); });
+  $("#plan-card").addEventListener("click", e => {
+    const b = e.target.closest("[data-recipe]");
+    if (b) document.dispatchEvent(new CustomEvent("cooking:receta", { detail: { id: b.dataset.recipe } }));
+  });
+  renderInputs(); syncRange(); update();
+  const peek = $("#plan-peek"), seen = { form: false, card: false };
+  const io = new IntersectionObserver(es => {
+    es.forEach(en => { seen[en.target === form ? "form" : "card"] = en.isIntersecting; });
+    peek.classList.toggle("is-on", seen.form && !seen.card && innerWidth < 1000);
+  }, { threshold: [0, .15] });
+  io.observe(form); io.observe($("#plan-card"));
 }
 
 /* ---------- 7-day switch ---------- */
@@ -1650,6 +2000,8 @@ function initSteps() {
   $(".pbag__rot", bagEl.old).innerHTML = pourBagSVG("old");
   $(".pbag__rot", bagEl.ck).innerHTML = pourBagSVG("ck");
   const doneTag = document.createElement("span"); doneTag.className = "pour__done"; doneTag.textContent = "¡Listo!";
+  const mixTag = document.createElement("p"); mixTag.className = "pour__mix"; mixTag.setAttribute("aria-hidden", "true");
+  mixTag.innerHTML = `${icon("rotate-cw")}Mézclalo bien`; stage.appendChild(mixTag);
 
   // sprites
   const load = src => { const im = new Image(); im.src = src; return im; };
@@ -1742,59 +2094,77 @@ function initSteps() {
   };
   function redrawHeap() { hctx.clearRect(0, 0, SW, SH); landed.forEach(([i, kind]) => paintSlot(i, kind)); }
 
-  // per-step plan: which bag feeds each slot, mixed evenly so both bags pour at the same time
-  const kindsFor = idx => {
+  // Each bag pours at the same rate, one after the other, so pouring time is proportional to its share:
+  // days 1-2 the old food pours 3x longer than CooKing, days 3-4 the same, days 5-6 CooKing 3x longer, day 7 only CooKing.
+  // Then both are mixed in the bowl.
+  const F = 3.2, T_TILT = .45, T_BACK = .5, T_MIX = .9, T_HOLD = 1.7, T_FADE = .45;
+  function planFor(idx) {
+    const ck = STEPS[idx].ck / 100, nOld = Math.round(N * (1 - ck)), seq = [];
+    let t = .2;
+    for (const [k, share, n] of [["old", 1 - ck, nOld], ["ck", ck, N - nOld]]) {
+      if (!n) continue;
+      const p0 = t + T_TILT, p1 = p0 + F * share;
+      seq.push({ k, share, n, in0: t, p0, p1, emitted: 0 });
+      t = p1 + .05;
+    }
+    const last = seq[seq.length - 1].p1;
+    const mix = seq.length > 1 ? last + .75 : null;
+    const end = (mix ? mix + T_MIX : last + .8) + T_HOLD + (idx === 3 ? 1 : 0) + T_FADE;
+    return { seq, mix, end, nOld };
+  }
+  const mixedKinds = idx => {
     const ck = STEPS[idx].ck, R = seeded(100 + idx), nck = Math.round(N * ck / 100);
     const arr = slots.map((_, i) => i < nck ? "ck" : "old");
     for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
     return arr;
   };
-  const D = 2.6, T_IN = .6, T_POUR = .45, T_HOLD = 1.9;
-  const stepLen = idx => T_POUR + D + T_HOLD + (idx === 3 ? 1.2 : 0) + .45;
-  let step = 0, tau = 0, kinds = kindsFor(0), emitted = 0, flying = [], playing = !still, visible = false, raf = 0, lastT = 0, fading = false, userPaused = false;
+  let step = 0, tau = 0, plan = planFor(0), slotNext = 0, flying = [], visible = false, raf = 0, lastT = 0, fading = false, mixed = false;
+  let playing = !still, autoAdvance = !still, started = false;
+  const tlBar = b => b && b.style.setProperty("--prog", Math.min(1, tau / plan.end).toFixed(3));
 
   function setStep(idx, { announce = false } = {}) {
-    step = idx; tau = 0; emitted = 0; flying = []; landed = []; fading = false;
-    kinds = kindsFor(idx);
-    heapCv.classList.remove("is-fading"); hctx.clearRect(0, 0, SW, SH); fctx.clearRect(0, 0, SW, SH);
+    step = idx; tau = 0; slotNext = 0; flying = []; landed = []; fading = false; mixed = false;
+    plan = planFor(idx);
+    heapCv.classList.remove("is-fading", "is-mixing"); hctx.clearRect(0, 0, SW, SH); fctx.clearRect(0, 0, SW, SH);
+    mixTag.classList.remove("is-on");
     const st = STEPS[idx], old = 100 - st.ck;
     dayEl.textContent = st.day; doneTag.classList.remove("is-on"); if (idx === 3) dayEl.appendChild(doneTag);
     $("[data-pct]", pill.old).innerHTML = `${old}&nbsp;%`; $("[data-pct]", pill.ck).innerHTML = `${st.ck}&nbsp;%`;
+    pill.old.style.setProperty("--fill", 0); pill.ck.style.setProperty("--fill", 0);
     pill.old.classList.toggle("is-zero", old === 0);
     bagEl.old.classList.toggle("is-idle", old === 0);
-    tls.forEach((b, i) => { if (i === idx) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+    tls.forEach((b, i) => { b.style.setProperty("--prog", 0); if (i === idx) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
     if (announce) live.textContent = `${st.day}: ${st.ck} % CooKing${old ? ` y ${old} % de su alimento anterior` : ""}.`;
     placeBag("old", bagPose("old", 0, 0)); placeBag("ck", bagPose("ck", 0, 0));
   }
   const tiltOf = k => { const sh = (k === "ck" ? STEPS[step].ck : 100 - STEPS[step].ck) / 100; return sh ? (k === "old" ? 1 : -1) * (84 + 36 * sh) : 0; };
   const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  function fillInstant() { landed = slots.map((_, i) => [i, kinds[i]]); redrawHeap(); }
+  function fillInstant() { const kinds = mixedKinds(step); landed = slots.map((_, i) => [i, kinds[i]]); redrawHeap(); pill.old.style.setProperty("--fill", 1); pill.ck.style.setProperty("--fill", 1); }
 
   function frame(now) {
     raf = 0;
-    const dt = Math.min(.05, (now - (lastT || now)) / 1000); lastT = now;
+    const dt = Math.min(.1, (now - (lastT || now)) / 1000); lastT = now;
     tau += dt;
-    // bags
-    const tOut = T_POUR + D;
-    const e = tau < T_IN ? ease(tau / T_IN) : tau < tOut ? 1 : tau < tOut + T_IN ? 1 - ease((tau - tOut) / T_IN) : 0;
-    const pose = {};
-    for (const k of ["old", "ck"]) {
-      const tilt = tiltOf(k), wob = e > .98 ? Math.sin(now / 90 + (k === "ck" ? 1 : 0)) * 2.2 : 0;
-      pose[k] = bagPose(k, tilt ? e : 0, tilt);
-      pose[k].ang += tilt ? wob : 0;
-      placeBag(k, pose[k]);
+    const g = SH * 2.6, pose = { old: bagPose("old", 0, 0), ck: bagPose("ck", 0, 0) };
+    for (const s of plan.seq) {
+      const e = tau < s.in0 ? 0 : tau < s.p0 ? ease((tau - s.in0) / T_TILT) : tau < s.p1 ? 1 : tau < s.p1 + T_BACK ? 1 - ease((tau - s.p1) / T_BACK) : 0;
+      const tilt = tiltOf(s.k);
+      pose[s.k] = bagPose(s.k, e, tilt);
+      if (e > .98) pose[s.k].ang += Math.sin(now / 90) * 2.2;
+      const prog = Math.min(1, Math.max(0, (tau - s.p0) / (s.p1 - s.p0)));
+      pill[s.k].style.setProperty("--fill", prog.toFixed(3));
+      // emit at a constant rate while this bag is pouring; slots fill from the bottom up
+      const target = Math.floor(prog * s.n);
+      while (s.emitted < target && slotNext < N) {
+        s.emitted++;
+        const i = slotNext++, kind = s.k, m = mouthAt(kind, pose[kind]);
+        const sl = slots[i], [tx, ty] = toStage(sl.ix, sl.iy), j = (Math.random() - .5) * bag[kind].w * .5, a = pose[kind].ang * Math.PI / 180;
+        const p0 = { x: m.x + j * Math.cos(a), y: m.y + j * Math.sin(a) };
+        const T = .42 + Math.random() * .12 + Math.hypot(tx - p0.x, ty - p0.y) / (SH * 3.2);
+        flying.push({ i, kind, x0: p0.x, y0: p0.y, vx: (tx - p0.x) / T, vy: (ty - p0.y - .5 * g * T * T) / T, t: 0, T, rot: Math.random() * 360, vr: (Math.random() - .5) * 720, size: sl.size * bowl.s, spr: Math.floor(Math.random() * 10) });
+      }
     }
-    // emit
-    const target = Math.min(N, Math.floor(Math.max(0, (tau - T_POUR) / D) * N));
-    const g = SH * 2.6;
-    while (emitted < target) {
-      const i = emitted++, kind = kinds[i], m = mouthAt(kind, pose[kind]);
-      const sl = slots[i], [tx, ty] = toStage(sl.ix, sl.iy), j = (Math.random() - .5) * bag[kind].w * .5;
-      const p0 = { x: m.x + j * Math.cos(pose[kind].ang * Math.PI / 180), y: m.y + j * Math.sin(pose[kind].ang * Math.PI / 180) };
-      const T = .42 + Math.random() * .12 + Math.hypot(tx - p0.x, ty - p0.y) / (SH * 3.2);
-      flying.push({ i, kind, x0: p0.x, y0: p0.y, vx: (tx - p0.x) / T, vy: (ty - p0.y - .5 * g * T * T) / T, t: 0, T, rot: Math.random() * 360, vr: (Math.random() - .5) * 720, size: sl.size * bowl.s, spr: Math.floor(Math.random() * 10) });
-    }
-    // fly
+    placeBag("old", pose.old); placeBag("ck", pose.ck);
     fctx.clearRect(0, 0, SW, SH);
     flying = flying.filter(f => {
       f.t += dt;
@@ -1803,34 +2173,46 @@ function initSteps() {
       drawKib(fctx, sp[f.spr % sp.length], x, y, f.size * (.85 + .15 * Math.min(1, f.t / f.T)), f.rot + f.vr * f.t);
       return true;
     });
-    if (step === 3 && tau > tOut) doneTag.classList.add("is-on");
-    const end = stepLen(step);
-    if (tau > end - .45 && !fading) { fading = true; heapCv.classList.add("is-fading"); }
-    if (tau >= end) setStep((step + 1) % STEPS.length);
+    // mix: the bowl gives a little shake and the layers turn into the real blend
+    if (plan.mix && tau >= plan.mix && !mixTag.classList.contains("is-on")) { mixTag.classList.add("is-on"); heapCv.classList.add("is-mixing"); }
+    if (plan.mix && tau >= plan.mix + .38 && !mixed) { mixed = true; const kinds = mixedKinds(step); landed = slots.slice(0, landed.length).map((_, i) => [i, kinds[i]]); redrawHeap(); }
+    if (step === 3 && tau > plan.seq[0].p1 + .3) doneTag.classList.add("is-on");
+    tlBar(tls[step]);
+    if (tau > plan.end - T_FADE && !fading && autoAdvance) { fading = true; heapCv.classList.add("is-fading"); }
+    if (tau >= plan.end - (autoAdvance ? 0 : T_FADE)) {
+      if (autoAdvance) setStep((step + 1) % STEPS.length);
+      else { playing = false; playIcon(); return; }
+    }
     if (playing && visible) raf = requestAnimationFrame(frame); else lastT = 0;
   }
   const run = () => { if (!raf && playing && visible) { lastT = 0; raf = requestAnimationFrame(frame); } };
-  const playIcon = () => {
+  function playIcon() {
     playBtn.innerHTML = svgIcon(playing ? "pause" : "play");
     playBtn.setAttribute("aria-label", playing ? "Pausar la animación" : "Reproducir la animación");
-  };
-  playBtn.addEventListener("click", () => { playing = !playing; userPaused = !playing; playIcon(); run(); });
+  }
+  playBtn.addEventListener("click", () => {
+    playing = !playing;
+    if (playing) { autoAdvance = true; if (still && tau >= plan.end - T_FADE) setStep((step + 1) % STEPS.length); }
+    playIcon(); run();
+  });
   list.addEventListener("click", e => {
     const b = e.target.closest(".tl"); if (!b) return;
+    started = true;
     setStep(+b.dataset.step, { announce: true });
-    if (!playing) fillInstant(); else run();
+    playing = true; playIcon(); run();
   });
 
-  measure(); setStep(0);
-  playBtn.hidden = still; playIcon();
+  measure(); setStep(0); playIcon();
   new ResizeObserver(() => { measure(); if (!playing) { placeBag("old", bagPose("old", 0, 0)); placeBag("ck", bagPose("ck", 0, 0)); } }).observe(stage);
-  Promise.all([...SPR.ck, ...SPR.old].map(im => im.decode().catch(() => {}))).then(() => { redrawHeap(); if (!playing) fillInstant(); });
-  if (still) { fillInstant(); return; }
+  Promise.all([...SPR.ck, ...SPR.old].map(im => im.decode().catch(() => {}))).then(() => { redrawHeap(); if (still && !started) fillInstant(); });
+  if (still) fillInstant();
+  // start from day 1 once the section is well in view, so the visitor sees the whole sequence
   new IntersectionObserver(es => {
     visible = es.some(en => en.isIntersecting);
+    if (visible && !started && !still) { started = true; setStep(0); }
     if (visible) run();
-  }, { threshold: .25 }).observe(stage);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAnimationFrame(raf), raf = 0; else run(); });
+  }, { threshold: .55 }).observe(stage);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else run(); });
 }
 
 /* ---------- Map ---------- */
@@ -2440,6 +2822,7 @@ initBowl();
 initPan();
 initOrbit();
 initRecipes();
+initPlan();
 initSteps();
 $$("img[src^='http'], img[data-fallback]").forEach(watchImage);
 initMap();

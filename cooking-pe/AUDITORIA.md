@@ -69,7 +69,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
     - Al tocar el plato, salen disparadas otra vez.
     - Se apartan al pasar el cursor, y si se toca una croqueta, sale despedida.
     - El botón "Lanzar las croquetas / Devolverlas al plato" hace lo mismo desde el teclado.
-  - Tiene 4 puntos interactivos con las tarjetas marrones del original, que se pueden cerrar con la × o con Esc. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
+  - Tiene 4 puntos interactivos con las tarjetas marrones del original, que se pueden cerrar con la × o con Esc. La tarjeta se ubica siempre por encima de todos los puntos, con una línea punteada hacia el que explica, así ningún ícono tapa el texto. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
   - Sin numeración falsa: cada punto lleva el ícono de línea de lo que explica.
 - **Beneficios en órbita** alrededor del perro y el gato: las 8 características en un solo bloque, en lugar de los tres bloques repetidos, con íconos mostaza al estilo de la marca.
   - Los íconos van sobre la línea punteada y cada texto se ubica hacia afuera. La línea se interrumpe alrededor de cada ícono y texto, así que nunca pasa por encima de la letra.
@@ -81,11 +81,26 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - **Filtros por edad** (cachorro o gatito, adulto, senior) **y por tamaño de bolsa** (2, 3, 8 y 12 kg, según la especie). Muestran cuántas recetas coinciden, tienen "Quitar filtros" y quedan en el enlace (`?edad=adulto&bolsa=12`).
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
 - **Guía de cambio de alimento en 7 días** con una animación en loop:
-  - Dos bolsas, la del alimento anterior y la de CooKing, vierten croquetas en un plato 3D vacío.
-  - En cada paso cae la proporción real: 75/25, 50/50, 25/75 y, el día 7, solo CooKing.
-  - Cada bolsa se inclina más cuanto más aporta, y el plato se llena con la mezcla.
-  - Tiene botón de pausa. Los 4 pasos (con su plato 3D y su barra) sirven para saltar a cualquier etapa.
-  - Con movimiento reducido, se muestra el plato lleno de la etapa elegida.
+  - Arranca sola desde los días 1 y 2 cuando la sección está a la vista.
+  - Primero vierte la bolsa del alimento anterior y después la de CooKing, al mismo ritmo, así el tiempo de cada una es proporcional a lo que aporta:
+    - Días 1 y 2: el anterior vierte tres veces más tiempo que CooKing.
+    - Días 3 y 4: el mismo tiempo.
+    - Días 5 y 6: CooKing vierte tres veces más.
+    - Día 7: solo CooKing.
+  - Al final aparece "Mézclalo bien" y el plato muestra la mezcla real de esa etapa.
+  - La barra de cada bolsa se llena mientras vierte, y el paso activo muestra su avance antes de pasar al siguiente.
+  - Tiene botón de pausa y los 4 pasos sirven para saltar a cualquier etapa.
+  - Con movimiento reducido no arranca sola, pero se puede reproducir con el botón o tocando un paso.
+- **Nueva sección "Arma su plan CooKing en 30 segundos":**
+  - El visitante elige perro o gato, edad, peso (con un deslizador) y una condición: esterilizado, sobrepeso, muy activo o piel y pelaje.
+  - Al instante ve:
+    - La receta recomendada del catálogo real, con 3 razones tomadas de su descripción y una alternativa.
+    - La ración diaria estimada en gramos y en comidas, con un montoncito de croquetas que crece.
+    - Cuántos días le dura cada bolsa.
+    - Su cambio en 7 días expresado en gramos de CooKing.
+  - Lleva a "Encuentra tu tienda" y a "Ver la receta", que abre la pestaña correcta y resalta la tarjeta.
+  - En celular, una barra flotante muestra el resultado mientras se responde.
+  - La ración se calcula con las kcal/kg de cada receta y la fórmula veterinaria estándar (70 × peso^0,75 por un factor de edad y actividad). La sección lo indica y remite a la tabla del empaque y al veterinario.
 - **Mapa interactivo de Lima Metropolitana:**
   - Mapa real de calles: MapLibre con datos de OpenStreetMap servidos por OpenFreeMap, gratis, sin clave ni límite de uso.
   - Está pintado con la paleta de CooKing: crema, melocotón, mar turquesa y parques verdes con huellitas de mascota.
@@ -126,3 +141,4 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
    - OpenFreeMap es un servicio comunitario sin garantía de servicio. Si se quiere una, sirve el mismo estilo con MapTiler o Stadia (requieren clave). Usar Google Maps con logos propios exige una clave de Maps JavaScript API con facturación.
    - Con `CONFIG.streetMap = false` se usa solo el mapa de distritos.
 10. **Filtro de tamaño:** todas las recetas para perros son para todas las razas, así que "tamaño" se interpretó como tamaño de bolsa. Si llegan recetas por tamaño de raza, se agrega ese filtro con el mismo componente.
+11. **Validar la calculadora de ración** con el equipo técnico o veterinario de la marca. Hay que comparar varios casos (por ejemplo, perro adulto de 12 kg, gato esterilizado de 4 kg y cachorro de 20 kg) contra la tabla de cada empaque. Los factores de energía están en la función `factor()` de `initPlan` y se pueden ajustar en una línea.
