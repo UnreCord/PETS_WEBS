@@ -2,7 +2,7 @@
 
 **Base del análisis:** HTML guardado de https://cooking.pe/ (WordPress 7.1.2, Elementor 4.2.4 + Elementor Pro, tema Astra Pro y 4 plugins propios `rblweb-*`) y captura de la sección de puntos de venta. El sitio en vivo no se pudo cargar desde el entorno de trabajo, así que no se midieron tiempos de carga reales (Core Web Vitals); los hallazgos de rendimiento salen del código.
 
-**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~620 KB con íconos, fotos y renders incluidos; solo carga aparte Google Fonts y las imágenes de marca desde cooking.pe).
+**Propuesta:** `cooking-pe/index.html` (un solo archivo de ~810 KB con íconos, fotos y renders incluidos). Aparte solo carga Google Fonts, las imágenes de marca desde cooking.pe y, al acercarse al mapa, la librería MapLibre con las calles de OpenFreeMap.
 
 ---
 
@@ -57,24 +57,42 @@ La propuesta mantiene el mundo visual de la marca, que es minimalista y fotográ
 
 Encima de eso suma movimiento con propósito y todo el contenido real del sitio. No usa emojis ni ilustraciones genéricas.
 
-- **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado de "Cocina Nutricional" se dibuja al cargar y las bolsas suben desde una ola.
-- **Cinta de ingredientes en movimiento** (solo texto) con los ingredientes reales de las composiciones.
+- **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras. Las bolsas suben desde una ola.
+- **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, patata, legumbres, zanahoria, habas, frutos rojos, manzana, romero, cítricos y achicoria.
 - **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
-- **"¡Los ingredientes marcan la diferencia!"**, como en el sitio actual: la olla con los ingredientes, que gira suavemente al hacer scroll, y la franja fotográfica de ingredientes frescos.
+- **"¡Los ingredientes marcan la diferencia!"**, como en el sitio actual, con la franja fotográfica de ingredientes frescos. La olla gira a medida que se hace scroll, y el visitante también puede girarla arrastrándola con el cursor; al soltarla sigue girando por inercia. En celular se gira deslizando hacia los lados.
 - **El plato de croquetas, restaurado y mejorado:**
   - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.
-  - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Arriba hay una franja de vegetales.
-  - Tiene 4 puntos interactivos con las tarjetas marrones del original. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
+  - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
+    - Al tocar uno de los 4 puntos, se mueven y se reacomodan.
+    - Al cerrar la tarjeta, vuelven a caer dentro del plato.
+    - Al tocar el plato, salen disparadas otra vez.
+    - Se apartan al pasar el cursor, y si se toca una croqueta, sale despedida.
+    - El botón "Lanzar las croquetas / Devolverlas al plato" hace lo mismo desde el teclado.
+  - Tiene 4 puntos interactivos con las tarjetas marrones del original, que se pueden cerrar con la × o con Esc. Son accesibles con teclado, se repiten como botones debajo del plato y rotan solos hasta que el usuario interactúa.
   - Sin numeración falsa: cada punto lleva el ícono de línea de lo que explica.
 - **Beneficios en órbita** alrededor del perro y el gato: las 8 características en un solo bloque, en lugar de los tres bloques repetidos, con íconos mostaza al estilo de la marca.
+  - Los íconos van sobre la línea punteada y cada texto se ubica hacia afuera. La línea se interrumpe alrededor de cada ícono y texto, así que nunca pasa por encima de la letra.
+  - Al pasar el cursor, la característica crece y su ícono cambia a naranja.
 - **Recetas con pestañas Perros / Gatos:**
   - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero), con croquetas 3D flotando alrededor. Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
   - Barras animadas de proteína, grasa y fibra, más ceniza, kcal y formatos.
+  - Todas las tarjetas de una fila quedan alineadas, aunque el título o la descripción ocupen más líneas: las barras, los datos y "Ver composición" están a la misma altura.
+  - **Filtros por edad** (cachorro o gatito, adulto, senior) **y por tamaño de bolsa** (2, 3, 8 y 12 kg, según la especie). Muestran cuántas recetas coinciden, tienen "Quitar filtros" y quedan en el enlace (`?edad=adulto&bolsa=12`).
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
-- **Guía de cambio de alimento en 7 días** con 4 platos en 3D que muestran la mezcla real: croquetas CooKing en naranja y alimento anterior en marrón. Una barra se llena con el porcentaje de cada paso. Aquí la secuencia es real.
+- **Guía de cambio de alimento en 7 días** con una animación en loop:
+  - Dos bolsas, la del alimento anterior y la de CooKing, vierten croquetas en un plato 3D vacío.
+  - En cada paso cae la proporción real: 75/25, 50/50, 25/75 y, el día 7, solo CooKing.
+  - Cada bolsa se inclina más cuanto más aporta, y el plato se llena con la mezcla.
+  - Tiene botón de pausa. Los 4 pasos (con su plato 3D y su barra) sirven para saltar a cualquier etapa.
+  - Con movimiento reducido, se muestra el plato lleno de la etapa elegida.
 - **Mapa interactivo de Lima Metropolitana:**
-  - Distritos con puntos de venta como azulejos dorados, mar con textura de olas y pines de la marca.
+  - Mapa real de calles: MapLibre con datos de OpenStreetMap servidos por OpenFreeMap, gratis, sin clave ni límite de uso.
+  - Está pintado con la paleta de CooKing: crema, melocotón, mar turquesa y parques verdes con huellitas de mascota.
+  - Encima van los distritos con tiendas en dorado.
+  - **Cada punto de venta es el logo de CooKing.** Las tiendas cercanas se agrupan en un logo con contador, que se abre al tocarlo.
   - Buscador, "Cerca de mí", distrito sin tienda → la más cercana, "Cómo llegar" a Google Maps y enlaces compartibles (`?tienda=…`, `?distrito=…`).
+  - Si el navegador no soporta WebGL o el servicio de calles no responde, se muestra el mapa de distritos propio, con los mismos logos y funciones.
 - **SEO:** H1 real, `title` y `description` útiles, Open Graph y datos estructurados de la organización.
 - **Accesibilidad:**
   - Enlace para saltar al contenido y foco visible en todo el recorrido con teclado.
@@ -102,4 +120,9 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 5. **Implementación en WordPress:** la página puede montarse como plantilla HTML personalizada, o rehacerse en Elementor usando este archivo como especificación. El mapa funciona por sí solo dentro de un widget HTML.
 6. **Datos del mapa:** INEI 2007 vía [peru-geojson](https://github.com/juaneladio/peru-geojson) (MPL-2.0). En esa fuente, Santa Anita y La Punta no tienen polígono propio, y Breña se corrigió a mano porque venía incompleta.
 7. **Imágenes de marca tomadas de capturas:** el perro y el gato chefs del hero y la franja de ingredientes están definidos en los CSS de Elementor, así que no tienen URL pública. Para la propuesta los recorté de las capturas del sitio (`img/marca/`). Al publicar, conviene reemplazarlos por los archivos originales en alta resolución, con el mismo nombre.
-8. **Renders 3D e íconos:** los platos y croquetas son renders 3D propios (`img/render/`), con el logo tomado de una captura. Si se entrega el logo en vector, se regeneran más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más un ícono propio de estrellas para "Hecho en Europa".
+8. **Renders 3D e íconos:** los platos y croquetas son renders 3D propios (`img/render/`), incluidos el plato vacío y las croquetas del "alimento anterior" de la animación de 7 días. El logo de los renders y el de los marcadores del mapa vienen de una captura (el del mapa se pasó a vector). Si se entrega el logo oficial en SVG, se reemplazan y quedan más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más íconos propios en el mismo estilo para patata, habas, romero y "Hecho en Europa".
+9. **Mapa de calles:**
+   - Revisarlo en un navegador normal antes de publicar. En el entorno de trabajo no hay acceso a OpenFreeMap, así que el estilo se validó con datos de prueba de OpenMapTiles, que es el mismo formato.
+   - OpenFreeMap es un servicio comunitario sin garantía de servicio. Si se quiere una, sirve el mismo estilo con MapTiler o Stadia (requieren clave). Usar Google Maps con logos propios exige una clave de Maps JavaScript API con facturación.
+   - Con `CONFIG.streetMap = false` se usa solo el mapa de distritos.
+10. **Filtro de tamaño:** todas las recetas para perros son para todas las razas, así que "tamaño" se interpretó como tamaño de bolsa. Si llegan recetas por tamaño de raza, se agrega ese filtro con el mismo componente.
