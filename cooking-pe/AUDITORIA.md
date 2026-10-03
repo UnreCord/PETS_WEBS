@@ -57,6 +57,14 @@ La propuesta mantiene el mundo visual de la marca, que es minimalista y fotográ
 
 Encima de eso suma movimiento con propósito y todo el contenido real del sitio. No usa emojis ni ilustraciones genéricas.
 
+- **Una sección por pantalla:**
+  - En computadoras y laptops, cada sección entra completa en la pantalla debajo del menú, sin tener que "cuadrar" el scroll. Probado en 1905×909 (Full HD al 100 %), 1920×1080, 1680×950, 1536×730, 1440×900, 1280×720 y 1366×625.
+  - Cada giro de la rueda o gesto del touchpad lleva exactamente a la sección siguiente o anterior. La inercia del mismo gesto no salta dos secciones.
+  - El teclado (Av Pág, flechas), la barra de desplazamiento y los enlaces del menú también caen al inicio de cada sección.
+  - Las listas con scroll propio, como la de tiendas, se recorren primero.
+  - En pantallas bajas se ocultan detalles secundarios (el SKU del empaque, algunos subtítulos) para que todo siga entrando.
+  - En celulares y tablets las secciones conservan su altura natural, porque varias son más largas que la pantalla. El inicio de cada una se acomoda solo cuando el scroll se detiene cerca.
+
 - **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras. Las bolsas suben desde una ola.
 - **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, patata, legumbres, zanahoria, habas, frutos rojos, manzana, romero, cítricos y achicoria.
 - **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
@@ -92,7 +100,10 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - Tiene botón de pausa y los 4 pasos sirven para saltar a cualquier etapa.
   - Con movimiento reducido no arranca sola, pero se puede reproducir con el botón o tocando un paso.
 - **Nueva sección "Arma su plan CooKing en 30 segundos":**
-  - El visitante elige perro o gato, edad, peso (con un deslizador) y una condición: esterilizado, sobrepeso, muy activo o piel y pelaje.
+  - El visitante elige perro o gato, edad y peso (con un deslizador).
+  - La pregunta de condición solo ofrece lo que define un producto del catálogo y solo cambia la receta, nunca la cantidad:
+    - en perros, "Tiende a subir de peso" lleva a Senior y light;
+    - en gatos, "Está esterilizado" lleva a Esterilizado con pollo.
   - Al instante ve:
     - La receta recomendada del catálogo real, con 3 razones tomadas de su descripción y una alternativa.
     - La ración diaria estimada en gramos y en comidas, con un montoncito de croquetas que crece.
@@ -100,7 +111,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
     - Su cambio en 7 días expresado en gramos de CooKing.
   - Lleva a "Encuentra tu tienda" y a "Ver la receta", que abre la pestaña correcta y resalta la tarjeta.
   - En celular, una barra flotante muestra el resultado mientras se responde.
-  - La ración se calcula con las kcal/kg de cada receta y la fórmula veterinaria estándar (70 × peso^0,75 por un factor de edad y actividad). La sección lo indica y remite a la tabla del empaque y al veterinario.
+  - La ración se calcula con la fórmula estándar (70 × peso^0,75 por un factor según la etapa de vida) y las kcal/kg de la receta recomendada. Por eso los gramos solo varían si cambia el producto, ya que cada receta tiene distinta energía. La sección lo indica y remite a la tabla del empaque y al veterinario.
 - **Mapa interactivo de Lima Metropolitana:**
   - Mapa real de calles: MapLibre con datos de OpenStreetMap servidos por OpenFreeMap, gratis, sin clave ni límite de uso.
   - Está pintado con la paleta de CooKing: crema, melocotón, mar turquesa y parques verdes con huellitas de mascota.
@@ -141,4 +152,4 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
    - OpenFreeMap es un servicio comunitario sin garantía de servicio. Si se quiere una, sirve el mismo estilo con MapTiler o Stadia (requieren clave). Usar Google Maps con logos propios exige una clave de Maps JavaScript API con facturación.
    - Con `CONFIG.streetMap = false` se usa solo el mapa de distritos.
 10. **Filtro de tamaño:** todas las recetas para perros son para todas las razas, así que "tamaño" se interpretó como tamaño de bolsa. Si llegan recetas por tamaño de raza, se agrega ese filtro con el mismo componente.
-11. **Validar la calculadora de ración** con el equipo técnico o veterinario de la marca. Hay que comparar varios casos (por ejemplo, perro adulto de 12 kg, gato esterilizado de 4 kg y cachorro de 20 kg) contra la tabla de cada empaque. Los factores de energía están en la función `factor()` de `initPlan` y se pueden ajustar en una línea.
+11. **Validar la calculadora de ración** con el equipo técnico o veterinario de la marca. Hay que comparar varios casos (por ejemplo, perro adulto de 12 kg, gato esterilizado de 4 kg y cachorro de 20 kg) contra la tabla de cada empaque. Los factores por etapa de vida están en la función `factor()` de `initPlan` (perro adulto 1,6; senior 1,4; cachorro y gatito 2,5; gato adulto 1,4) y se pueden ajustar en una línea.
