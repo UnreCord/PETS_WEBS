@@ -38,7 +38,8 @@ Otras formas de asignar la página:
 
 - **Una sección por pantalla.** En computadora (≥1024 px de ancho y ≥600 px de alto) cada gesto de rueda o de trackpad lleva a la siguiente sección, en este orden: inicio, CooKing es irresistible, ingredientes, plato, lo que cuida cada receta, recetas, arma su plan, cambia su alimento en 7 días, Encuéntranos en Lima y contacto. Cada sección cabe completa a 100 % de zoom.
 - **En celular** (<768 px) cada sección ocupa una pantalla. Lo que no cabe se desliza de lado: filtros, recetas, los dos pasos del plan y mapa o lista de tiendas. “Contacto” tiene dos paradas: formulario y datos.
-- **La olla de “Los ingredientes” gira sola**, despacio, mientras la sección está en pantalla. No depende del scroll ni se arrastra.
+- **“Los ingredientes”:** el arco de ingredientes ocupa la pantalla de borde a borde. La olla va delante de las zanahorias y gira sola, despacio, mientras la sección está en pantalla; no depende del scroll ni se arrastra.
+- **Plato de croquetas:** las croquetas que saltan nunca suben más allá del subtítulo.
 - **El plan y el cambio en 7 días están conectados.** “Cambia su alimento en 7 días” muestra porcentajes hasta que el visitante usa “Arma su plan”. Desde ese momento muestra gramos calculados con su ración diaria. Por ejemplo, perro cachorro de 12 kg: 285 g al día, días 1 y 2 = 70 g de CooKing + 215 g de su alimento anterior. El botón “Su cambio en 7 días” del plan lleva a esa sección.
 - **Las tarjetas de recetas** muestran proteína, grasa y fibra. Ceniza, kcal, tamaños de bolsa y el nombre del empaque están dentro de “Ver composición”.
 - En tablets (768–1023 px) el ajuste es suave, no obligatorio.
@@ -185,7 +186,10 @@ La cabecera y el pie de Astra o Elementor no aparecen en la landing: tiene su pr
 
 1. **Computadora a 100 % de zoom** (1920×1080, 1536×864 y 1366×768): cada sección se ve completa, y cada gesto de rueda lleva a la siguiente y no salta dos.
 2. **Celular** (iPhone y Android): cada sección ocupa una pantalla, no hay desplazamiento horizontal y las filas laterales se deslizan.
-3. **Plato:** los 4 puntos están en el borde (Libre de grano y Hecho en Europa a la izquierda, 80 % proteína animal y Carne fresca a la derecha), abren su tarjeta sin tapar texto, las croquetas vuelven al cerrar y se pueden lanzar tocándolas.
+3. **Plato:**
+    - los 4 puntos están en el filo delantero del borde: Libre de grano y Hecho en Europa a la izquierda, 80 % proteína animal y Carne fresca a la derecha;
+    - abren su tarjeta sin tapar texto ni otro punto;
+    - las croquetas no tapan el título, vuelven al cerrar y se pueden lanzar tocándolas.
 4. **Recetas:** filtros de perro o gato, edad y tamaño, y las fotos de producto (sección 4.2).
 5. **Arma su plan:**
     - cambiar especie, edad, peso y condición actualiza la receta y los gramos; la condición solo cambia la receta;

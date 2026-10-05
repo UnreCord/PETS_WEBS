@@ -398,7 +398,7 @@ $ck_media = cooking_landing_media_base();
             <p class="field__err" id="e-nombres"></p>
           </div>
           <div class="field">
-            <label for="f-apellidos">Apellidos <span class="opt">(opcional)</span></label>
+            <label for="f-apellidos">Apellidos</label>
             <input id="f-apellidos" name="apellidos" type="text" autocomplete="family-name">
           </div>
           <div class="field">

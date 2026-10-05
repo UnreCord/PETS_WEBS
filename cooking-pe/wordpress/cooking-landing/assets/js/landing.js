@@ -77,10 +77,10 @@ const RECIPES = [
 ];
 
 const CLAIMS = [
-  { id:"grano", icons:["wheat-off"], title:"Libre de grano", text:"Todas nuestras variedades aumentan el aporte nutricional y disminuyen el riesgo de alergias e intolerancias alimentarias.", x:21.8, y:16.6 },
-  { id:"europa", icons:["eu"], title:"Hecho en Europa", text:"Más de 30 años de experiencia nutriendo y dando salud a millones de mascotas en 27 países.", x:21.8, y:34.4 },
-  { id:"proteina", icons:["dumbbell"], title:"80 % proteína animal", text:"El 80 % de las proteínas de cada receta es de origen animal, lo que aumenta su aporte nutricional.", x:76.2, y:16.6 },
-  { id:"fresca", icons:["beef"], title:"Carne fresca", text:"Elaborado a base de carne fresca: proteína de la mejor calidad y con mayor palatabilidad.", x:76.2, y:34.4 }
+  { id:"grano", icons:["wheat-off"], title:"Libre de grano", text:"Todas nuestras variedades aumentan el aporte nutricional y disminuyen el riesgo de alergias e intolerancias alimentarias.", x:17, y:30.9 },
+  { id:"europa", icons:["eu"], title:"Hecho en Europa", text:"Más de 30 años de experiencia nutriendo y dando salud a millones de mascotas en 27 países.", x:28.7, y:37.2 },
+  { id:"proteina", icons:["dumbbell"], title:"80 % proteína animal", text:"El 80 % de las proteínas de cada receta es de origen animal, lo que aumenta su aporte nutricional.", x:81, y:30.9 },
+  { id:"fresca", icons:["beef"], title:"Carne fresca", text:"Elaborado a base de carne fresca: proteína de la mejor calidad y con mayor palatabilidad.", x:69.3, y:37.2 }
 ];
 
 const PERKS = [
@@ -158,7 +158,8 @@ function initRibbon() {
 /* ---------- Pan spin ---------- */
 // The pan turns slowly on its own (a CSS animation); it only runs while the section is on screen.
 function initPan() {
-  const sec = $("#ingredientes");
+  const sec = $("#ingredientes"), stage = $(".ingr__stage", sec || document);
+  if (sec && stage) { const inset = () => sec.classList.toggle("is-inset", innerWidth >= 768 && stage.offsetWidth < document.documentElement.clientWidth - 4); inset(); addEventListener("resize", inset, { passive: true }); }
   if (!sec || !("IntersectionObserver" in window)) { if (sec) sec.classList.add("is-on"); return; }
   new IntersectionObserver(es => es.forEach(en => sec.classList.toggle("is-on", en.isIntersecting)), { rootMargin: "80px 0px" }).observe(sec);
 }
@@ -180,16 +181,24 @@ function initBowl() {
   fly.innerHTML = K.map(k => `<span class="kib" style="--w:${k.w.toFixed(1)}%;--b:${k.blur}px"><img src="${RENDERS["kibble-" + k.k]}" alt="" width="120" height="120" draggable="false"></span>`).join("");
   $$(".kib", fly).forEach((el, i) => { K[i].el = el; });
 
-  let W = 1, H = 1;
-  const measure = () => { W = art.clientWidth || 1; H = art.clientHeight || 1; };
-  const home = k => ({ x: k.hx / 100 * W, y: k.hy / 100 * H });
+  let W = 1, H = 1, ceil = -1e4;
+  const head = $("#plato .sec__head");
+  const measure = () => {
+    W = art.clientWidth || 1; H = art.clientHeight || 1;
+    ceil = head ? head.getBoundingClientRect().bottom + 10 - art.getBoundingClientRect().top : -1e4;
+  };
+  const top = k => ceil + k.w / 200 * W + 7; // highest center of a kibble (half its size + the bob)
+  const home = k => ({ x: k.hx / 100 * W, y: Math.max(k.hy / 100 * H, top(k)) });
   const pile = () => ({ x: (50 + (R() - .5) * 30) / 100 * W, y: (13 + R() * 9) / 100 * H });
   const draw = (k, bob = 0) => {
     k.el.style.transform = `translate3d(${k.x.toFixed(1)}px,${(k.y + bob).toFixed(1)}px,0) rotate(${k.r.toFixed(1)}deg) scale(${k.s.toFixed(3)})`;
     k.el.style.opacity = k.o.toFixed(2);
   };
   const ballistic = (k, to, T, delay) => {
-    const g = 2.1 * H;
+    const g = 2.1 * H, lim = top(k);
+    to = { x: to.x, y: Math.max(to.y, lim) };
+    const room = k.y - lim; // how far it may rise above its start
+    if (room > 0) T = Math.min(T, (Math.sqrt(2 * g * room) + Math.sqrt(Math.max(0, 2 * g * (room + to.y - k.y)))) / g);
     k.p0 = { x: k.x, y: k.y }; k.to = to; k.T = T; k.t = -delay; k.g = g;
     k.v0 = { x: (to.x - k.x) / T, y: (to.y - k.y - .5 * g * T * T) / T };
   };
@@ -254,6 +263,7 @@ function initBowl() {
           if (d < RAD && d > .1) { const f = 14000 * (1 - d / RAD) ** 2; ax += dx / d * f; ay += dy / d * f; k.vr += (dx > 0 ? 1 : -1) * f * dt * .08; }
         }
         k.vx += ax * dt; k.vy += ay * dt; k.x += k.vx * dt; k.y += k.vy * dt;
+        const lim = top(k); if (k.y < lim) { k.y = lim; if (k.vy < 0) k.vy *= -.4; }
         k.vr *= Math.pow(.2, dt); k.r += k.vr * dt + Math.sin(now / 1900 + k.ph) * .05;
         k.s += (1 - k.s) * Math.min(1, dt * 8); k.o = 1;
       }
@@ -286,7 +296,9 @@ function initBowl() {
       const side = c.x < 50 ? "l" : "r", gap = 46;
       card.classList.add("is-side-" + side);
       const top = Math.max(0, hy - card.offsetHeight / 2);
-      const left = side === "r" ? hx + 34 + gap : hx - 34 - gap - cw;
+      // beside the outermost point of that side, so it never covers the other point
+      const xs = CLAIMS.filter(x => (x.x < 50) === (side === "l")).map(x => art.offsetLeft + x.x / 100 * art.clientWidth);
+      const left = side === "r" ? Math.max(...xs) + 34 + gap : Math.min(...xs) - 34 - gap - cw;
       Object.assign(card.style, { left: left + "px", top: top + "px", bottom: "auto" });
       card.style.setProperty("--ay", (hy - top) + "px");
       card.style.setProperty("--link", Math.max(0, side === "r" ? left - 11 - (hx + 34) : (hx - 34) - (left + cw + 11)) + "px");
@@ -644,8 +656,8 @@ function initPlan() {
     const n = Math.min(28, Math.max(3, Math.round(g / 9)));
     if (n === pileN) return;
     const R = seeded(5), rows = [9, 7, 6, 4, 2], spots = [];
-    rows.forEach((cap, row) => { for (let j = 0; j < cap; j++) spots.push({ x: 50 + (j - (cap - 1) / 2) * 9.4 + (R() - .5) * 3, y: row * 12 + (R() - .5) * 3, r: Math.round(R() * 360) }); });
-    O.pile.innerHTML = spots.slice(0, n).map((p, i) => `<img${i < pileN ? ' class="is-old"' : ""} src="${RENDERS["kibble-" + (1 + i % 10)]}" alt="" width="120" height="120" style="--x:calc(${p.x.toFixed(1)}% - 11px);--y:${p.y.toFixed(0)}px;--r:${p.r}deg;--d:${((i - pileN) * 28)}ms">`).join("");
+    rows.forEach((cap, row) => { for (let j = 0; j < cap; j++) spots.push({ x: 50 + (j - (cap - 1) / 2) * 9.4 + (R() - .5) * 3, y: Math.max(0, row / 4 + (R() - .5) * .06), r: Math.round(R() * 360) }); });
+    O.pile.innerHTML = spots.slice(0, n).map((p, i) => `<img${i < pileN ? ' class="is-old"' : ""} src="${RENDERS["kibble-" + (1 + i % 10)]}" alt="" width="120" height="120" style="--x:calc(${p.x.toFixed(1)}% - 11px);--y:${p.y.toFixed(3)};--r:${p.r}deg;--d:${((i - pileN) * 28)}ms">`).join("");
     pileN = n;
   }
   function update() {

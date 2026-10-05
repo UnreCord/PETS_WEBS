@@ -77,10 +77,11 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 - **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, patata, legumbres, zanahoria, habas, frutos rojos, manzana, romero, cítricos y achicoria.
 - **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
 - **"¡Los ingredientes marcan la diferencia!"**, con la distribución que pidió marketing:
-  - título y texto arriba a la izquierda;
-  - la olla arriba a la derecha, girando sola y despacio mientras la sección está en pantalla;
-  - el arco de ingredientes frescos a lo largo del borde inferior, con las verduras por delante de la olla.
-  - En celular van texto, olla y arco, uno debajo del otro. El arco siempre ocupa el espacio que queda bajo el texto, así que nunca lo tapa.
+  - el arco de ingredientes frescos ocupa la pantalla de borde a borde y se apoya en el borde inferior;
+  - el título, el texto y la olla quedan dentro de su curva;
+  - la olla va delante de las zanahorias y gira sola, despacio, mientras la sección está en pantalla.
+  - En laptops de pantalla baja el arco es un poco más angosto, para no tapar el texto, y sus extremos se desvanecen en el fondo.
+  - En celular van texto, olla y arco, uno debajo del otro.
 - **El plato de croquetas, restaurado y mejorado:**
   - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.
   - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
