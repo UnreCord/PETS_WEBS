@@ -96,7 +96,7 @@ function cooking_landing_script_data() {
 		'photos'      => array(
 			'chef-perro'   => $base . 'marca/hero-chef-perro.webp',
 			'chef-gato'    => $base . 'marca/hero-chef-gato.webp',
-			'ingredientes' => $base . 'marca/ingredientes-banda.webp',
+			'ingredientes' => $base . 'marca/ingredientes-arco.webp',
 		),
 		'map'         => cooking_landing_json( 'lima-distritos-svg.json' ),
 		'geo'         => cooking_landing_json( 'lima-distritos-geo.json' ),

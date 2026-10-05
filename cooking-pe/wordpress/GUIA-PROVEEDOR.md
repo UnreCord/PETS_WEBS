@@ -37,7 +37,10 @@ Otras formas de asignar la página:
 ## 3. Cómo funciona la página (es intencional)
 
 - **Una sección por pantalla.** En computadora (≥1024 px de ancho y ≥600 px de alto) cada gesto de rueda o de trackpad lleva a la siguiente sección, en este orden: inicio, CooKing es irresistible, ingredientes, plato, lo que cuida cada receta, recetas, arma su plan, cambia su alimento en 7 días, Encuéntranos en Lima y contacto. Cada sección cabe completa a 100 % de zoom.
-- **En celular** (<768 px) cada sección ocupa una pantalla. Lo que no cabe se desliza de lado: ingredientes, filtros, recetas, los dos pasos del plan y mapa o lista de tiendas. “Contacto” tiene dos paradas: formulario y datos.
+- **En celular** (<768 px) cada sección ocupa una pantalla. Lo que no cabe se desliza de lado: filtros, recetas, los dos pasos del plan y mapa o lista de tiendas. “Contacto” tiene dos paradas: formulario y datos.
+- **La olla de “Los ingredientes” gira sola**, despacio, mientras la sección está en pantalla. No depende del scroll ni se arrastra.
+- **El plan y el cambio en 7 días están conectados.** “Cambia su alimento en 7 días” muestra porcentajes hasta que el visitante usa “Arma su plan”. Desde ese momento muestra gramos calculados con su ración diaria. Por ejemplo, perro cachorro de 12 kg: 285 g al día, días 1 y 2 = 70 g de CooKing + 215 g de su alimento anterior. El botón “Su cambio en 7 días” del plan lleva a esa sección.
+- **Las tarjetas de recetas** muestran proteína, grasa y fibra. Ceniza, kcal, tamaños de bolsa y el nombre del empaque están dentro de “Ver composición”.
 - En tablets (768–1023 px) el ajuste es suave, no obligatorio.
 - Quien activa “reducir movimiento” en su sistema ve la página sin animaciones automáticas.
 - **La barra de administración de WordPress no se muestra en la landing**, ni siquiera con la sesión iniciada, porque movería todas las secciones 32 px. Para ir al panel, entra a `/wp-admin/`.
@@ -78,7 +81,20 @@ Son los mismos archivos que hoy usa cooking.pe. Si falta alguno, la tarjeta mues
 
 ### 4.3 Imágenes incluidas en el plugin
 
-El plato 3D, las croquetas, los platos de la transición de 7 días y las fotos de ingredientes vienen dentro del plugin (`assets/img/`) en WebP. No hay que subirlas.
+El plato 3D, las croquetas, los platos de la transición de 7 días y el arco de ingredientes de “Los ingredientes marcan la diferencia” vienen dentro del plugin (`assets/img/`) en WebP. No hay que subirlas.
+
+### 4.4 Tipografías
+
+La página usa dos fuentes, incluidas en `assets/fonts/` como WOFF2 (recortadas a los caracteres del español):
+
+| Fuente | Uso |
+|---|---|
+| **Circular Book** (Lineto) | Títulos, textos, botones y números. “El Rey de la” del inicio. |
+| **Authenia** (Mika Melvas) | Palabras destacadas en caligrafía: “Cocina Nutricional”, “marcan la diferencia!”, “en todas sus etapas”, “en 30 segundos”. |
+
+- **Licencias:** las dos son fuentes comerciales. CooKing debe tener una licencia de uso web (webfont) para cooking.pe de cada una antes de publicar. Si no la tiene, hay que comprarla o reemplazar la fuente.
+- Circular Book tiene un solo grosor; las negritas pequeñas (botones, etiquetas) las genera el navegador.
+- Para cambiar una fuente, reemplaza el archivo con el mismo nombre (`circular-book.woff2` o `authenia.woff2`) y sube la versión del plugin.
 
 ## 5. Puntos de venta (mapa “Encuéntranos en Lima”)
 
@@ -111,7 +127,7 @@ El plato 3D, las croquetas, los platos de la transición de 7 días y las fotos 
 - Usa **MapLibre** (librería abierta) con mapas de **OpenFreeMap**: gratis, sin clave y sin facturación. El estilo está adaptado a la marca y los marcadores son el logo de CooKing.
 - Si el servicio no responde, o si se desactiva en Ajustes, la landing muestra su propio mapa de distritos de Lima. No queda en blanco.
 - OpenFreeMap no da garantía de servicio. Si en el futuro se quiere Google Maps, hace falta una clave de Google Cloud con facturación activa; es un cambio aparte.
-- Si el sitio usa una política de seguridad de contenido (CSP), debe permitir `cdn.jsdelivr.net` (MapLibre), `tiles.openfreemap.org`, `fonts.googleapis.com` y `fonts.gstatic.com`.
+- Si el sitio usa una política de seguridad de contenido (CSP), debe permitir `cdn.jsdelivr.net` (MapLibre) y `tiles.openfreemap.org`. Las fuentes ya no vienen de Google Fonts: están dentro del plugin.
 
 ## 8. Cambiar textos, recetas o datos
 
@@ -149,7 +165,7 @@ Recomendaciones:
 
 - **Se quita:**
   - el CSS y el JS del tema (Astra);
-  - los estilos de bloques de WordPress;
+  - los estilos de bloques y las fuentes web del tema;
   - la clase del kit global de Elementor (`elementor-kit-N`), para que su tipografía y colores no cambien el diseño;
   - la barra de administración.
 - **Se mantiene:**
@@ -169,10 +185,15 @@ La cabecera y el pie de Astra o Elementor no aparecen en la landing: tiene su pr
 
 1. **Computadora a 100 % de zoom** (1920×1080, 1536×864 y 1366×768): cada sección se ve completa, y cada gesto de rueda lleva a la siguiente y no salta dos.
 2. **Celular** (iPhone y Android): cada sección ocupa una pantalla, no hay desplazamiento horizontal y las filas laterales se deslizan.
-3. **Plato:** los 4 puntos abren su tarjeta sin tapar texto, las croquetas vuelven al cerrar y se pueden lanzar tocándolas.
+3. **Plato:** los 4 puntos están en el borde (Libre de grano y Hecho en Europa a la izquierda, 80 % proteína animal y Carne fresca a la derecha), abren su tarjeta sin tapar texto, las croquetas vuelven al cerrar y se pueden lanzar tocándolas.
 4. **Recetas:** filtros de perro o gato, edad y tamaño, y las fotos de producto (sección 4.2).
-5. **Arma su plan:** cambiar especie, edad, peso y condición actualiza la receta y los gramos; la condición solo cambia la receta.
-6. **7 días:** la animación corre sola por los días 1–2, 3–4, 5–6 y 7, con tiempos proporcionales a la mezcla.
+5. **Arma su plan:**
+    - cambiar especie, edad, peso y condición actualiza la receta y los gramos; la condición solo cambia la receta;
+    - el botón “Su cambio en 7 días” lleva a la sección siguiente;
+    - esa sección muestra gramos en lugar de porcentajes.
+6. **7 días:**
+    - la animación corre sola por los días 1–2, 3–4, 5–6 y 7, con tiempos proporcionales a la mezcla;
+    - las bolsas no tapan el texto, también en laptops de pantalla baja.
 7. **Mapa:**
    - las 14 tiendas aparecen con el logo;
    - la búsqueda por distrito funciona, igual que “Cerca de mí” y “Cómo llegar”;

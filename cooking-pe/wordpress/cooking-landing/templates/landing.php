@@ -125,22 +125,20 @@ $ck_media = cooking_landing_media_base();
   <!-- INGREDIENTES -->
   <section class="sec ingr" id="ingredientes" aria-labelledby="ingr-title">
     <svg class="wave wave--top" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C260,80 520,16 780,44 C1040,72 1250,74 1440,38 L1440,100 L0,100 Z" fill="currentColor"/></svg>
-    <div class="wrap ingr__grid">
+    <div class="wrap ingr__stage">
       <div class="ingr__copy">
-        <h2 class="h2" id="ingr-title">¡Los ingredientes marcan la diferencia!</h2>
+        <h2 class="h2" id="ingr-title">¡Los ingredientes <span class="script">marcan la diferencia!</span></h2>
         <p class="lead">Carne y pescado frescos primero, luego patata, legumbres, verduras y frutos rojos. A tu mascota no solo le encantará: también protegerá sus articulaciones y controlará su peso. Un alimento premium, accesible y recomendado por veterinarios.</p>
-        <ul class="ingr__list" aria-label="Ingredientes principales">
-          <li>Pollo fresco</li><li>Salmón</li><li>Cordero</li><li>Patata</li><li>Legumbres</li><li>Zanahoria</li><li>Arándanos</li><li>Espinaca</li>
-        </ul>
       </div>
       <div class="ingr__pan media" data-caption="">
         <div class="ingr__shadow"><div class="ingr__spin" id="pan-spin">
           <img src="<?php echo esc_url( $ck_media ); ?>2026/07/plato.png" width="694" height="547" loading="lazy" draggable="false" alt="Olla con los ingredientes de una receta CooKing: carne, legumbres y frutos rojos">
         </div></div>
-        <p class="ingr__hint" id="pan-hint" aria-hidden="true"><span class="ico" data-icon="rotate-cw"></span><span data-hint-text>Arrastra la olla para girarla</span></p>
+      </div>
+      <div class="ingr__arcbox">
+        <img class="ingr__arc" data-photo="ingredientes" width="1536" height="762" loading="lazy" alt="Ingredientes frescos: salmón, pollo, arándanos, carne, atún, zanahoria, brócoli, espinaca y patata">
       </div>
     </div>
-    <div class="ingr__band" role="img" aria-label="Ingredientes frescos: salmón, pollo, arándanos, carne, atún, zanahoria, espinaca y patata"></div>
   </section>
 
   <!-- EL PLATO -->
@@ -273,10 +271,11 @@ $ck_media = cooking_landing_media_base();
                 <ul class="bags" id="plan-bags"></ul>
               </div>
             </div>
-            <div class="stat planr__switch">
-              <p class="stat__label"><span>Su cambio en 7 días (gramos de CooKing)</span><a href="#cambio">Ver cómo</a></p>
-              <ol class="sw7" id="plan-switch"></ol>
-            </div>
+            <a class="planr__switch" href="#cambio" id="plan-switch">
+              <span class="planr__switch-mix" aria-hidden="true"><i style="--p:25%"></i><i style="--p:50%"></i><i style="--p:75%"></i><i style="--p:100%"></i></span>
+              <span class="planr__switch-txt"><b>Su cambio en 7 días</b><span>Cuánto mezclar cada día con su ración</span></span>
+              <span class="planr__switch-go" aria-hidden="true"></span>
+            </a>
             <div class="planr__ctas">
               <a class="btn btn--orange" href="#comprar">Encuentra tu tienda</a>
               <button class="btn btn--light" type="button" id="plan-see">Ver la receta</button>
@@ -298,6 +297,7 @@ $ck_media = cooking_landing_media_base();
       <div class="sec__head">
         <h2 class="h2" id="switch-title">Cambia su alimento en 7 días</h2>
         <p class="lead">Un cambio gradual cuida su digestión. Mezcla CooKing con su alimento actual en estas proporciones.</p>
+        <p class="switch__for" id="switch-for" hidden></p>
       </div>
       <div class="pour" id="pour">
         <div class="pour__stage" id="pour-stage">

@@ -77,10 +77,10 @@ const RECIPES = [
 ];
 
 const CLAIMS = [
-  { id:"grano", icons:["wheat-off"], title:"Libre de grano", text:"Todas nuestras variedades aumentan el aporte nutricional y disminuyen el riesgo de alergias e intolerancias alimentarias.", x:29.64, y:16.92 },
-  { id:"europa", icons:["eu"], title:"Hecho en Europa", text:"Más de 30 años de experiencia nutriendo y dando salud a millones de mascotas en 27 países.", x:49.76, y:5.51 },
-  { id:"proteina", icons:["dumbbell"], title:"80 % proteína animal", text:"El 80 % de las proteínas de cada receta es de origen animal, lo que aumenta su aporte nutricional.", x:69.02, y:15.65 },
-  { id:"fresca", icons:["beef"], title:"Carne fresca", text:"Elaborado a base de carne fresca: proteína de la mejor calidad y con mayor palatabilidad.", x:56.56, y:24.43 }
+  { id:"grano", icons:["wheat-off"], title:"Libre de grano", text:"Todas nuestras variedades aumentan el aporte nutricional y disminuyen el riesgo de alergias e intolerancias alimentarias.", x:21.8, y:16.6 },
+  { id:"europa", icons:["eu"], title:"Hecho en Europa", text:"Más de 30 años de experiencia nutriendo y dando salud a millones de mascotas en 27 países.", x:21.8, y:34.4 },
+  { id:"proteina", icons:["dumbbell"], title:"80 % proteína animal", text:"El 80 % de las proteínas de cada receta es de origen animal, lo que aumenta su aporte nutricional.", x:76.2, y:16.6 },
+  { id:"fresca", icons:["beef"], title:"Carne fresca", text:"Elaborado a base de carne fresca: proteína de la mejor calidad y con mayor palatabilidad.", x:76.2, y:34.4 }
 ];
 
 const PERKS = [
@@ -101,7 +101,6 @@ function paintIcons(root = document) {
   $$("[data-icon]", root).forEach(el => { el.innerHTML = svgIcon(el.dataset.icon); });
   $$("img[data-render]", root).forEach(img => { img.src = RENDERS[img.dataset.render]; });
   $$("img[data-photo]", root).forEach(img => { img.src = PHOTOS[img.dataset.photo]; });
-  const band = $(".ingr__band"); if (band) band.style.setProperty("--band", `url("${PHOTOS["ingredientes"]}")`);
 }
 function watchImage(img) {
   const holder = img.closest(".media") || img;
@@ -157,48 +156,11 @@ function initRibbon() {
 }
 
 /* ---------- Pan spin ---------- */
-// The pan turns with the page scroll, and the visitor can also spin it by dragging (with inertia).
+// The pan turns slowly on its own (a CSS animation); it only runs while the section is on screen.
 function initPan() {
-  const pan = $(".ingr__pan"), spin = $("#pan-spin"), hint = $("#pan-hint");
-  if (!pan || !spin) return;
-  if (!window.matchMedia("(pointer: fine)").matches) $("[data-hint-text]", hint).textContent = "Desliza la olla hacia los lados para girarla";
-  let scrollA = 0, userA = 0, vel = 0, drag = null, coast = 0, raf = 0;
-  const apply = () => { spin.style.transform = `rotate(${(scrollA + userA).toFixed(2)}deg)`; };
-  const onScroll = () => {
-    raf = 0;
-    const r = pan.getBoundingClientRect(), t = (innerHeight - r.top) / (innerHeight + r.height);
-    scrollA = Math.min(Math.max(t, 0), 1) * 240 - 60; apply();
-  };
-  if (!reduceMotion.matches) { addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(onScroll); }, { passive: true }); onScroll(); }
-  const angleAt = e => { const r = spin.getBoundingClientRect(); return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) * 180 / Math.PI; };
-  spin.addEventListener("pointerdown", e => {
-    if (e.button > 0) return;
-    cancelAnimationFrame(coast); vel = 0;
-    drag = { a: angleAt(e), t: performance.now() };
-    spin.setPointerCapture(e.pointerId); spin.classList.add("is-grabbing");
-    hint.classList.add("is-done");
-  });
-  spin.addEventListener("pointermove", e => {
-    if (!drag) return;
-    const a = angleAt(e), now = performance.now(), dt = Math.max(1, now - drag.t);
-    let d = a - drag.a; if (d > 180) d -= 360; if (d < -180) d += 360;
-    userA += d; vel = vel * .6 + (d / dt) * .4;
-    drag = { a, t: now }; apply();
-  });
-  const release = () => {
-    if (!drag) return;
-    drag = null; spin.classList.remove("is-grabbing");
-    if (reduceMotion.matches) return;
-    let t0 = performance.now();
-    const step = now => {
-      const dt = now - t0; t0 = now;
-      userA += vel * dt; vel *= Math.pow(.94, dt / 16); apply();
-      if (Math.abs(vel) > .004) coast = requestAnimationFrame(step);
-    };
-    coast = requestAnimationFrame(step);
-  };
-  spin.addEventListener("pointerup", release);
-  spin.addEventListener("pointercancel", release);
+  const sec = $("#ingredientes");
+  if (!sec || !("IntersectionObserver" in window)) { if (sec) sec.classList.add("is-on"); return; }
+  new IntersectionObserver(es => es.forEach(en => sec.classList.toggle("is-on", en.isIntersecting)), { rootMargin: "80px 0px" }).observe(sec);
 }
 
 /* ---------- Bowl ---------- */
@@ -321,10 +283,10 @@ function initBowl() {
     if (deckMQ.matches) {
       // one-screen layout: the card sits beside the bowl, on the side of the point, with a dashed line to it
       const hx = art.offsetLeft + c.x / 100 * art.clientWidth, hy = art.offsetTop + c.y / 100 * art.clientHeight, cw = card.offsetWidth;
-      const side = c.x < 45 ? "l" : "r";
+      const side = c.x < 50 ? "l" : "r", gap = 46;
       card.classList.add("is-side-" + side);
       const top = Math.max(0, hy - card.offsetHeight / 2);
-      const left = side === "r" ? art.offsetLeft + art.clientWidth * .8 : art.offsetLeft + art.clientWidth * .2 - cw;
+      const left = side === "r" ? hx + 34 + gap : hx - 34 - gap - cw;
       Object.assign(card.style, { left: left + "px", top: top + "px", bottom: "auto" });
       card.style.setProperty("--ay", (hy - top) + "px");
       card.style.setProperty("--link", Math.max(0, side === "r" ? left - 11 - (hx + 34) : (hx - 34) - (left + cw + 11)) + "px");
@@ -459,14 +421,14 @@ function bagSVG(r) {
     <rect x="18" y="20" width="132" height="9" fill="${k.c}"/>
     <path d="M140 29 L150 29 L152 226 L140 226 Z" fill="${k.c}" opacity=".9"/>
     <g transform="translate(71 38) scale(1.1)" fill="none" stroke="${k.c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON_SVG.crown}</g>
-    <text x="80" y="82" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="19" fill="#5A4632">CooKing</text>
+    <text x="80" y="82" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="19" fill="#5A4632">CooKing</text>
     <circle cx="80" cy="122" r="29" fill="${k.c3}"/>
     <g transform="translate(62 104) scale(1.5)" fill="none" stroke="${k.c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICON_SVG[r.species === "gato" ? "cat" : "dog"]}</g>
-    <text x="26" y="175" font-family="Schibsted Grotesk, sans-serif" font-weight="800" font-size="17" fill="${k.c}">${esc(r.bag[0])}</text>
-    <text x="26" y="187" font-family="Schibsted Grotesk, sans-serif" font-weight="700" font-size="7.4" fill="#5A4632">${esc(r.bag[1])}</text>
-    <text x="134" y="175" text-anchor="end" font-family="Schibsted Grotesk, sans-serif" font-weight="700" font-size="12" fill="#5A4632">${r.formats[0]}kg</text>
+    <text x="26" y="175" font-family="Circular, Arial, sans-serif" font-weight="800" font-size="17" fill="${k.c}">${esc(r.bag[0])}</text>
+    <text x="26" y="187" font-family="Circular, Arial, sans-serif" font-weight="700" font-size="7.4" fill="#5A4632">${esc(r.bag[1])}</text>
+    <text x="134" y="175" text-anchor="end" font-family="Circular, Arial, sans-serif" font-weight="700" font-size="12" fill="#5A4632">${r.formats[0]}kg</text>
     <rect x="16" y="200" width="124" height="26" fill="${k.c}"/>
-    <text x="78" y="217" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-weight="800" font-size="8.4" letter-spacing=".6" fill="#FFFFFF">GRAIN FREE RECIPE</text>
+    <text x="78" y="217" text-anchor="middle" font-family="Circular, Arial, sans-serif" font-weight="800" font-size="8.4" letter-spacing=".6" fill="#FFFFFF">GRAIN FREE RECIPE</text>
   </svg>`;
 }
 function initRecipes() {
@@ -487,9 +449,11 @@ function initRecipes() {
         <h3>${esc(r.name)}</h3>
         <p class="rcard__for">${esc(r.for)}</p>
         <div class="bars">${bars}</div>
-        <div class="rcard__meta"><span>Ceniza <b>${nf1.format(r.ash)}&nbsp;%</b> y <b>${nf0.format(r.kcal)}</b>&nbsp;kcal/kg</span><span class="sizes" aria-label="Bolsas de ${r.formats.join(" y ")} kilos">${r.formats.map(f => `<span>${f}&nbsp;kg</span>`).join("")}</span></div>
-        <p class="rcard__sku">En el empaque: <span translate="no">${esc(r.sku)}</span></p>
-        <details><summary>Ver composición</summary><p>${esc(r.desc)}</p><p>${esc(r.comp)}</p></details>
+        <details><summary>Ver composición</summary>
+          <div class="rcard__meta"><span>Ceniza <b>${nf1.format(r.ash)}&nbsp;%</b> y <b>${nf0.format(r.kcal)}</b>&nbsp;kcal/kg</span><span class="sizes" aria-label="Bolsas de ${r.formats.join(" y ")} kilos">${r.formats.map(f => `<span>${f}&nbsp;kg</span>`).join("")}</span></div>
+          <p class="rcard__sku">En el empaque: <span translate="no">${esc(r.sku)}</span></p>
+          <p class="rcard__desc">${esc(r.desc)}</p><p class="rcard__comp">${esc(r.comp)}</p>
+        </details>
       </li>`;
     }).join("");
   }
@@ -501,7 +465,7 @@ function initRecipes() {
   // Cards in the same visual row get equal-height text blocks (title + description, analysis + SKU),
   // padding the last element of each block, so bars and "Ver composición" line up across the row.
   function equalize() {
-    const blocks = [["h3", ".rcard__for"], [".rcard__meta", ".rcard__sku"]];
+    const blocks = [["h3", ".rcard__for"]];
     for (const grid of $$(".panel:not([hidden]) .rgrid")) {
       const cards = $$(".rcard:not([hidden])", grid);
       cards.forEach(c => blocks.forEach(bl => { $(bl[bl.length - 1], c).style.minHeight = ""; }));
@@ -614,7 +578,7 @@ const PLAN_WHY = {
 const PLAN_ALT = { lamb: "dog-salmon", "dog-salmon": "lamb", "cat-salmon": "sterilized", sterilized: "cat-salmon" };
 function initPlan() {
   const form = $("#plan-form"), ageBox = $("#plan-age"), condBox = $("#plan-cond"), kg = $("#plan-kg"), kgOut = $("#plan-kg-out"), pet = $("#plan-pet");
-  const O = { stage: $("#plan-stage"), bag: $("#plan-bag"), name: $("#plan-name"), for: $("#plan-for"), why: $("#plan-why"), alt: $("#plan-alt"), g: $("#plan-g"), meals: $("#plan-meals"), pile: $("#plan-pile"), bags: $("#plan-bags"), sw: $("#plan-switch"), live: $("#plan-live"), see: $("#plan-see") };
+  const O = { stage: $("#plan-stage"), bag: $("#plan-bag"), name: $("#plan-name"), for: $("#plan-for"), why: $("#plan-why"), alt: $("#plan-alt"), g: $("#plan-g"), meals: $("#plan-meals"), pile: $("#plan-pile"), bags: $("#plan-bags"), live: $("#plan-live"), see: $("#plan-see") };
   const AGES = {
     perro: [["cachorro", "Cachorro", "hasta 12 meses"], ["adulto", "Adulto", "de 1 a 7 años"], ["senior", "Senior", "más de 7 años"]],
     gato: [["cachorro", "Gatito", "hasta 12 meses"], ["adulto", "Adulto", "desde 1 año"]]
@@ -660,6 +624,9 @@ function initPlan() {
     requestAnimationFrame(tick);
   }
   let shownId = null, pileN = 0, liveT = 0;
+  // "Cambia su alimento en 7 días" shows percentages until the visitor uses the plan, then this plan's grams
+  let engaged = false, shared = null;
+  const share = () => document.dispatchEvent(new CustomEvent("cooking:plan", { detail: shared }));
   function swapBag(r) {
     const k = COLORS[r.protein];
     const paint = () => {
@@ -702,11 +669,8 @@ function initPlan() {
     const days = r.formats.map(f => Math.round(f * 1000 / g)), maxD = Math.max(...days);
     O.bags.innerHTML = r.formats.map((f, i) => `<li><span class="bags__kg">${f}&nbsp;kg</span><span class="bags__days">≈ ${nf0.format(days[i])}<small>días${days[i] >= 60 ? ` · ${nf1.format(days[i] / 30)} meses` : ""}</small></span><span class="bags__bar" style="--c:${k.c}"><i style="--w:0%"></i></span></li>`).join("");
     requestAnimationFrame(() => requestAnimationFrame(() => $$(".bags__bar i", O.bags).forEach((b, i) => b.style.setProperty("--w", Math.max(8, days[i] / maxD * 100).toFixed(0) + "%"))));
-    O.sw.innerHTML = STEPS.map(s => {
-      const ck = round5(g * s.ck / 100), old = 100 - s.ck;
-      const rest = old ? `+ ${old === 75 ? "¾" : old === 50 ? "½" : "¼"} de lo que come hoy` : "solo CooKing";
-      return `<li><span class="sw7__day">${s.day}</span><span class="mix" aria-hidden="true"><span style="width:${s.ck}%"></span></span><p><b>${nf0.format(ck)}&nbsp;g</b>${rest}</p></li>`;
-    }).join("");
+    shared = { g, species: st.species, age: st.age, ageLabel: AGES[st.species].find(a => a[0] === st.age)[1], kg: st.kg, recipe: r.name };
+    if (engaged) share();
     $("#plan-peek-name").textContent = r.name; $("#plan-peek-g").innerHTML = `${nf0.format(g)}&nbsp;g al día · ${nf1.format(st.kg)}&nbsp;kg`;
     clearTimeout(liveT);
     liveT = setTimeout(() => { O.live.textContent = `Receta recomendada: ${r.name}. Ración estimada: ${g} gramos al día, en ${meals} comidas.`; }, 700);
@@ -715,12 +679,14 @@ function initPlan() {
   form.addEventListener("submit", e => e.preventDefault());
   form.addEventListener("change", e => {
     const t = e.target;
+    engaged = true;
     if (t.name === "plan-sp") { st.species = t.value; renderInputs(); syncRange(); }
     else if (t.name === "plan-age") st.age = t.value;
     else if (t.name === "plan-cond") st.cond = t.value;
     update();
   });
-  kg.addEventListener("input", () => { st.kg = +kg.value; syncRange(); update(); });
+  kg.addEventListener("input", () => { engaged = true; st.kg = +kg.value; syncRange(); update(); });
+  $("#plan-switch").addEventListener("click", () => { engaged = true; share(); });
   $("#plan-card").addEventListener("click", e => {
     const b = e.target.closest("[data-recipe]");
     if (b) document.dispatchEvent(new CustomEvent("cooking:receta", { detail: { id: b.dataset.recipe } }));
@@ -755,15 +721,15 @@ function pourBagSVG(kind) {
   const side = ck ? "#B83E17" : "#A88A60", band = ck ? "#E8562B" : "#B9996B", g = "pb-" + kind;
   const label = ck
     ? `<g transform="translate(71 44) scale(1.1)" fill="none" stroke="#E8562B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON_SVG.crown}</g>
-       <text x="84" y="90" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="21" fill="#5A4632">CooKing</text>
+       <text x="84" y="90" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="21" fill="#5A4632">CooKing</text>
        <circle cx="84" cy="128" r="22" fill="#FFE1D3"/>
        <g transform="translate(70 114) scale(1.17)" fill="none" stroke="#E8562B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON_SVG["paw-print"]}</g>
        <rect x="16" y="196" width="136" height="30" fill="${band}"/>
-       <text x="84" y="215" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-weight="800" font-size="9" letter-spacing=".6" fill="#FFFFFF">GRAIN FREE RECIPE</text>`
+       <text x="84" y="215" text-anchor="middle" font-family="Circular, Arial, sans-serif" font-weight="800" font-size="9" letter-spacing=".6" fill="#FFFFFF">GRAIN FREE RECIPE</text>`
     : `<rect x="34" y="70" width="100" height="92" rx="14" fill="#F4EAD8" opacity=".85"/>
        <g transform="translate(70 82) scale(1.17)" fill="none" stroke="#8C734B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON_SVG["paw-print"]}</g>
-       <text x="84" y="132" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-weight="800" font-size="11" letter-spacing=".8" fill="#6B5444">ALIMENTO</text>
-       <text x="84" y="148" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-weight="800" font-size="11" letter-spacing=".8" fill="#6B5444">ANTERIOR</text>
+       <text x="84" y="132" text-anchor="middle" font-family="Circular, Arial, sans-serif" font-weight="800" font-size="11" letter-spacing=".8" fill="#6B5444">ALIMENTO</text>
+       <text x="84" y="148" text-anchor="middle" font-family="Circular, Arial, sans-serif" font-weight="800" font-size="11" letter-spacing=".8" fill="#6B5444">ANTERIOR</text>
        <rect x="16" y="196" width="136" height="30" fill="${band}" opacity=".7"/>`;
   return `<svg viewBox="0 0 170 236" aria-hidden="true">
     <defs><linearGradient id="${g}" x1="0" x2="1"><stop offset="0" stop-color="${front[0]}"/><stop offset=".8" stop-color="${front[1]}"/><stop offset="1" stop-color="${front[2]}"/></linearGradient></defs>
@@ -775,6 +741,18 @@ function pourBagSVG(kind) {
     ${label}
   </svg>`;
 }
+// one step's mix: percentages, or grams once the visitor has used "Arma su plan" (round to 5 g, total kept)
+let planMix = null;
+const mixOf = st => {
+  if (!planMix) return null;
+  const ck = st.ck >= 100 ? planMix.g : Math.max(5, Math.round(planMix.g * st.ck / 500) * 5);
+  return { ck, old: planMix.g - ck };
+};
+function stepText(st) {
+  const m = mixOf(st);
+  if (m) return `<b>${nf0.format(m.ck)}&nbsp;g de CooKing</b><br>${m.old ? `+ ${nf0.format(m.old)}&nbsp;g de su alimento anterior` : "Listo: su nuevo plato favorito"}`;
+  return `<b>${st.ck}&nbsp;% CooKing</b><br>${st.ck < 100 ? `${100 - st.ck}&nbsp;% alimento anterior` : "Listo: su nuevo plato favorito"}`;
+}
 function initSteps() {
   const stage = $("#pour-stage"), bowlImg = $("#pour-bowl"), heapCv = $("#pour-heap"), flyCv = $("#pour-fly");
   const bagEl = { old: $("#bag-old"), ck: $("#bag-ck") }, pill = { old: $("#pill-old"), ck: $("#pill-ck") };
@@ -784,7 +762,7 @@ function initSteps() {
       <img src="${RENDERS["step-" + st.ck]}" alt="" width="520" height="319" loading="lazy">
       <span class="tl__day">${st.day}</span>
       <span class="mix" aria-hidden="true"><span style="--p:${st.ck}%"></span></span>
-      <span class="tl__txt"><b>${st.ck}&nbsp;% CooKing</b>${st.ck < 100 ? `<br>${100 - st.ck}&nbsp;% alimento anterior` : "<br>Listo: su nuevo plato favorito"}</span>
+      <span class="tl__txt">${stepText(st)}</span>
     </button></li>`).join("");
   const tls = $$(".tl", list);
   $(".pbag__rot", bagEl.old).innerHTML = pourBagSVG("old");
@@ -830,7 +808,7 @@ function initSteps() {
   const bag = { old: { w: 1, h: 1 }, ck: { w: 1, h: 1 } };
   function measure() {
     const r = stage.getBoundingClientRect();
-    SW = r.width; SH = r.height; dpr = Math.min(2, devicePixelRatio || 1); narrow = SW < 600;
+    SW = r.width; SH = r.height; dpr = Math.min(2, devicePixelRatio || 1); narrow = SW < 600 && SH > SW * .75; // the phone pose is for tall stages only
     for (const cv of [heapCv, flyCv]) { cv.width = Math.round(SW * dpr); cv.height = Math.round(SH * dpr); }
     hctx.setTransform(dpr, 0, 0, dpr, 0, 0); fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const bw = SW * (narrow ? .72 : .46);
@@ -911,6 +889,23 @@ function initSteps() {
   let step = 0, tau = 0, plan = planFor(0), slotNext = 0, flying = [], visible = false, raf = 0, lastT = 0, fading = false, mixed = false;
   let playing = !still, autoAdvance = !still, started = false;
   const tlBar = b => b && b.style.setProperty("--prog", Math.min(1, tau / plan.end).toFixed(3));
+  function pillText() {
+    const st = STEPS[step], m = mixOf(st);
+    $("[data-pct]", pill.old).innerHTML = m ? `${nf0.format(m.old)}&nbsp;g` : `${100 - st.ck}&nbsp;%`;
+    $("[data-pct]", pill.ck).innerHTML = m ? `${nf0.format(m.ck)}&nbsp;g` : `${st.ck}&nbsp;%`;
+  }
+  // grams from "Arma su plan": relabel the steps, the bowl's two tags and the line under the title
+  const forEl = $("#switch-for");
+  document.addEventListener("cooking:plan", e => {
+    const d = e.detail; if (!d) return;
+    planMix = d;
+    tls.forEach((b, i) => { $(".tl__txt", b).innerHTML = stepText(STEPS[i]); });
+    pillText();
+    const who = d.species === "gato" ? (d.age === "cachorro" ? "gatito" : `gato ${d.ageLabel.toLowerCase()}`) : (d.age === "cachorro" ? "cachorro" : `perro ${d.ageLabel.toLowerCase()}`);
+    forEl.innerHTML = `<span>Para su ${who} de ${nf1.format(d.kg)}&nbsp;kg: <b>${nf0.format(d.g)}&nbsp;g al día</b><span class="switch__rec"> de ${esc(d.recipe)}</span></span><a href="#plan">Cambiar datos</a>`;
+    forEl.hidden = false;
+    $("#cambio").classList.add("has-plan");
+  });
 
   function setStep(idx, { announce = false } = {}) {
     step = idx; tau = 0; slotNext = 0; flying = []; landed = []; fading = false; mixed = false;
@@ -919,12 +914,12 @@ function initSteps() {
     mixTag.classList.remove("is-on");
     const st = STEPS[idx], old = 100 - st.ck;
     dayEl.textContent = st.day; doneTag.classList.remove("is-on"); if (idx === 3) dayEl.appendChild(doneTag);
-    $("[data-pct]", pill.old).innerHTML = `${old}&nbsp;%`; $("[data-pct]", pill.ck).innerHTML = `${st.ck}&nbsp;%`;
+    pillText();
     pill.old.style.setProperty("--fill", 0); pill.ck.style.setProperty("--fill", 0);
     pill.old.classList.toggle("is-zero", old === 0);
     bagEl.old.classList.toggle("is-idle", old === 0);
     tls.forEach((b, i) => { b.style.setProperty("--prog", 0); if (i === idx) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
-    if (announce) live.textContent = `${st.day}: ${st.ck} % CooKing${old ? ` y ${old} % de su alimento anterior` : ""}.`;
+    if (announce) { const m = mixOf(st); live.textContent = m ? `${st.day}: ${m.ck} gramos de CooKing${m.old ? ` y ${m.old} gramos de su alimento anterior` : ""}.` : `${st.day}: ${st.ck} % CooKing${old ? ` y ${old} % de su alimento anterior` : ""}.`; }
     placeBag("old", bagPose("old", 0, 0)); placeBag("ck", bagPose("ck", 0, 0));
   }
   const tiltOf = k => { const sh = (k === "ck" ? STEPS[step].ck : 100 - STEPS[step].ck) / 100; return sh ? (k === "old" ? 1 : -1) * (84 + 36 * sh) : 0; };

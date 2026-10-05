@@ -61,6 +61,8 @@ function cooking_landing_template_setup() {
 	add_filter( 'show_admin_bar', '__return_false' );
 	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	// the theme's own web fonts (block themes declare them in wp_head) are not used here
+	remove_action( 'wp_head', 'wp_print_font_faces', 50 );
 	if ( ! cooking_landing_has_seo_plugin() ) {
 		add_filter( 'pre_get_document_title', 'cooking_landing_document_title' );
 	}
@@ -88,8 +90,8 @@ function cooking_landing_assets() {
 	if ( ! cooking_landing_is_active() ) {
 		return;
 	}
-	wp_enqueue_style( 'cooking-landing-fonts', 'https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Schibsted+Grotesk:wght@400..800&family=Young+Serif&display=swap', array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-	wp_enqueue_style( 'cooking-landing', COOKING_LANDING_URL . 'assets/css/landing.css', array( 'cooking-landing-fonts' ), COOKING_LANDING_VERSION );
+	// Circular Book and Authenia ship in assets/fonts/ and are declared at the top of landing.css
+	wp_enqueue_style( 'cooking-landing', COOKING_LANDING_URL . 'assets/css/landing.css', array(), COOKING_LANDING_VERSION );
 	wp_enqueue_script( 'cooking-landing', COOKING_LANDING_URL . 'assets/js/landing.js', array(), COOKING_LANDING_VERSION, true );
 	wp_add_inline_script( 'cooking-landing', 'window.COOKING_LANDING = ' . wp_json_encode( cooking_landing_script_data(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . ';', 'before' );
 }
@@ -153,22 +155,18 @@ function cooking_landing_body_class( $classes ) {
 	return array_values( preg_grep( '/^elementor-kit-\d+$/', $classes, PREG_GREP_INVERT ) );
 }
 
-add_filter( 'wp_resource_hints', 'cooking_landing_resource_hints', 10, 2 );
+add_action( 'wp_head', 'cooking_landing_preload_fonts', 2 );
 
 /**
- * @param array  $urls          Hints.
- * @param string $relation_type Relation.
- * @return array
+ * The text font and the script font of the title are needed for the first screen.
  */
-function cooking_landing_resource_hints( $urls, $relation_type ) {
-	if ( 'preconnect' === $relation_type && cooking_landing_is_active() ) {
-		$urls[] = 'https://fonts.googleapis.com';
-		$urls[] = array(
-			'href'        => 'https://fonts.gstatic.com',
-			'crossorigin' => 'anonymous',
-		);
+function cooking_landing_preload_fonts() {
+	if ( ! cooking_landing_is_active() ) {
+		return;
 	}
-	return $urls;
+	foreach ( array( 'circular-book', 'authenia' ) as $f ) {
+		printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( COOKING_LANDING_URL . 'assets/fonts/' . $f . '.woff2' ) );
+	}
 }
 
 /**

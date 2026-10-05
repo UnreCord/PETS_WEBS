@@ -50,7 +50,7 @@
 
 La propuesta mantiene el mundo visual de la marca, que es minimalista y fotográfico:
 
-- **Paleta y tipografía:** melocotón y crema, el marrón del logo y el naranja CooKing, con "El Rey de la *Cocina Nutricional*" en serif y script.
+- **Paleta y tipografía:** melocotón y crema, el marrón del logo y el naranja CooKing. Las fuentes de la marca son Circular Book para títulos y textos, y Authenia para las palabras en caligrafía: "El Rey de la" en Circular y "*Cocina Nutricional*" en Authenia.
 - **Imágenes:** las fotos reales de la marca (los chefs, el perro y el gato con gorro, la olla, los ingredientes).
 - **Íconos:** de línea blancos sobre círculos mostaza, como en "Beneficios funcionales".
 - **Estructura:** olas entre secciones.
@@ -70,13 +70,17 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
     - el mapa con el selector "Mapa | Lista de tiendas"; al tocar una tienda de la lista se abre en el mapa.
   - En celular, "Conócenos" no repite el segundo párrafo, que ya aparece en "Los ingredientes".
   - El contacto tiene dos paradas: primero el formulario y después los datos de Solpet con el pie de página.
-  - En celulares bajos (667 px de alto o menos) se ocultan detalles secundarios. Por ejemplo, el cambio en gramos dentro de la calculadora, que igual se explica en la sección siguiente.
+  - En celulares bajos (667 px de alto o menos) se ocultan detalles secundarios. Por ejemplo, las razones de la receta dentro de la calculadora.
   - En tablets las secciones conservan su altura natural y el inicio de cada una se acomoda solo cuando el scroll se detiene cerca.
 
 - **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras. Las bolsas suben desde una ola.
 - **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, patata, legumbres, zanahoria, habas, frutos rojos, manzana, romero, cítricos y achicoria.
 - **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
-- **"¡Los ingredientes marcan la diferencia!"**, como en el sitio actual, con la franja fotográfica de ingredientes frescos. La olla gira a medida que se hace scroll, y el visitante también puede girarla arrastrándola con el cursor; al soltarla sigue girando por inercia. En celular se gira deslizando hacia los lados.
+- **"¡Los ingredientes marcan la diferencia!"**, con la distribución que pidió marketing:
+  - título y texto arriba a la izquierda;
+  - la olla arriba a la derecha, girando sola y despacio mientras la sección está en pantalla;
+  - el arco de ingredientes frescos a lo largo del borde inferior, con las verduras por delante de la olla.
+  - En celular van texto, olla y arco, uno debajo del otro. El arco siempre ocupa el espacio que queda bajo el texto, así que nunca lo tapa.
 - **El plato de croquetas, restaurado y mejorado:**
   - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.
   - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
@@ -92,7 +96,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - Al pasar el cursor, la característica crece y su ícono cambia a naranja.
 - **Recetas con pestañas Perros / Gatos:**
   - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero), con croquetas 3D flotando alrededor. Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
-  - Barras animadas de proteína, grasa y fibra, más ceniza, kcal y formatos.
+  - Barras animadas de proteína, grasa y fibra. Ceniza, kcal, tamaños de bolsa y el nombre del empaque están dentro de "Ver composición".
   - Todas las tarjetas de una fila quedan alineadas, aunque el título o la descripción ocupen más líneas: las barras, los datos y "Ver composición" están a la misma altura.
   - **Filtros por edad** (cachorro o gatito, adulto, senior) **y por tamaño de bolsa** (2, 3, 8 y 12 kg, según la especie). Muestran cuántas recetas coinciden, tienen "Quitar filtros" y quedan en el enlace (`?edad=adulto&bolsa=12`).
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
@@ -107,6 +111,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - La barra de cada bolsa se llena mientras vierte, y el paso activo muestra su avance antes de pasar al siguiente.
   - Tiene botón de pausa y los 4 pasos sirven para saltar a cualquier etapa.
   - Con movimiento reducido no arranca sola, pero se puede reproducir con el botón o tocando un paso.
+  - Muestra porcentajes hasta que el visitante usa "Arma su plan". Desde ese momento muestra los gramos de su ración diaria. Por ejemplo, perro cachorro de 12 kg: 285 g al día; días 1 y 2 = 70 g de CooKing + 215 g de su alimento anterior. Arriba aparece para quién está calculado, con "Cambiar datos".
 - **Nueva sección "Arma su plan CooKing en 30 segundos":**
   - El visitante elige perro o gato, edad y peso (con un deslizador).
   - La pregunta de condición solo ofrece lo que define un producto del catálogo y solo cambia la receta, nunca la cantidad:
@@ -116,7 +121,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
     - La receta recomendada del catálogo real, con 3 razones tomadas de su descripción y una alternativa.
     - La ración diaria estimada en gramos y en comidas, con un montoncito de croquetas que crece.
     - Cuántos días le dura cada bolsa.
-    - Su cambio en 7 días expresado en gramos de CooKing.
+    - Un botón "Su cambio en 7 días" que lleva a la sección siguiente, ya calculada en gramos.
   - Lleva a "Encuentra tu tienda" y a "Ver la receta", que abre la pestaña correcta y resalta la tarjeta.
   - En celular, una barra flotante muestra el resultado mientras se responde.
   - La ración se calcula con la fórmula estándar (70 × peso^0,75 por un factor según la etapa de vida) y las kcal/kg de la receta recomendada. Por eso los gramos solo varían si cambia el producto, ya que cada receta tiene distinta energía. La sección lo indica y remite a la tabla del empaque y al veterinario.
@@ -153,7 +158,9 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 4. **Conectar el formulario.** Completa `CONFIG.formEndpoint`. Mientras esté vacío, el formulario abre el correo del visitante con el mensaje listo para `marketingpets@solvet.com.pe`.
 5. **Implementación en WordPress:** lista en `wordpress/cooking-landing.zip`, un plugin que reproduce este archivo tal cual. Agrega puntos de venta editables, guarda los mensajes del formulario y los envía con `wp_mail`, y tiene una página de ajustes. Los pasos para el proveedor están en `wordpress/GUIA-PROVEEDOR.md` (y en `.pdf`): instalación, fotos de producto, SMTP, exclusiones de caché y lista de revisión. Se probó en WordPress 6.5 con un tema de bloques y con un tema clásico. cooking.pe usa WordPress 7.1.2 con Astra Pro y Elementor Pro, así que conviene instalarlo primero en staging.
 6. **Datos del mapa:** INEI 2007 vía [peru-geojson](https://github.com/juaneladio/peru-geojson) (MPL-2.0). En esa fuente, Santa Anita y La Punta no tienen polígono propio, y Breña se corrigió a mano porque venía incompleta.
-7. **Imágenes de marca tomadas de capturas:** el perro y el gato chefs del hero y la franja de ingredientes están definidos en los CSS de Elementor, así que no tienen URL pública. Para la propuesta los recorté de las capturas del sitio (`img/marca/`). Al publicar, conviene reemplazarlos por los archivos originales en alta resolución, con el mismo nombre.
+7. **Imágenes de marca tomadas de capturas:**
+   - El perro y el gato chefs del hero están definidos en los CSS de Elementor, así que no tienen URL pública. Para la propuesta los recorté de las capturas del sitio (`img/marca/`). Al publicar, conviene reemplazarlos por los archivos originales en alta resolución, con el mismo nombre.
+   - El arco de ingredientes (`img/marca/ingredientes-arco.webp`) es la imagen original que entregó marketing.
 8. **Renders 3D e íconos:** los platos y croquetas son renders 3D propios (`img/render/`), incluidos el plato vacío y las croquetas del "alimento anterior" de la animación de 7 días. El logo de los renders y el de los marcadores del mapa vienen de una captura (el del mapa se pasó a vector). Si se entrega el logo oficial en SVG, se reemplazan y quedan más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más íconos propios en el mismo estilo para patata, habas, romero y "Hecho en Europa".
 9. **Mapa de calles:**
    - Revisarlo en un navegador normal antes de publicar. En el entorno de trabajo no hay acceso a OpenFreeMap, así que el estilo se validó con datos de prueba de OpenMapTiles, que es el mismo formato.
@@ -161,3 +168,4 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
    - Con `CONFIG.streetMap = false` se usa solo el mapa de distritos.
 10. **Filtro de tamaño:** todas las recetas para perros son para todas las razas, así que "tamaño" se interpretó como tamaño de bolsa. Si llegan recetas por tamaño de raza, se agrega ese filtro con el mismo componente.
 11. **Validar la calculadora de ración** con el equipo técnico o veterinario de la marca. Hay que comparar varios casos (por ejemplo, perro adulto de 12 kg, gato esterilizado de 4 kg y cachorro de 20 kg) contra la tabla de cada empaque. Los factores por etapa de vida están en la función `factor()` de `initPlan` (perro adulto 1,6; senior 1,4; cachorro y gatito 2,5; gato adulto 1,4) y se pueden ajustar en una línea.
+12. **Licencias de las fuentes:** Circular Book (Lineto) y Authenia (Mika Melvas) son comerciales. Hay que confirmar que CooKing tiene licencia de uso web para cooking.pe antes de publicar. Van en WOFF2, recortadas al español: dentro de `index.html` y en `wordpress/cooking-landing/assets/fonts/`.
