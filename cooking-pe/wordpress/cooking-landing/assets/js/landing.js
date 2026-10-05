@@ -423,6 +423,15 @@ function initOrbit() {
 }
 
 /* ---------- Recipes ---------- */
+// Product photo: the WebP that ships with the page, then a PNG with the same name (as in the cooking.pe media
+// library); with neither, the drawn bag stays.
+function productPhoto(img, src, onOk) {
+  const list = /^data:/.test(src) ? [src] : [...new Set([src.replace(/\.png$/i, ".webp"), src.replace(/\.webp$/i, ".png")])];
+  let i = 0;
+  img.addEventListener("load", () => { if (img.naturalWidth) onOk(); });
+  img.addEventListener("error", () => { if (++i < list.length) img.src = list[i]; else img.remove(); });
+  img.src = list[0];
+}
 function bagSVG(r) {
   const k = COLORS[r.protein], g = "bg-" + r.id;
   return `<svg viewBox="0 0 170 236" aria-hidden="true">
@@ -453,7 +462,7 @@ function initRecipes() {
       return `<li class="rcard" data-id="${r.id}" style="--c:${k.c};--c2:${k.c2};--c3:${k.c3};--i:${i}">
         <div class="rcard__stage">
           <span class="rcard__pill">${esc(r.stage)}</span>
-          <div class="rcard__bag">${bagSVG(r)}<img class="rcard__photo" src="${esc(r.img)}" alt="" loading="lazy" width="400" height="560"></div>
+          <div class="rcard__bag">${bagSVG(r)}<img class="rcard__photo" data-src="${esc(r.img)}" alt="" loading="lazy" width="490" height="758"></div>
           <img class="rcard__kib rcard__kib--a" src="${RENDERS["kibble-" + (1 + i % 10)]}" alt="" width="120" height="120">
           <img class="rcard__kib rcard__kib--b" src="${RENDERS["kibble-" + (1 + (i + 4) % 10)]}" alt="" width="120" height="120">
           <img class="rcard__kib rcard__kib--c" src="${RENDERS["kibble-" + (1 + (i + 7) % 10)]}" alt="" width="120" height="120">
@@ -469,10 +478,7 @@ function initRecipes() {
       </li>`;
     }).join("");
   }
-  $$(".rcard__photo").forEach(img => {
-    img.addEventListener("load", () => { if (img.naturalWidth) img.parentElement.classList.add("has-photo"); });
-    img.addEventListener("error", () => img.remove());
-  });
+  $$(".rcard__photo").forEach(img => productPhoto(img, img.dataset.src, () => img.parentElement.classList.add("has-photo")));
 
   // Cards in the same visual row get equal-height text blocks (title + description, analysis + SKU),
   // padding the last element of each block, so bars and "Ver composición" line up across the row.
@@ -642,7 +648,9 @@ function initPlan() {
   function swapBag(r) {
     const k = COLORS[r.protein];
     const paint = () => {
-      O.bag.innerHTML = bagSVG({ ...r, id: "plan-" + r.id });
+      O.bag.classList.remove("has-photo");
+      O.bag.innerHTML = bagSVG({ ...r, id: "plan-" + r.id }) + `<img class="planr__photo" alt="" width="490" height="758">`;
+      productPhoto($(".planr__photo", O.bag), r.img, () => O.bag.classList.add("has-photo"));
       O.stage.style.cssText = `--c:${k.c};--c2:${k.c2};--c3:${k.c3}`;
       $$(".rcard__kib", O.stage).forEach(n => n.remove());
       O.stage.insertAdjacentHTML("beforeend", [["a", 1], ["b", 5], ["c", 8]].map(([c, i]) => `<img class="rcard__kib rcard__kib--${c}" src="${RENDERS["kibble-" + i]}" alt="" width="120" height="120">`).join(""));

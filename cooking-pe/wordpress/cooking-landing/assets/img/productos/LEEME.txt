@@ -1,12 +1,14 @@
-Fotos de producto de las tarjetas de recetas (PNG con fondo transparente).
-Copia aquí los archivos con estos nombres exactos. Si falta alguno, la tarjeta muestra la bolsa dibujada.
+Fotos de producto de las tarjetas de recetas y de "Su receta ideal" (fondo transparente).
 
-  puppy-recipe-new1.png        Cachorro con pollo
-  dog-lamb-allbreeds.png       Adulto con cordero
-  dog-salmon-allbreeds.png     Adulto con salmón (perro)
-  senior-dog-new.png           Senior y light con pollo
-  Kitten-Salmon-cooking.png    Kitten con salmón
-  salmon-cat-new-cooking.png   Adulto con salmón (gato)
-  sterilized-new-cooking.png   Esterilizado con pollo
+Incluidas (WebP):
+  puppy-recipe-new1.webp       Cachorro con pollo
+  dog-lamb-allbreeds.webp      Adulto con cordero
+  dog-salmon-allbreeds.webp    Adulto con salmón (perro)
+  senior-dog-new.webp          Senior y light con pollo
+  salmon-cat-new-cooking.webp  Adulto con salmón (gato)
 
-Son los mismos archivos del sitio actual (biblioteca de medios de cooking.pe).
+Faltan (copia aquí la foto con este nombre, en .webp o .png):
+  Kitten-Salmon-cooking        Kitten con salmón
+  sterilized-new-cooking       Esterilizado con pollo
+
+La página prueba primero el .webp y después el .png. Si no encuentra ninguno, muestra la bolsa dibujada.

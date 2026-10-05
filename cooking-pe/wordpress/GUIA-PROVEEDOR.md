@@ -25,7 +25,7 @@ Lo que el plugin agrega al sitio:
 2. Ve a **Ajustes > CooKing Landing** y pulsa **Crear la página**. Se crea “Inicio CooKing” como **borrador**. La portada actual no cambia.
 3. Pulsa **Vista previa** y revisa la landing.
 4. Cuando esté aprobada, pulsa **Publicarla y ponerla como portada**. Para volver atrás: **Ajustes > Lectura > Página de inicio**.
-5. Copia las fotos de producto (sección 4.2) y revisa el correo del formulario (sección 6).
+5. Copia las 2 fotos de producto que faltan (sección 4.2) y revisa el correo del formulario (sección 6).
 
 Otras formas de asignar la página:
 
@@ -64,21 +64,19 @@ La landing usa estos archivos que el sitio ya tiene en `wp-content/uploads/`:
 
 Si se borran o se renombran en la biblioteca de medios, la landing deja de mostrarlos. En un sitio de pruebas que no tenga esas imágenes, escribe `https://cooking.pe/wp-content/uploads/` en **Ajustes > CooKing Landing > URL base de las imágenes de marca**. En cooking.pe ese campo va vacío.
 
-### 4.2 Fotos de producto: hay que copiarlas una vez
+### 4.2 Fotos de producto
 
-Las tarjetas de “Recetas completas y balanceadas” usan los PNG de las bolsas. Cópialos por FTP o desde el administrador de archivos del hosting a `wp-content/plugins/cooking-landing/assets/img/productos/`, con estos nombres exactos:
+Las tarjetas de “Recetas completas y balanceadas” y “Su receta ideal” del plan usan las fotos reales de las bolsas. Cinco ya vienen dentro del plugin, en `wp-content/plugins/cooking-landing/assets/img/productos/`:
 
 | Archivo | Receta |
 |---|---|
-| `puppy-recipe-new1.png` | Cachorro con pollo |
-| `dog-lamb-allbreeds.png` | Adulto con cordero |
-| `dog-salmon-allbreeds.png` | Adulto con salmón (perro) |
-| `senior-dog-new.png` | Senior y light con pollo |
-| `Kitten-Salmon-cooking.png` | Kitten con salmón |
-| `salmon-cat-new-cooking.png` | Adulto con salmón (gato) |
-| `sterilized-new-cooking.png` | Esterilizado con pollo |
+| `puppy-recipe-new1.webp` | Cachorro con pollo |
+| `dog-lamb-allbreeds.webp` | Adulto con cordero |
+| `dog-salmon-allbreeds.webp` | Adulto con salmón (perro) |
+| `senior-dog-new.webp` | Senior y light con pollo |
+| `salmon-cat-new-cooking.webp` | Adulto con salmón (gato) |
 
-Son los mismos archivos que hoy usa cooking.pe. Si falta alguno, la tarjeta muestra una bolsa dibujada en su lugar, sin romper nada.
+**Faltan dos:** `Kitten-Salmon-cooking` (Kitten con salmón) y `sterilized-new-cooking` (Esterilizado con pollo). Cópialas a esa misma carpeta con ese nombre, en `.webp` o `.png` y con fondo transparente. Mientras falten, esas dos tarjetas muestran una bolsa dibujada, sin romper nada. Para cambiar una foto, reemplaza el archivo con el mismo nombre.
 
 ### 4.3 Imágenes incluidas en el plugin
 

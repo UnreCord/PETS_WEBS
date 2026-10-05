@@ -144,16 +144,10 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 
 ## 5. Pendientes antes de publicar
 
-1. **Imágenes de producto.** Copia desde la carpeta `Cooking – Pet_files` (la que se creó al guardar la página) a `cooking-pe/img/` estos archivos:
-   - `Kitten-Salmon-cooking.png`
-   - `salmon-cat-new-cooking.png`
-   - `sterilized-new-cooking.png`
-   - `puppy-recipe-new1.png`
-   - `dog-lamb-allbreeds.png`
-   - `dog-salmon-allbreeds.png`
-   - `senior-dog-new.png`
-
-   Las imágenes de marca (logo, hero, plato, perro y gato) se cargan desde cooking.pe y, si fallan, buscan una copia en `img/`.
+1. **Imágenes de producto:**
+   - Ya están las fotos reales de 5 bolsas, entregadas por marketing: Cachorro con pollo, Adulto con cordero, Adulto con salmón (perro), Senior y light con pollo y Adulto con salmón (gato). Están en `img/productos/` (WebP), van incrustadas en `index.html` y dentro del plugin.
+   - **Faltan** Kitten con salmón (`Kitten-Salmon-cooking`) y Esterilizado con pollo (`sterilized-new-cooking`). Mientras tanto, esas tarjetas muestran la bolsa dibujada.
+   - Las imágenes de marca (logo, hero, plato, perro y gato) se cargan desde cooking.pe y, si fallan, buscan una copia en `img/`.
 2. **Confirmar los datos de los dos salmones** con los empaques (ver hallazgo 1).
 3. **Coordenadas de las tiendas.** Son aproximadas: están validadas dentro de su distrito, pero no a nivel de calle. Para exactitud, copia la latitud y longitud de cada local desde Google Maps (clic derecho sobre el local) al arreglo `LOCATIONS` del archivo.
 4. **Conectar el formulario.** Completa `CONFIG.formEndpoint`. Mientras esté vacío, el formulario abre el correo del visitante con el mensaje listo para `marketingpets@solvet.com.pe`.

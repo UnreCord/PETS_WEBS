@@ -360,9 +360,10 @@ main{overflow-x:clip}
 .rcard__bag{position:absolute;left:50%;bottom:12%;width:54%;translate:-50% 0;z-index:2;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
 .rcard:hover .rcard__bag{transform:translateY(-8px) rotate(-3deg)}
 .rcard__bag svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 10px rgba(58,40,28,.3))}
-.rcard__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
+/* transparent (not display:none) until loaded, so lazy loading still fetches it */
+.rcard__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .3s;filter:drop-shadow(0 12px 10px rgba(58,40,28,.3))}
 .rcard__bag.has-photo svg{visibility:hidden}
-.rcard__bag.has-photo .rcard__photo{display:block}
+.rcard__bag.has-photo .rcard__photo{opacity:1;transform:scale(1.08);transform-origin:50% 100%}
 @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-10px) rotate(calc(var(--r,0deg) + 12deg))}}
 .rcard__kib{position:absolute;z-index:3;width:13%;filter:drop-shadow(0 8px 6px rgba(58,40,28,.25))}
 .rcard__kib--a{right:12%;top:18%;animation:float 6s ease-in-out infinite;--r:-20deg}
@@ -466,6 +467,9 @@ main{overflow-x:clip}
 .planr__stage::after{content:"";position:absolute;left:20%;right:20%;bottom:8%;height:7%;border-radius:50%;background:rgba(58,40,28,.22);filter:blur(6px)}
 .planr__bag{position:absolute;left:21%;bottom:12%;width:58%;z-index:2;transform-style:preserve-3d}
 .planr__bag svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 10px rgba(58,40,28,.3))}
+.planr__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;filter:drop-shadow(0 12px 10px rgba(58,40,28,.3))}
+.planr__bag.has-photo svg{visibility:hidden}
+.planr__bag.has-photo .planr__photo{display:block;transform:scale(1.08);transform-origin:50% 100%}
 .planr__stage .rcard__kib{z-index:3}
 .planr__kicker{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--naranja-texto)}
 .planr__kicker .ico{width:16px;height:16px}
