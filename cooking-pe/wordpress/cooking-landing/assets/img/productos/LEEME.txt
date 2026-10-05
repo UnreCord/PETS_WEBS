@@ -1,0 +1,12 @@
+Fotos de producto de las tarjetas de recetas (PNG con fondo transparente).
+Copia aquí los archivos con estos nombres exactos. Si falta alguno, la tarjeta muestra la bolsa dibujada.
+
+  puppy-recipe-new1.png        Cachorro con pollo
+  dog-lamb-allbreeds.png       Adulto con cordero
+  dog-salmon-allbreeds.png     Adulto con salmón (perro)
+  senior-dog-new.png           Senior y light con pollo
+  Kitten-Salmon-cooking.png    Kitten con salmón
+  salmon-cat-new-cooking.png   Adulto con salmón (gato)
+  sterilized-new-cooking.png   Esterilizado con pollo
+
+Son los mismos archivos del sitio actual (biblioteca de medios de cooking.pe).
