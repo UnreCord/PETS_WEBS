@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       CooKing Landing
  * Description:       Landing de CooKing Perú a pantalla completa: plato 3D interactivo, beneficios, recetas con filtros, "Arma su plan", cambio en 7 días, mapa de tiendas con el logo y formulario de contacto. Agrega la plantilla de página "CooKing – Landing", los puntos de venta editables y la bandeja de mensajes.
- * Version:           1.3.0
+ * Version:           1.3.1
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            CooKing Perú
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'COOKING_LANDING_VERSION', '1.3.0' );
+define( 'COOKING_LANDING_VERSION', '1.3.1' );
 define( 'COOKING_LANDING_FILE', __FILE__ );
 define( 'COOKING_LANDING_DIR', plugin_dir_path( __FILE__ ) );
 define( 'COOKING_LANDING_URL', plugin_dir_url( __FILE__ ) );

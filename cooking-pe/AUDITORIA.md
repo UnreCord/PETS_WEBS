@@ -80,7 +80,8 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - el arco de ingredientes frescos ocupa la pantalla de borde a borde y se apoya en el borde inferior;
   - el título, el texto y la olla quedan dentro de su curva;
   - la olla va delante de las zanahorias y gira sola, despacio, mientras la sección está en pantalla.
-  - En laptops de pantalla baja el arco es un poco más angosto, para no tapar el texto, y sus extremos se desvanecen en el fondo.
+  - La composición escala completa, como un afiche: texto, olla y arco se dimensionan en proporción a su ancho. Así el texto no puede caer sobre la imagen en laptops chicas (ni con el escalado de Windows al 125–150 %), y en pantallas grandes o 4K ocupa toda la pantalla. Se verificó píxel a píxel entre 1024 px y 3840 px de ancho.
+  - En pantallas muy anchas para su altura, el arco es un poco más angosto que la ventana y sus extremos se desvanecen en el fondo.
   - En celular van texto, olla y arco, uno debajo del otro.
 - **El plato de croquetas, restaurado y mejorado:**
   - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.

@@ -158,8 +158,9 @@ function initRibbon() {
 /* ---------- Pan spin ---------- */
 // The pan turns slowly on its own (a CSS animation); it only runs while the section is on screen.
 function initPan() {
-  const sec = $("#ingredientes"), stage = $(".ingr__stage", sec || document);
-  if (sec && stage) { const inset = () => sec.classList.toggle("is-inset", innerWidth >= 768 && stage.offsetWidth < document.documentElement.clientWidth - 4); inset(); addEventListener("resize", inset, { passive: true }); }
+  const sec = $("#ingredientes");
+  const arcbox = $(".ingr__arcbox", sec || document);
+  if (sec && arcbox) { const inset = () => sec.classList.toggle("is-inset", innerWidth >= 1024 && arcbox.getBoundingClientRect().width < document.documentElement.clientWidth - 4); inset(); addEventListener("resize", inset, { passive: true }); }
   if (!sec || !("IntersectionObserver" in window)) { if (sec) sec.classList.add("is-on"); return; }
   new IntersectionObserver(es => es.forEach(en => sec.classList.toggle("is-on", en.isIntersecting)), { rootMargin: "80px 0px" }).observe(sec);
 }

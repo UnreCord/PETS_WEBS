@@ -220,18 +220,30 @@ main{overflow-x:clip}
 }
 .ingr__arcbox{position:relative;z-index:2;pointer-events:none}
 .ingr__arc{display:block;width:100%;height:auto;user-select:none}
-@media (min-width:768px){
+/* tablets: text, pan and arc one under the other, like on phones */
+@media (min-width:768px) and (max-width:1023px){
+  .ingr{padding-bottom:0}
+  .ingr__stage{display:flex;flex-direction:column;align-items:center}
+  .ingr__copy{text-align:center;max-width:640px}
+  .ingr__pan{width:min(46vw,400px);margin-top:28px}
+  .ingr__arcbox{flex:none;width:132vw;margin-top:-14vw}
+}
+/* computers: one composition that scales as a whole, like a poster. Text, pan and arc are sized in units of the
+   stage width (cqw), so they keep the same proportions on a 13" laptop with display scaling and on a 4K screen,
+   and the text can never land on the ingredients. The stage is as wide as the window unless the window is very
+   wide for its height (2.15:1); on taller windows the extra height goes above the text and the pan. */
+@media (min-width:1024px){
   .ingr{padding-block:0}
-  /* --ih: composition height (the whole screen on one-section layouts, a landscape box otherwise).
-     --aw: width of the ingredient arc, edge to edge when the height allows it; the text and the pan sit inside its curve.
-     The arc sinks 8 % under the bottom edge (only garnish is cut) and its left and right ends rise past the text,
-     so the text starts after the chicken bowl and ends above the blueberries. */
-  .ingr__stage{--ih:min(calc(100svh - 72px),940px,calc((100vw - 2 * var(--gutter)) * .78));--aw:min(102vw,calc((var(--ih) - 300px) * 4),calc((var(--ih) + 40px) * 2.19));position:relative;width:var(--aw);max-width:none;height:var(--ih);margin-inline:calc(50% - var(--aw) / 2);container-type:size}
-  .ingr__copy{position:absolute;left:27cqw;top:9cqh;width:max(30cqw,360px)}
-  .ingr__pan{position:absolute;left:max(57cqw,calc(27cqw + max(30cqw,360px) + 16px));top:5cqh;width:min(30cqw,calc(95cqh - 20cqw))}
-  .ingr__arcbox{position:absolute;left:0;bottom:-3.97cqw;width:100cqw}
-  /* on short screens the arc is narrower than the window: its cut ends fade into the background */
-  .ingr.is-inset .ingr__arc{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+  .ingr__stage{position:relative;width:min(100vw,calc((100svh - 72px) * 2.15));max-width:none;height:calc(100svh - 72px);margin-inline:auto;container-type:size}
+  .ingr__copy{position:absolute;left:25cqw;top:calc(4.5cqw + max(0px,100cqh - 46.5cqw) * .45);width:32cqw}
+  /* readable floor on small laptops (the pixel test keeps the text clear of the ingredients down to 1024 px) */
+  .ingr__copy .h2{font-size:max(2.55cqw,28px)}
+  .ingr__copy .lead{margin-top:1.2cqw;font-size:max(1.1cqw,14.5px);line-height:1.6;max-width:none}
+  .ingr__pan{position:absolute;left:60cqw;top:calc(2cqw + max(0px,100cqh - 46.5cqw) * .45);width:24cqw}
+  /* the arc is 10 % wider than the stage and sinks 8 % of its height under the bottom edge (only garnish is cut) */
+  .ingr__arcbox{position:absolute;left:-5cqw;bottom:-4.37cqw;width:110cqw}
+  /* when the window is wider than the arc, its cut ends fade into the background */
+  .ingr.is-inset .ingr__arc{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%)}
 }
 
 /* ============ El plato (bowl) ============ */
