@@ -20,6 +20,33 @@ const GEO = DATA.geo;       // Lima district outlines (lng/lat) for the street m
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+// page scale set by #ck-scale: screen coordinates (getBoundingClientRect, clientX, innerHeight, scrollY) are this
+// many times the CSS pixels used for layout (offsetWidth, clientWidth, styles)
+const Z = () => parseFloat(document.documentElement.style.zoom) || 1;
+// Scroll the page to a screen-pixel position. On a scaled-up page the animation is done here, with section snapping
+// paused: some browsers drop long native smooth scrolls on very large windows.
+function smoothTo(top) {
+  if (reduceMotion.matches) { scrollTo({ top, behavior: "instant" }); return; }
+  if (Z() <= 1) { scrollTo({ top, behavior: "smooth" }); return; }
+  const html = document.documentElement, y0 = scrollY, d = top - y0, t0 = performance.now(), T = 650;
+  html.style.scrollSnapType = "none"; html.style.scrollBehavior = "auto";
+  const step = now => {
+    const k = Math.min(1, (now - t0) / T), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    scrollTo(0, y0 + d * e);
+    if (k < 1) requestAnimationFrame(step); else { html.style.scrollSnapType = ""; html.style.scrollBehavior = ""; }
+  };
+  requestAnimationFrame(step);
+}
+// in-page links on a scaled-up page use the same animation (the header is 72 CSS px)
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || Z() <= 1 || e.defaultPrevented) return;
+  const id = a.getAttribute("href").slice(1), el = id && document.getElementById(id);
+  if (!el) return;
+  e.preventDefault();
+  smoothTo(Math.round(el.getBoundingClientRect().top + scrollY - 72 * Z()));
+  history.replaceState(null, "", "#" + id);
+});
 const deckMQ = window.matchMedia("(min-width: 1024px) and (min-height: 600px)"); // one section per screen
 const phoneMQ = window.matchMedia("(max-width: 767px)");
 const nf1 = new Intl.NumberFormat("es-PE", { maximumFractionDigits: 1 });
@@ -160,7 +187,7 @@ function initRibbon() {
 function initPan() {
   const sec = $("#ingredientes");
   const arcbox = $(".ingr__arcbox", sec || document);
-  if (sec && arcbox) { const inset = () => sec.classList.toggle("is-inset", innerWidth >= 1024 && arcbox.getBoundingClientRect().width < document.documentElement.clientWidth - 4); inset(); addEventListener("resize", inset, { passive: true }); }
+  if (sec && arcbox) { const inset = () => sec.classList.toggle("is-inset", innerWidth >= 1024 && arcbox.offsetWidth < document.documentElement.clientWidth - 4); inset(); addEventListener("resize", inset, { passive: true }); }
   if (!sec || !("IntersectionObserver" in window)) { if (sec) sec.classList.add("is-on"); return; }
   new IntersectionObserver(es => es.forEach(en => sec.classList.toggle("is-on", en.isIntersecting)), { rootMargin: "80px 0px" }).observe(sec);
 }
@@ -186,7 +213,7 @@ function initBowl() {
   const head = $("#plato .sec__head");
   const measure = () => {
     W = art.clientWidth || 1; H = art.clientHeight || 1;
-    ceil = head ? head.getBoundingClientRect().bottom + 10 - art.getBoundingClientRect().top : -1e4;
+    ceil = head ? (head.getBoundingClientRect().bottom - art.getBoundingClientRect().top) / Z() + 10 : -1e4;
   };
   const top = k => ceil + k.w / 200 * W + 7; // highest center of a kibble (half its size + the bob)
   const home = k => ({ x: k.hx / 100 * W, y: Math.max(k.hy / 100 * H, top(k)) });
@@ -349,13 +376,13 @@ function initBowl() {
   art.addEventListener("click", e => {
     if (still || e.target.closest(".hot")) return;
     stopAuto();
-    const r = art.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    const r = art.getBoundingClientRect(), x = (e.clientX - r.left) / Z(), y = (e.clientY - r.top) / Z();
     const hit = K.find(k => k.mode === "float" && Math.hypot(k.x - x, k.y - y) < k.w / 100 * W * .7);
     if (hit) { hit.vx += (hit.x - x) * 18 + (R() - .5) * 200; hit.vy -= 420 + R() * 200; hit.vr += (R() - .5) * 1400; wake(); return; }
     if (y < H * .62) { if (state === "in") launchAll(); else impulse(x, H * .3, 420); }
   });
   if (window.matchMedia("(pointer: fine)").matches) {
-    art.addEventListener("pointermove", e => { const r = art.getBoundingClientRect(); ptr = { x: e.clientX - r.left, y: e.clientY - r.top }; wake(); });
+    art.addEventListener("pointermove", e => { const r = art.getBoundingClientRect(); ptr = { x: (e.clientX - r.left) / Z(), y: (e.clientY - r.top) / Z() }; wake(); });
     art.addEventListener("pointerleave", () => { ptr = null; });
   }
   // only real pointer movement counts as interaction (content scrolling under a still cursor does not)
@@ -412,7 +439,7 @@ function initOrbit() {
       holes += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="52" fill="#000"/>`;
       const t = $(".perk__txt", el).getBoundingClientRect(), sc = parseFloat(getComputedStyle(el).scale) || 1;
       // measure as if the entry animation had finished (scale 1 around the icon center)
-      const L = x + (t.left - o.left - x) / sc, T = y + (t.top - o.top - y) / sc, Wd = t.width / sc, Hd = t.height / sc;
+      const z = Z(), L = x + ((t.left - o.left) / z - x) / sc, T = y + ((t.top - o.top) / z - y) / sc, Wd = t.width / z / sc, Hd = t.height / z / sc;
       holes += `<rect x="${(L - 14).toFixed(1)}" y="${(T - 12).toFixed(1)}" width="${(Wd + 28).toFixed(1)}" height="${(Hd + 24).toFixed(1)}" rx="16" fill="#000"/>`;
     }
     mask.innerHTML = holes;
@@ -491,7 +518,7 @@ function initRecipes() {
       const rows = new Map();
       cards.forEach(c => { const top = Math.round(c.offsetTop); if (!rows.has(top)) rows.set(top, []); rows.get(top).push(c); });
       for (const group of rows.values()) for (const bl of blocks) {
-        const hs = group.map(c => bl.map(sel => $(sel, c).getBoundingClientRect().height));
+        const hs = group.map(c => bl.map(sel => $(sel, c).getBoundingClientRect().height / Z()));
         const max = Math.max(...hs.map(h => h.reduce((a, x) => a + x, 0)));
         group.forEach((c, i) => { const own = hs[i].reduce((a, x) => a + x, 0), last = $(bl[bl.length - 1], c); last.style.minHeight = (hs[i][hs[i].length - 1] + max - own).toFixed(1) + "px"; });
       }
@@ -718,7 +745,7 @@ function initPlan() {
   const panels = [form, $(".planr", grid)];
   const goPanel = i => {
     const g = grid.getBoundingClientRect(), r = panels[i].getBoundingClientRect();
-    grid.scrollTo({ left: grid.scrollLeft + (r.left - g.left) - (g.width - r.width) / 2, behavior: reduceMotion.matches ? "instant" : "smooth" });
+    grid.scrollTo({ left: grid.scrollLeft + ((r.left - g.left) - (g.width - r.width) / 2) / Z(), behavior: reduceMotion.matches ? "instant" : "smooth" });
   };
   $("#plan").addEventListener("click", e => { const b = e.target.closest("[data-panel]"); if (b) goPanel(+b.dataset.panel); });
   grid.addEventListener("scroll", () => {
@@ -828,8 +855,7 @@ function initSteps() {
   const toStage = (ix, iy) => [bowl.x + ix * bowl.s, bowl.y + iy * bowl.s];
   const bag = { old: { w: 1, h: 1 }, ck: { w: 1, h: 1 } };
   function measure() {
-    const r = stage.getBoundingClientRect();
-    SW = r.width; SH = r.height; dpr = Math.min(2, devicePixelRatio || 1); narrow = SW < 600 && SH > SW * .75; // the phone pose is for tall stages only
+    SW = stage.clientWidth; SH = stage.clientHeight; dpr = Math.min(3, (devicePixelRatio || 1) * Z()); narrow = SW < 600 && SH > SW * .75; // the phone pose is for tall stages only
     for (const cv of [heapCv, flyCv]) { cv.width = Math.round(SW * dpr); cv.height = Math.round(SH * dpr); }
     hctx.setTransform(dpr, 0, 0, dpr, 0, 0); fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const bw = SW * (narrow ? .72 : .46);
@@ -1284,13 +1310,13 @@ function initMap() {
       const dB = {};
       GEO.features.forEach(f => { dB[f.properties.id] = bounds((f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates).flatMap(poly => poly[0].map(([lng, lat]) => ({ lng, lat })))); });
       const dur = () => reduceMotion.matches ? 0 : 700;
-      const pad = k => { const r = el.getBoundingClientRect(); return Math.round(Math.min(r.width, r.height) * k); };
+      const pad = k => Math.round(Math.min(el.clientWidth, el.clientHeight) * k);
       const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
       glBox.hidden = false;
       const holder = document.createElement("div");
       holder.className = "map__gl-in"; glBox.appendChild(holder);
       const map = new ml.Map({
-        container: holder, style: brandStyle(), bounds: storesB, fitBoundsOptions: { padding: pad(.12) + 20 },
+        container: holder, style: brandStyle(), bounds: storesB, pixelRatio: Math.min(3, (devicePixelRatio || 1) * Z()), fitBoundsOptions: { padding: pad(.12) + 20 },
         minZoom: 9.4, maxZoom: 17.5, maxBounds: [[-77.75, -12.75], [-76.35, -11.4]], dragRotate: false, pitchWithRotate: false, touchPitch: false,
         cooperativeGestures: true, attributionControl: { compact: true, customAttribution: "Distritos: INEI 2007" }, fadeDuration: 120,
         locale: {
@@ -1564,8 +1590,9 @@ function initMap() {
 // moves exactly one section: inertia from the same swipe is ignored, and inner scrollers (store list) scroll first.
 function initPaging() {
   const stops = () => {
-    const end = document.documentElement.scrollHeight - innerHeight;
-    return [0, ...$$("main > .sec").map(s => Math.round(s.getBoundingClientRect().top + scrollY - 72)), end].filter((t, i, a) => t <= end && (i === 0 || t > a[i - 1] + 4));
+    // screen pixels throughout; the header is 72 CSS px (more on screen when the page is scaled up)
+    const z = Z(), end = Math.round(document.body.getBoundingClientRect().bottom + scrollY - innerHeight);
+    return [0, ...$$("main > .sec").map(s => Math.round(s.getBoundingClientRect().top + scrollY - 72 * z)), end].filter((t, i, a) => t <= end && (i === 0 || t > a[i - 1] + 4 * z));
   };
   let lockUntil = 0, lastEvent = 0;
   addEventListener("wheel", e => {
@@ -1575,17 +1602,17 @@ function initPaging() {
       const oy = getComputedStyle(el).overflowY;
       if ((oy === "auto" || oy === "scroll") && el.scrollHeight > el.clientHeight + 1 && (e.deltaY > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0)) return;
     }
-    const y = scrollY, list = stops(), dir = Math.sign(e.deltaY);
+    const y = scrollY, list = stops(), dir = Math.sign(e.deltaY), z = Z();
     // a section taller than the screen (e.g. an open composition) scrolls normally until its end
-    const cur = [...list].reverse().find(t => t <= y + 4) ?? 0, next = list.find(t => t > cur + 4) ?? list[list.length - 1];
-    const tall = next - cur > innerHeight - 72 + 40;
-    if (tall && (dir > 0 ? y + innerHeight < next + 72 - 4 : y > cur + 4)) return;
+    const cur = [...list].reverse().find(t => t <= y + 4 * z) ?? 0, next = list.find(t => t > cur + 4 * z) ?? list[list.length - 1];
+    const hd = 72 * z, tall = next - cur > innerHeight - hd + 40 * z;
+    if (tall && (dir > 0 ? y + innerHeight < next + hd - 4 * z : y > cur + 4 * z)) return;
     e.preventDefault();
     if (now < lockUntil || gap < 160) { lockUntil = Math.max(lockUntil, now + 160); return; } // same gesture (or its inertia)
-    const target = dir > 0 ? list.find(t => t > y + 4) : [...list].reverse().find(t => t < y - 4);
+    const target = dir > 0 ? list.find(t => t > y + 4 * z) : [...list].reverse().find(t => t < y - 4 * z);
     if (target == null) return;
     lockUntil = now + 700;
-    scrollTo({ top: target, behavior: reduceMotion.matches ? "instant" : "smooth" });
+    smoothTo(target);
   }, { passive: false });
 }
 

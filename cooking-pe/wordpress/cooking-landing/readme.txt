@@ -2,7 +2,7 @@
 Requires at least: 6.3
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPL-2.0-or-later
 
 Landing de CooKing Perú a pantalla completa, con puntos de venta editables y formulario de contacto.

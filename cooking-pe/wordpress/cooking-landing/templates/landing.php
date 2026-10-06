@@ -13,6 +13,22 @@ $ck_media = cooking_landing_media_base();
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script id="ck-scale">
+/* Big windows (a large monitor, or the browser zoomed out) show the whole page scaled up from a 1920×940 layout,
+   so every section keeps filling the screen. Zooming in still works as usual (the layout reflows).
+   The CSS divides its viewport units by --z, and the script converts screen coordinates with it. */
+(function () {
+  var d = document.documentElement;
+  function fit() {
+    var z = Math.min(innerWidth / 1920, innerHeight / 940);
+    z = z > 1.02 ? Math.round(z * 1000) / 1000 : 1;
+    d.style.zoom = z > 1 ? z : "";
+    d.style.setProperty("--z", z);
+  }
+  fit();
+  addEventListener("resize", fit);
+})();
+</script>
 <meta name="color-scheme" content="light">
 <title><?php echo esc_html( wp_get_document_title() ); ?></title>
 <?php cooking_landing_head_meta(); ?>

@@ -62,6 +62,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - Cada giro de la rueda o gesto del touchpad lleva exactamente a la sección siguiente o anterior. La inercia del mismo gesto no salta dos secciones.
   - El teclado (Av Pág, flechas), la barra de desplazamiento y los enlaces del menú también caen al inicio de cada sección.
   - Las listas con scroll propio, como la de tiendas, se recorren primero.
+  - **Con cualquier zoom del navegador.** Si la ventana mide más de 1920 × 940 px (monitores grandes, o el zoom alejado al 90, 75, 50 o 25 %), toda la página se muestra escalada desde ese tamaño. Así cada sección sigue llenando la pantalla, sin franjas vacías. Al acercar el zoom (125–150 %) se reorganiza como en una laptop más chica. En una pantalla Full HD, desde 175 % el desplazamiento es libre, para leer el contenido ampliado. Se verificó sección por sección del 25 % al 200 % sobre una ventana de 1905 × 1030, también en WordPress. Al 50 % y 75 % se probaron además la rueda, el plato, el plan, el cambio en 7 días y el mapa.
   - En pantallas bajas se ocultan detalles secundarios (el SKU del empaque, algunos subtítulos) para que todo siga entrando.
   - **En celulares** (hasta 767 px de ancho) también es una sección por pantalla y cada deslizamiento lleva a la siguiente. Probado en 390×844, 412×915, 375×667 y 360×640. Lo que no entra a lo alto se mueve hacia los costados:
     - las recetas en carrusel;
@@ -99,6 +100,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 - **Recetas con pestañas Perros / Gatos:**
   - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero), con croquetas 3D flotando alrededor. Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
   - Barras animadas de proteína, grasa y fibra. Ceniza, kcal, tamaños de bolsa y el nombre del empaque están dentro de "Ver composición".
+  - La bolsa queda centrada en su recuadro, con el mismo aire arriba y abajo. Al pasar el cursor sube apenas 5 px y se inclina, sin acercarse al borde.
   - Todas las tarjetas de una fila quedan alineadas, aunque el título o la descripción ocupen más líneas: las barras, los datos y "Ver composición" están a la misma altura.
   - **Filtros por edad** (cachorro o gatito, adulto, senior) **y por tamaño de bolsa** (2, 3, 8 y 12 kg, según la especie). Muestran cuántas recetas coinciden, tienen "Quitar filtros" y quedan en el enlace (`?edad=adulto&bolsa=12`).
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.

@@ -43,6 +43,11 @@ Otras formas de asignar la página:
 - **El plan y el cambio en 7 días están conectados.** “Cambia su alimento en 7 días” muestra porcentajes hasta que el visitante usa “Arma su plan”. Desde ese momento muestra gramos calculados con su ración diaria. Por ejemplo, perro cachorro de 12 kg: 285 g al día, días 1 y 2 = 70 g de CooKing + 215 g de su alimento anterior. El botón “Su cambio en 7 días” del plan lleva a esa sección.
 - **Las tarjetas de recetas** muestran proteína, grasa y fibra. Ceniza, kcal, tamaños de bolsa y el nombre del empaque están dentro de “Ver composición”.
 - En tablets (768–1023 px) el ajuste es suave, no obligatorio.
+- **Zoom y pantallas grandes:** si la ventana mide más de 1920 × 940 px, la página completa se muestra escalada desde ese tamaño. Pasa en un monitor grande o con el zoom del navegador alejado (90, 75, 50 o 25 %). Así cada sección sigue llenando la pantalla.
+    - Al acercar el zoom (125–150 %), la página se reorganiza como en una laptop más chica.
+    - Si el área visible queda por debajo de 600 px de alto (por ejemplo, desde 175 % en una pantalla Full HD), el desplazamiento pasa a ser libre para leer el contenido ampliado.
+    - El escalado lo hace un script corto en el `<head>` de la plantilla (`id="ck-scale"`). No lo quites.
+    - Los widgets de otros plugins (chat, WhatsApp, aviso de cookies) también se ven escalados en esas pantallas.
 - Quien activa “reducir movimiento” en su sistema ve la página sin animaciones automáticas.
 - **La barra de administración de WordPress no se muestra en la landing**, ni siquiera con la sesión iniciada, porque movería todas las secciones 32 px. Para ir al panel, entra a `/wp-admin/`.
 
@@ -145,6 +150,7 @@ Recomendaciones:
 
 - Después de editar, sube el número de versión en `cooking-landing.php` (`Version` y `COOKING_LANDING_VERSION`). Así los navegadores y las cachés cargan los archivos nuevos.
 - **El plan solo recomienda el tipo de producto según la condición elegida, nunca cambia los gramos.** Los gramos salen de la energía estimada (peso y edad) dividida por las kcal de la receta. Marketing pidió no prometer gramajes por condición (esterilizado, sobrepeso, etc.). Mantén ese criterio. Antes de publicar, valida los factores de la función `factor()` con las tablas de las bolsas.
+- **Unidades de pantalla en el CSS:** si agregas reglas con `vh`, `svh` o `vw` en `landing.css`, divídelas por la escala de la página. Por ejemplo, `calc(100svh / var(--z,1))` en lugar de `100svh`. Si no, esa regla se agranda de más cuando la página está escalada.
 - Guarda una copia del plugin antes de editar. Si se reinstala el `.zip`, los cambios hechos a mano se pierden.
 
 ## 9. Caché, optimización, SEO y otros plugins
@@ -202,7 +208,8 @@ La cabecera y el pie de Astra o Elementor no aparecen en la landing: tiene su pr
    - en celular, los botones Mapa y Lista de tiendas funcionan.
 8. **Formulario:** envía un mensaje de prueba, revisa que llegue al correo (no a spam) y que aparezca en Mensajes CooKing.
 9. **Plugins de caché:** con la caché activa, repite los puntos 1, 6 y 8.
-10. **Velocidad:** prueba con PageSpeed Insights y revisa que no haya errores en la consola del navegador (F12).
+10. **Zoom:** con el navegador al 75 % y al 50 %, cada sección sigue llenando la pantalla. Al 125 % y 150 % se reorganiza sin cortes.
+11. **Velocidad:** prueba con PageSpeed Insights y revisa que no haya errores en la consola del navegador (F12).
 
 ## 11. Contenido del plugin
 
