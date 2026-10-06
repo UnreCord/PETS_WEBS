@@ -90,7 +90,6 @@ $ck_media = cooking_landing_media_base();
       <div class="hero__ctas">
         <a class="btn btn--brown" href="#dog">Recetas para perros</a>
         <a class="btn btn--brown" href="#cat">Recetas para gatos</a>
-        <a class="btn btn--orange" href="#comprar">Dónde comprar</a>
       </div>
     </div>
 
@@ -125,9 +124,8 @@ $ck_media = cooking_landing_media_base();
         </div>
       </div>
       <div class="know__copy">
-        <h2 class="h2" id="know-title">CooKing es irresistible para tus engreídos</h2>
+        <h2 class="h2" id="know-title"><b>CooKing</b> es irresistible para tus engreídos</h2>
         <p class="lead">Una buena nutrición comienza con ingredientes reales. Combinamos proteínas de alta calidad, vegetales y nutrientes funcionales en recetas completas para acompañar su bienestar todos los días.</p>
-        <p class="lead">A tu mascota no solo le encantará: también cuidará sus articulaciones y su peso. Un alimento premium, accesible y recomendado por veterinarios.</p>
         <ul class="facts">
           <li class="fact"><span class="badge-ico" data-icon="star"></span><div><b>+30 años</b><br><span>cocinando para mascotas</span></div></li>
           <li class="fact"><span class="badge-ico" data-icon="globe"></span><div><b>27 países</b><br><span>confían en CooKing</span></div></li>
@@ -144,7 +142,7 @@ $ck_media = cooking_landing_media_base();
     <div class="wrap ingr__stage">
       <div class="ingr__copy">
         <h2 class="h2" id="ingr-title">¡Los ingredientes <span class="script">marcan la diferencia!</span></h2>
-        <p class="lead">Carne y pescado frescos primero, luego patata, legumbres, verduras y frutos rojos. A tu mascota no solo le encantará: también protegerá sus articulaciones y controlará su peso. Un alimento premium, accesible y recomendado por veterinarios.</p>
+        <p class="lead">Carne y pescado frescos, tubérculos, legumbres, verduras y frutas. A tu mascota no solo le encantará, también protegerá sus articulaciones y controlará su peso. Un alimento premium, accesible y recomendado por veterinarios.</p>
       </div>
       <div class="ingr__pan media" data-caption="">
         <div class="ingr__shadow"><div class="ingr__spin" id="pan-spin">
@@ -152,7 +150,7 @@ $ck_media = cooking_landing_media_base();
         </div></div>
       </div>
       <div class="ingr__arcbox">
-        <img class="ingr__arc" data-photo="ingredientes" width="1536" height="762" loading="lazy" alt="Ingredientes frescos: salmón, pollo, arándanos, carne, atún, zanahoria, brócoli, espinaca y patata">
+        <img class="ingr__arc" data-photo="ingredientes" width="1536" height="762" loading="lazy" alt="Ingredientes frescos: salmón, pollo, arándanos, carne, atún, zanahoria, brócoli, espinaca y papa">
       </div>
     </div>
   </section>
@@ -270,9 +268,9 @@ $ck_media = cooking_landing_media_base();
               <div>
                 <p class="planr__kicker"><span class="ico" data-icon="sparkles"></span>Su receta ideal</p>
                 <h3 class="planr__name" id="plan-name">Adulto con cordero</h3>
+                <div class="planr__flavor" id="plan-flavor" role="group" aria-label="Sabor" hidden></div>
                 <p class="planr__for" id="plan-for"></p>
                 <ul class="planr__why" id="plan-why" aria-label="Por qué esta receta"></ul>
-                <p class="planr__alt" id="plan-alt" hidden></p>
               </div>
             </div>
             <div class="planr__stats">

@@ -23,6 +23,8 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 // page scale set by #ck-scale: screen coordinates (getBoundingClientRect, clientX, innerHeight, scrollY) are this
 // many times the CSS pixels used for layout (offsetWidth, clientWidth, styles)
 const Z = () => parseFloat(document.documentElement.style.zoom) || 1;
+// header bar height in CSS px (--hb: 72, 80 or 88 depending on the screen)
+const HB = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hb")) || 72;
 // Scroll the page to a screen-pixel position. On a scaled-up page the animation is done here, with section snapping
 // paused: some browsers drop long native smooth scrolls on very large windows.
 function smoothTo(top) {
@@ -44,7 +46,7 @@ document.addEventListener("click", e => {
   const id = a.getAttribute("href").slice(1), el = id && document.getElementById(id);
   if (!el) return;
   e.preventDefault();
-  smoothTo(Math.round(el.getBoundingClientRect().top + scrollY - 72 * Z()));
+  smoothTo(Math.round(el.getBoundingClientRect().top + scrollY - HB() * Z()));
   history.replaceState(null, "", "#" + id);
 });
 const deckMQ = window.matchMedia("(min-width: 1024px) and (min-height: 600px)"); // one section per screen
@@ -121,7 +123,7 @@ const PERKS = [
   { icons:["sparkles"], title:"Piel y pelaje brillantes", text:"Omega 3 de aceite de pescado." }
 ];
 
-const RIBBON = [["Pollo fresco","drumstick"],["Salmón","fish"],["Cordero","ham"],["Patata","potato"],["Legumbres","bean"],["Zanahoria","carrot"],["Habas verdes","pea-pod"],["Frutos rojos","cherry"],["Manzana","apple"],["Romero","rosemary"],["Cítricos","citrus"],["Achicoria","flower-2"]];
+const RIBBON = [["Pollo fresco","drumstick"],["Salmón","fish"],["Cordero","ham"],["Papa","potato"],["Legumbres","bean"],["Zanahoria","carrot"],["Habas verdes","pea-pod"],["Frutos rojos","cherry"],["Manzana","apple"],["Romero","rosemary"],["Cítricos","citrus"]];
 
 /* ---------- Images ---------- */
 function paintIcons(root = document) {
@@ -621,28 +623,33 @@ const PLAN_WHY = {
   "cat-salmon": [["fish", "Salmón fresco"], ["shield-check", "Cardo mariano para su hígado"], ["dumbbell", "Proteína de alto valor"]],
   sterilized: [["leaf", "Reducida en grasa"], ["drumstick", "Pollo para paladares exigentes"], ["shield-check", "Pensada para gatos esterilizados"]]
 };
-const PLAN_ALT = { lamb: "dog-salmon", "dog-salmon": "lamb", "cat-salmon": "sterilized", sterilized: "cat-salmon" };
+// adult dogs have two recipes: the card lets the visitor choose the flavor
+const PLAN_FLAVORS = [["lamb", "Cordero"], ["dog-salmon", "Salmón"]];
 function initPlan() {
   const form = $("#plan-form"), ageBox = $("#plan-age"), condBox = $("#plan-cond"), kg = $("#plan-kg"), kgOut = $("#plan-kg-out"), pet = $("#plan-pet");
-  const O = { stage: $("#plan-stage"), bag: $("#plan-bag"), name: $("#plan-name"), for: $("#plan-for"), why: $("#plan-why"), alt: $("#plan-alt"), g: $("#plan-g"), meals: $("#plan-meals"), pile: $("#plan-pile"), bags: $("#plan-bags"), live: $("#plan-live"), see: $("#plan-see") };
+  const O = { stage: $("#plan-stage"), bag: $("#plan-bag"), name: $("#plan-name"), for: $("#plan-for"), why: $("#plan-why"), flavor: $("#plan-flavor"), g: $("#plan-g"), meals: $("#plan-meals"), pile: $("#plan-pile"), bags: $("#plan-bags"), live: $("#plan-live"), see: $("#plan-see") };
   const AGES = {
     perro: [["cachorro", "Cachorro", "hasta 12 meses"], ["adulto", "Adulto", "de 1 a 7 años"], ["senior", "Senior", "más de 7 años"]],
     gato: [["cachorro", "Gatito", "hasta 12 meses"], ["adulto", "Adulto", "desde 1 año"]]
   };
-  // Only options that define a product in the catalog; they change the recipe, never the grams.
+  // Only options that define a product in the catalog; they change the recipe, never the grams. Adults only.
   const CONDS = {
-    perro: [["", "Ninguna"], ["peso", "Tiende a subir de peso"]],
-    gato: [["", "Ninguna"], ["esterilizado", "Está esterilizado"]]
+    perro: [["", "Ninguna"], ["peso", "Sobrepeso"]],
+    gato: [["", "Ninguna"], ["esterilizado", "Esterilizado"]]
   };
   const KG = { perro: { min: 1, max: 70, step: .5, def: 12 }, gato: { min: 1, max: 10, step: .1, def: 4 } };
-  const st = { species: "perro", age: "adulto", kg: 12, cond: "" };
-  const radios = (name, list, val) => list.map(([v, t, sub]) =>
-    `<label class="opt"><input type="radio" name="${name}" value="${v}"${v === val ? " checked" : ""}><span class="opt__box">${esc(t)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></label>`).join("");
+  const st = { species: "perro", age: "adulto", kg: 12, cond: "", flavor: "lamb" };
+  const radios = (name, list, val, off) => list.map(([v, t, sub]) =>
+    `<label class="opt"${off && v ? ' title="Solo para adultos"' : ""}><input type="radio" name="${name}" value="${v}"${v === val ? " checked" : ""}${off && v ? " disabled" : ""}><span class="opt__box">${esc(t)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></label>`).join("");
+  function renderCond() {
+    const young = st.age === "cachorro";
+    if (young || !CONDS[st.species].some(c => c[0] === st.cond)) st.cond = "";
+    condBox.innerHTML = radios("plan-cond", CONDS[st.species], st.cond, young);
+  }
   function renderInputs() {
     if (!AGES[st.species].some(a => a[0] === st.age)) st.age = "adulto";
-    if (!CONDS[st.species].some(c => c[0] === st.cond)) st.cond = "";
     ageBox.innerHTML = radios("plan-age", AGES[st.species], st.age);
-    condBox.innerHTML = radios("plan-cond", CONDS[st.species], st.cond);
+    renderCond();
     const k = KG[st.species];
     Object.assign(kg, { min: k.min, max: k.max, step: k.step }); kg.value = st.kg = k.def;
     $("#plan-kg-min").textContent = `${k.min} kg`; $("#plan-kg-max").textContent = `${k.max} kg`;
@@ -653,7 +660,7 @@ function initPlan() {
     if (st.species === "gato") return st.age === "cachorro" ? "kitten" : st.cond === "esterilizado" ? "sterilized" : "cat-salmon";
     if (st.age === "cachorro") return "puppy";
     if (st.age === "senior" || st.cond === "peso") return "senior";
-    return "lamb";
+    return st.flavor;
   }
   // maintenance energy = 70 × kg^0.75 × a standard factor for the life stage only (no condition adjustments)
   function factor() {
@@ -704,9 +711,9 @@ function initPlan() {
       swapBag(r);
       O.name.textContent = r.name; O.for.textContent = r.for;
       O.why.innerHTML = PLAN_WHY[id].map(([ic, t], i) => `<li style="--i:${i}">${icon(ic)}${esc(t)}</li>`).join("");
-      const alt = PLAN_ALT[id] && RECIPES.find(x => x.id === PLAN_ALT[id]);
-      O.alt.hidden = !alt;
-      if (alt) O.alt.innerHTML = `También le puede gustar: <button type="button" data-recipe="${alt.id}">${esc(alt.name)}</button>`;
+      const flavors = PLAN_FLAVORS.some(f => f[0] === id);
+      O.flavor.hidden = !flavors;
+      if (flavors) O.flavor.innerHTML = `<span>Sabor</span>` + PLAN_FLAVORS.map(([fid, t]) => `<button type="button" data-flavor="${fid}" aria-pressed="${fid === id}" style="--c:${COLORS[RECIPES.find(x => x.id === fid).protein].dark}">${t}</button>`).join("");
       O.see.dataset.recipe = id;
       shownId = id;
     }
@@ -729,13 +736,15 @@ function initPlan() {
     const t = e.target;
     engaged = true;
     if (t.name === "plan-sp") { st.species = t.value; renderInputs(); syncRange(); }
-    else if (t.name === "plan-age") st.age = t.value;
+    else if (t.name === "plan-age") { st.age = t.value; renderCond(); }
     else if (t.name === "plan-cond") st.cond = t.value;
     update();
   });
   kg.addEventListener("input", () => { engaged = true; st.kg = +kg.value; syncRange(); update(); });
   $("#plan-switch").addEventListener("click", () => { engaged = true; share(); });
   $("#plan-card").addEventListener("click", e => {
+    const f = e.target.closest("[data-flavor]");
+    if (f) { engaged = true; st.flavor = f.dataset.flavor; update(); $(`[data-flavor="${st.flavor}"]`, O.flavor).focus(); return; }
     const b = e.target.closest("[data-recipe]");
     if (b) document.dispatchEvent(new CustomEvent("cooking:receta", { detail: { id: b.dataset.recipe } }));
   });
@@ -1592,7 +1601,7 @@ function initPaging() {
   const stops = () => {
     // screen pixels throughout; the header is 72 CSS px (more on screen when the page is scaled up)
     const z = Z(), end = Math.round(document.body.getBoundingClientRect().bottom + scrollY - innerHeight);
-    return [0, ...$$("main > .sec").map(s => Math.round(s.getBoundingClientRect().top + scrollY - 72 * z)), end].filter((t, i, a) => t <= end && (i === 0 || t > a[i - 1] + 4 * z));
+    return [0, ...$$("main > .sec").map(s => Math.round(s.getBoundingClientRect().top + scrollY - HB() * z)), end].filter((t, i, a) => t <= end && (i === 0 || t > a[i - 1] + 4 * z));
   };
   let lockUntil = 0, lastEvent = 0;
   addEventListener("wheel", e => {
@@ -1605,7 +1614,7 @@ function initPaging() {
     const y = scrollY, list = stops(), dir = Math.sign(e.deltaY), z = Z();
     // a section taller than the screen (e.g. an open composition) scrolls normally until its end
     const cur = [...list].reverse().find(t => t <= y + 4 * z) ?? 0, next = list.find(t => t > cur + 4 * z) ?? list[list.length - 1];
-    const hd = 72 * z, tall = next - cur > innerHeight - hd + 40 * z;
+    const hd = HB() * z, tall = next - cur > innerHeight - hd + 40 * z;
     if (tall && (dir > 0 ? y + innerHeight < next + hd - 4 * z : y > cur + 4 * z)) return;
     e.preventDefault();
     if (now < lockUntil || gap < 160) { lockUntil = Math.max(lockUntil, now + 160); return; } // same gesture (or its inertia)

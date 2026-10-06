@@ -142,7 +142,7 @@ La página usa dos fuentes, incluidas en `assets/fonts/` como WOFF2 (recortadas 
 | Puntos del plato interactivo | `assets/js/landing.js`, `CLAIMS` |
 | Beneficios del círculo “Lo que cuida cada receta” | `assets/js/landing.js`, `PERKS` |
 | Ingredientes de la cinta del inicio | `assets/js/landing.js`, `RIBBON` |
-| Plan CooKing: condiciones y textos de “por qué esta receta” | `assets/js/landing.js`, `CONDS` y `PLAN_WHY` |
+| Plan CooKing: condiciones, sabores del perro adulto y textos de “por qué esta receta” | `assets/js/landing.js`, `CONDS`, `PLAN_FLAVORS` y `PLAN_WHY` |
 | Transición de 7 días | `assets/js/landing.js`, `STEPS` |
 | Colores, tamaños y espacios | `assets/css/landing.css` |
 
@@ -150,6 +150,7 @@ Recomendaciones:
 
 - Después de editar, sube el número de versión en `cooking-landing.php` (`Version` y `COOKING_LANDING_VERSION`). Así los navegadores y las cachés cargan los archivos nuevos.
 - **El plan solo recomienda el tipo de producto según la condición elegida, nunca cambia los gramos.** Los gramos salen de la energía estimada (peso y edad) dividida por las kcal de la receta. Marketing pidió no prometer gramajes por condición (esterilizado, sobrepeso, etc.). Mantén ese criterio. Antes de publicar, valida los factores de la función `factor()` con las tablas de las bolsas.
+- **Altura del menú:** está en la variable `--hb` de `landing.css`: 72 px en celulares, tablets y laptops bajas, 80 px en laptops y 88 px en monitores. Las secciones y el script la leen para que cada sección empiece justo debajo del menú. Si quieres otra altura, cambia solo esa variable.
 - **Unidades de pantalla en el CSS:** si agregas reglas con `vh`, `svh` o `vw` en `landing.css`, divídelas por la escala de la página. Por ejemplo, `calc(100svh / var(--z,1))` en lugar de `100svh`. Si no, esa regla se agranda de más cuando la página está escalada.
 - Guarda una copia del plugin antes de editar. Si se reinstala el `.zip`, los cambios hechos a mano se pierden.
 
@@ -198,7 +199,9 @@ La cabecera y el pie de Astra o Elementor no aparecen en la landing: tiene su pr
 5. **Arma su plan:**
     - cambiar especie, edad, peso y condición actualiza la receta y los gramos; la condición solo cambia la receta;
     - el botón “Su cambio en 7 días” lleva a la sección siguiente;
-    - esa sección muestra gramos en lugar de porcentajes.
+    - esa sección muestra gramos en lugar de porcentajes;
+    - en perro adulto, el selector “Cordero | Salmón” cambia la receta y los gramos;
+    - con cachorro o gatito, la condición (Sobrepeso o Esterilizado) aparece desactivada.
 6. **7 días:**
     - la animación corre sola por los días 1–2, 3–4, 5–6 y 7, con tiempos proporcionales a la mezcla;
     - las bolsas no tapan el texto, también en laptops de pantalla baja.

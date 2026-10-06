@@ -54,6 +54,7 @@ La propuesta mantiene el mundo visual de la marca, que es minimalista y fotográ
 - **Imágenes:** las fotos reales de la marca (los chefs, el perro y el gato con gorro, la olla, los ingredientes).
 - **Íconos:** de línea blancos sobre círculos mostaza, como en "Beneficios funcionales".
 - **Estructura:** olas entre secciones.
+- **Logo:** el menú mide 80 px de alto en laptops y 88 px en monitores, y el logo ocupa casi toda esa altura para reconocerse a primera vista. En el pie de página, el logo tiene aire dentro de su círculo.
 
 Encima de eso suma movimiento con propósito y todo el contenido real del sitio. No usa emojis ni ilustraciones genéricas.
 
@@ -69,13 +70,12 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
     - los filtros, los ingredientes y los puntos del plato en filas deslizables;
     - la calculadora en dos paneles, "Tu mascota" y "Su plan", con el botón "Ver su plan →";
     - el mapa con el selector "Mapa | Lista de tiendas"; al tocar una tienda de la lista se abre en el mapa.
-  - En celular, "Conócenos" no repite el segundo párrafo, que ya aparece en "Los ingredientes".
   - El contacto tiene dos paradas: primero el formulario y después los datos de Solpet con el pie de página.
   - En celulares bajos (667 px de alto o menos) se ocultan detalles secundarios. Por ejemplo, las razones de la receta dentro de la calculadora.
   - En tablets las secciones conservan su altura natural y el inicio de cada una se acomoda solo cuando el scroll se detiene cerca.
 
 - **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras. Las bolsas suben desde una ola.
-- **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, patata, legumbres, zanahoria, habas, frutos rojos, manzana, romero, cítricos y achicoria.
+- **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, papa, legumbres, zanahoria, habas, frutos rojos, manzana, romero y cítricos. La achicoria sigue en las composiciones, pero no está en la cinta porque es una palabra poco conocida.
 - **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
 - **"¡Los ingredientes marcan la diferencia!"**, con la distribución que pidió marketing:
   - el arco de ingredientes frescos ocupa la pantalla de borde a borde y se apoya en el borde inferior;
@@ -118,11 +118,13 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - Muestra porcentajes hasta que el visitante usa "Arma su plan". Desde ese momento muestra los gramos de su ración diaria. Por ejemplo, perro cachorro de 12 kg: 285 g al día; días 1 y 2 = 70 g de CooKing + 215 g de su alimento anterior. Arriba aparece para quién está calculado, con "Cambiar datos".
 - **Nueva sección "Arma su plan CooKing en 30 segundos":**
   - El visitante elige perro o gato, edad y peso (con un deslizador).
-  - La pregunta de condición solo ofrece lo que define un producto del catálogo y solo cambia la receta, nunca la cantidad:
-    - en perros, "Tiende a subir de peso" lleva a Senior y light;
-    - en gatos, "Está esterilizado" lleva a Esterilizado con pollo.
+  - Las opciones llevan a los 7 productos del catálogo: en perros, cachorro, adulto con salmón, adulto con cordero y senior; en gatos, gatito, adulto y adulto esterilizado.
+  - La pregunta de condición solo ofrece lo que define un producto y solo cambia la receta, nunca la cantidad. Aplica a adultos, así que con cachorro o gatito queda desactivada:
+    - en perros, "Sobrepeso" lleva a Senior y light;
+    - en gatos, "Esterilizado" lleva a Esterilizado con pollo.
+  - En perro adulto, la tarjeta tiene el selector "Sabor: Cordero | Salmón". Cambia la receta, las razones y los gramos, porque cada receta tiene distinta energía.
   - Al instante ve:
-    - La receta recomendada del catálogo real, con 3 razones tomadas de su descripción y una alternativa.
+    - La receta recomendada del catálogo real, con 3 razones tomadas de su descripción.
     - La ración diaria estimada en gramos y en comidas, con un montoncito de croquetas que crece.
     - Cuántos días le dura cada bolsa.
     - Un botón "Su cambio en 7 días" que lleva a la sección siguiente, ya calculada en gramos.
