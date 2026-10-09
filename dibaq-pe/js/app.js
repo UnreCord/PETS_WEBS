@@ -39,7 +39,10 @@ const RAZAS = [
 const lista = (arr, y = "y") => arr.length <= 1 ? arr.join("") : arr.slice(0, -1).join(", ") + " " + y + " " + arr[arr.length - 1];
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const imgDe = p => `img/productos/${p.id}.webp`;
+// la versión de un solo archivo trae las bolsas incrustadas en window.DIBAQ_IMG
+const imgDe = p => (window.DIBAQ_IMG && window.DIBAQ_IMG[p.id]) || `img/productos/${p.id}.webp`;
+// abierta como archivo local, algunos navegadores no dejan cambiar la dirección: los filtros siguen funcionando igual
+const fijarURL = url => { try { history.replaceState(null, "", url); } catch (e) { /* sin enlace compartible */ } };
 function paraQuien(p) {
   if (p.especie === "gato") return p.edad.includes("cachorro") ? "Gatito" : "Gato " + lista(p.edad.map(e => e === "senior" ? "senior" : e));
   const edad = lista(p.edad.map(e => e === "cachorro" ? "cachorro" : e));
@@ -314,7 +317,7 @@ function initBuscador() {
     if (F.peso) q.set("peso", F.peso); else if (F.tamano) q.set("tamano", F.tamano);
     if (F.necesidad.length) q.set("necesidad", F.necesidad.join(",")); if (F.sin.length) q.set("sin", F.sin.join(","));
     const s = q.toString();
-    history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + location.hash);
+    fijarURL(location.pathname + (s ? "?" + s : "") + location.hash);
   }
   function aFormulario() {
     $$("input[name=especie]", form).forEach(i => { i.checked = i.value === F.especie; });
@@ -473,7 +476,7 @@ function abrirFicha(id, desde) {
   }
   cuerpo.scrollTop = 0;
   const q = new URLSearchParams(location.search); q.set("producto", id);
-  history.replaceState(null, "", location.pathname + "?" + q + location.hash);
+  fijarURL(location.pathname + "?" + q + location.hash);
 }
 function cerrarFicha() {
   const ficha = $("#ficha");
@@ -482,7 +485,7 @@ function cerrarFicha() {
   document.body.classList.remove("bloqueado");
   setTimeout(() => { ficha.hidden = true; }, reduce.matches ? 0 : 450);
   const q = new URLSearchParams(location.search); q.delete("producto");
-  history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash);
+  fijarURL(location.pathname + (q.toString() ? "?" + q : "") + location.hash);
   if (origenFoco && document.contains(origenFoco)) origenFoco.focus({ preventScroll: true });
   fichaActual = null;
 }

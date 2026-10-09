@@ -13,6 +13,19 @@ python3 -m http.server 8000      # o: npx serve .
 
 Luego abre `http://localhost:8000`. Para publicarla basta con subir la carpeta completa a cualquier hosting estático (o a WordPress como página aparte). No requiere compilación.
 
+### Versión de un solo archivo
+
+`dist/dibaq-peru.html` (1.5 MB) trae todo adentro: fuentes, estilos, bolsas, catálogo y la escena 3D. Se abre con doble clic, sin servidor ni internet, y sirve para enviarla por correo o WhatsApp a quien tenga que revisarla.
+
+Es una copia generada: los cambios se hacen en la carpeta y luego se regenera con
+
+```bash
+npm i -D esbuild                   # una sola vez
+node herramientas/empaquetar.mjs
+```
+
+Las fotos de `DIBAQ_CONFIG.fotos` no se incrustan: si se configuran, la carpeta `img/fotos/` tiene que viajar junto al archivo.
+
 ## Concepto
 
 - **Blanco y negro en toda la interfaz. El único color es el alimento.** Solo tienen color las croquetas 3D, las proteínas (cada una con su tono: salmón, cordero, pavo…) y las bolsas.
