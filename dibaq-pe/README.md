@@ -1,10 +1,10 @@
 # Dibaq Perú: web informativa
 
-Web de una sola página para **Dibaq Natural Moments** y **Dibaq Sense**, alimento holístico para perros y gatos. Es informativa: muestra los productos y ayuda a elegir, pero no vende ni tiene carrito.
+Web de una sola página para **Dibaq Sense** y **Dibaq Natural Moments**, alimento holístico para perros y gatos. Es informativa: muestra los productos y ayuda a elegir, pero no vende ni tiene carrito.
 
 ## Cómo verla
 
-La página usa módulos de JavaScript y fuentes propias, así que necesita un servidor local (abrir `index.html` con doble clic no carga la escena 3D):
+La página usa módulos de JavaScript y fuentes propias, así que necesita un servidor local (abrir `index.html` con doble clic no carga las animaciones 3D):
 
 ```bash
 cd dibaq-pe
@@ -15,7 +15,7 @@ Luego abre `http://localhost:8000`. Para publicarla basta con subir la carpeta c
 
 ### Versión de un solo archivo
 
-`dist/dibaq-peru.html` (1.5 MB) trae todo adentro: fuentes, estilos, bolsas, catálogo y la escena 3D. Se abre con doble clic, sin servidor ni internet, y sirve para enviarla por correo o WhatsApp a quien tenga que revisarla.
+`dist/dibaq-peru.html` trae todo adentro: fuentes, estilos, imágenes, bolsas, catálogo y las animaciones. Se abre con doble clic, sin servidor ni internet, y sirve para enviarla por correo o WhatsApp a quien tenga que revisarla.
 
 Es una copia generada: los cambios se hacen en la carpeta y luego se regenera con
 
@@ -24,44 +24,52 @@ npm i -D esbuild                   # una sola vez
 node herramientas/empaquetar.mjs
 ```
 
-Las fotos de `DIBAQ_CONFIG.fotos` no se incrustan: si se configuran, la carpeta `img/fotos/` tiene que viajar junto al archivo.
+## Concepto (versión 2)
 
-## Concepto
+La primera versión era en blanco y negro con croquetas 3D en forma de anillo. Se descartó: el blanco y negro cansaba y el alimento holístico de Dibaq nunca tiene esa forma. Esta versión toma la identidad de los propios empaques y redes de Dibaq.
 
-- **Blanco y negro en toda la interfaz. El único color es el alimento.** Solo tienen color las croquetas 3D, las proteínas (cada una con su tono: salmón, cordero, pavo…) y las bolsas.
-- **Natural Moments vive en blanco y Sense en negro.** En "Las dos líneas" la pantalla se parte en dos mitades. En el buscador, las tarjetas blancas y negras se intercalan, así las dos líneas conviven en la misma grilla.
-- **Una croqueta protagonista.** Una escena 3D en tiempo real acompaña el recorrido. En el inicio, una nube de croquetas gira alrededor de la principal. En "Holístico" forman un anillo en órbita, y la croqueta se gira hacia el pilar que señala el visitante. En "Las dos líneas" caen sobre la frontera entre blanco y negro. En "Perro o gato" la croqueta cambia de forma: anillo para perro, triángulo para gato.
-- **Mensajes para quien lo cuida como a un hijo:** "Lo cuidas como a un hijo. Aliméntalo igual." Los textos son concretos (porcentajes, ingredientes, lo que no contiene) porque este público lee la etiqueta.
+- **Una paleta cálida, sacada del empaque y de las redes.** El fondo es papel (`#F7F5F0`) y crema (`#F2E8D5`); el texto es casi negro, pero los bloques negros se reservan para lo que es negro en la realidad: el bosque de las bolsas Natural Moments y el pie de página. El acento es el pasto dorado y el roble de las fotos, más un magenta para las notas escritas a mano (como en las publicaciones de Dibaq). Cada receta trae además su color de etiqueta (celeste para salmón, granate para cordero…).
+- **El perro que te trae su comida.** En el inicio, un perro llega con la bolsa de Dibaq en la boca: "Lo cuidas como a un hijo. Aliméntalo igual. ¡Y te lo trae!".
+- **La S de ingredientes, en 3D.** Como en el frente de cada bolsa Sense: salmón, pavo, hojas de espinaca, zanahoria, camote, arándanos, manzana y romero se arman en una S cuando la sección entra en pantalla y se desarman al salir. Nada de croquetas con forma de dona.
+- **Las dos líneas, cada una con su mundo.** Sense en blanco, con el dato de carne y el sello Grain Free. Natural Moments con su bosque entre la niebla y el sello Five Star Menu.
+- **Mensajes para quien lo cuida como a un hijo.** Los textos son concretos (porcentajes, ingredientes, lo que no contiene) porque este público lee la etiqueta.
 
-## Tipografía: evaluación de las fuentes propuestas
+Referencias de estructura: Taste of the Wild (paisaje detrás del producto, filtros con conteo) y Nutram Perú (consulta por WhatsApp y dónde comprar por distrito).
 
-![Comparación de tipografías](docs/comparacion-tipografias.webp)
+## Tipografía
 
-| Fuente | Evaluación |
-|---|---|
-| **Authenia** (Mika Melvas) | Es una caligrafía de pincel seco, enérgica y manual. Se asocia más a lo artesanal, lo urbano o lo deportivo que a la calma y la precisión que busca un dueño exigente. En títulos largos cuesta leerla y no tiene otros pesos. **No la recomiendo para Dibaq.** |
-| **Circular Book** (Lineto) | Es muy legible y funciona bien en interfaz, pero tiene un tono tecnológico (es la letra de marcas digitales muy conocidas) y solo se entregó un peso. Además, ya es la tipografía de CooKing. Si las dos marcas se venden en las mismas tiendas, compartir letra las confunde. Su licencia web es comercial. **Buena, pero no para esta marca.** |
-| **Cormorant Infant + Hanken Grotesk** (elegida) | Cormorant Infant es un serif clásico, de trazo fino, elegante y orgánico. Su variante "Infant" usa la *a* y la *g* de un solo piso, las de los libros para niños: suaviza el tono y conecta con "como a un hijo". Hanken Grotesk es una sans precisa para textos, filtros y datos nutricionales, y da el tono de rigor. Ambas tienen licencia libre (SIL Open Font License), así que se pueden usar en web, impresos y redes sin costo. |
+![Sistema tipográfico](docs/tipografia.webp)
 
-Las fuentes están en `fonts/` en WOFF2 (solo el juego latino, unos 120 KB en total), con sus licencias.
+En la primera versión se descartaron Authenia y Circular. Al estudiar mejor la marca, la decisión cambia: las dos encajan con lo que Dibaq ya usa.
+
+| Fuente | Uso | Por qué |
+|---|---|---|
+| **Fraunces** (serif, SIL OFL) | Títulos | Es la más cercana al serif grueso y suave de la palabra "Sense" en el empaque. Da el tono cálido y premium. |
+| **Circular Book** (Lineto, la entregada) | Textos, filtros, datos, botones | El logotipo de Dibaq es una sans geométrica; Circular conversa con él y es muy legible en datos nutricionales y en celular. |
+| **Authenia** (Mika Melvas, la entregada) | Solo notas cortas escritas a mano: "¡y te lo trae!", "sin trucos", "síguenos :)" | Las publicaciones de Dibaq combinan mayúsculas con una frase en pincel. Authenia cumple ese papel. En textos largos cuesta leerla, así que nunca se usa para más de cuatro palabras ni para información. |
+| **Plus Jakarta Sans** (SIL OFL) | Solo el nombre "Dibaq" del encabezado, hasta tener el SVG oficial | Recorte de 3 KB con las letras del logo. |
+
+**Licencias:** Circular y Authenia son fuentes comerciales. Antes de publicar hay que confirmar que Dibaq (o la agencia) tiene licencia **web** de ambas; los archivos de `fonts/` son los que se entregaron. Circular también es la letra de CooKing: si las dos marcas comparten tiendas, conviene que el resto del sistema (Fraunces, colores, fotos) las distinga, como aquí.
+
+Las fuentes están en `fonts/` en WOFF2. Authenia va recortada a los caracteres del español (264 KB).
 
 ## Secciones
 
-1. **Inicio:** título, entrada animada (el único momento orquestado de la página) y la nube de croquetas.
-2. **Holístico es mirarlo entero:** digestión, piel y pelo, articulaciones, peso y energía. Cada pilar enlaza al buscador ya filtrado.
-3. **Las dos líneas:** Natural Moments en blanco y Sense en negro. En computadora, la mitad que señala el visitante se ensancha. En celular, se cambia con las pestañas o deslizando de lado.
-4. **Un gato no es un perro pequeño:** conmutador Perro / Gato, conteo de recetas y rango de proteína calculado del catálogo.
-5. **Lo que lleva. Lo que no:** once proteínas como palabras grandes, con el número de recetas en que aparece cada una. Al tocar una, toma su color y ofrece "Ver las recetas con…" y "Ver las recetas sin…".
+1. **Inicio:** el perro que trae la bolsa, el título y el acceso directo al buscador.
+2. **Las dos líneas:** Sense y Natural Moments lado a lado en computadora; en celular, con pestañas.
+3. **Lo que lleva:** la S de ingredientes en 3D y las proteínas, cada una con el número de recetas en que aparece. Al tocar una, ofrece "Ver las recetas con…" y "Ver las recetas sin…".
+4. **Holístico es mirarlo entero:** digestión, piel y pelo, articulaciones, peso y energía. Cada pilar enlaza al buscador ya filtrado.
+5. **Un gato no es un perro pequeño:** conmutador Perro / Gato, conteo de recetas y rango de proteína calculado del catálogo.
 6. **Encuentra su alimento:** el buscador (detalle abajo).
-7. **Desde Segovia, con oficio:** origen, trayectoria y la ruta Fuentepelayo–Lima.
-8. **Contacto:** formulario de consulta y pie de página.
+7. **Tips, consejos y muchos peludines:** publicaciones de redes.
+8. **¿Dónde lo encuentro?:** tiendas por distrito, WhatsApp, redes y formulario de consulta.
 
 ### Una sección por gesto
 
 - En computadora, cada giro de la rueda o gesto del touchpad lleva exactamente a la sección siguiente o anterior. La inercia del mismo gesto no salta dos secciones. Las listas con scroll propio (resultados, filtros, ficha) se recorren primero.
 - En celulares y tablets, cada deslizamiento lleva a la sección siguiente (`scroll-snap` con `scroll-snap-stop: always`).
 - Teclado, barra de desplazamiento, menú y riel lateral también caen al inicio de cada sección.
-- Cada sección mide exactamente una pantalla. Probado en 1920×1080, 1440×900, 1366×657, 1280×720, 1024×768, 768×1024, 412×915, 390×844, 375×667 y 360×640.
+- Cada sección mide una pantalla. Probado en 1920×1080, 1440×900, 1280×680, 1024×768, 820×1180, 412×915, 390×844, 375×667 y 360×740.
 
 ### Buscador
 
@@ -70,7 +78,8 @@ Las fuentes están en `fonts/` en WOFF2 (solo el juego latino, unos 120 KB en to
 - **Raza y peso** (solo perro): al escribir la raza se completa el peso típico (40 razas, incluido el perro sin pelo del Perú). El deslizador de peso define el tamaño: pequeño hasta 10 kg, mediano de 11 a 25 kg, grande desde 26 kg.
 - **Necesita:** alergias o piel sensible, digestión delicada, control de peso, articulaciones, pelo y piel brillantes. Para gatos, además, esterilizado y salud urinaria.
 - **No puede comer:** salmón, pescado, pavo, pollo, cordero, pato, cereales. "Pescado" también excluye el krill y los aceites de pescado (por ejemplo, el aceite de salmón del Sense Cordero).
-- **Línea:** las dos, Natural Moments o Sense.
+- **Línea:** las dos, Sense o Natural Moments.
+- Cada opción muestra cuántas recetas quedarían al elegirla, como en Taste of the Wild. Las que dejarían cero se atenúan.
 - Un resumen en lenguaje natural dice qué se está viendo ("9 recetas para tu perro adulto de 6 kg, sin pollo."). Si ningún producto cumple, el buscador sugiere qué filtro quitar y cuántas recetas aparecerían.
 - Los filtros quedan en la dirección (`?especie=perro&edad=adulto&sin=pollo`) y cada ficha también (`?producto=sense-perro-cordero`), así se pueden compartir por WhatsApp.
 - La **ficha** de cada producto muestra la bolsa, para quién es, ingredientes principales con porcentaje, lo que no contiene, análisis garantizado, energía y formatos. Tiene botones para pasar a la receta anterior o siguiente y un botón de consulta (WhatsApp si está configurado; si no, lleva al formulario con el mensaje listo).
@@ -79,16 +88,20 @@ Las fuentes están en `fonts/` en WOFF2 (solo el juego latino, unos 120 KB en to
 
 | Qué | Dónde |
 |---|---|
-| Productos, ingredientes, análisis, formatos | `js/catalogo.js` (un arreglo comentado; los conteos de toda la página salen de ahí) |
-| WhatsApp, correo, redes, distribuidor, tiendas, fotos | `window.DIBAQ_CONFIG` al inicio de `index.html` |
-| Fotos de ambiente | `img/fotos/` (ver `img/fotos/LEEME.md`) |
+| Productos, ingredientes, análisis, formatos, color de cada receta | `js/catalogo.js` (un arreglo comentado; los conteos de toda la página salen de ahí) |
+| WhatsApp, correo, redes, distribuidor, tiendas, publicaciones | `window.DIBAQ_CONFIG` al inicio de `index.html` |
+| Publicaciones de "Peludines" | `img/comunidad/` (864 × 1080, WebP) y la lista `publicaciones` de `DIBAQ_CONFIG` |
+| Fotos de marca (perro con la bolsa, gato, cachorro) | `img/marca/` |
 | Fotos de las bolsas | `img/productos/<id>.webp`, con el mismo nombre que el `id` del producto |
 | Colores, tamaños y espacios | `css/estilos.css` (variables al inicio) |
-| Escena 3D | `js/escena.js` |
+| Animación del inicio | `js/entrega.js` |
+| S de ingredientes | `js/ingredientes3d.js` |
+
+Cuando `whatsapp` tiene un número, aparecen el botón flotante, el botón "Asesoría" del encabezado y el canal en "¿Dónde lo encuentro?". Con `tiendas` cargadas, se puede filtrar por distrito.
 
 ### Bolsas de producto
 
-Las bolsas de `img/productos/` son **renders 3D provisionales**: bolsa negra para Sense y blanca para Natural Moments, con el color de la proteína abajo. No son los empaques reales. Para usar las fotos reales, reemplaza cada archivo por la foto oficial (fondo transparente, WebP, unos 800 × 1000 px) con el mismo nombre.
+Las bolsas de `img/productos/` son **renders provisionales** que siguen el diseño real de cada línea: Sense blanca con la S de ingredientes y el sello Grain Free; Natural Moments con el bosque entre la niebla, el sello Five Star Menu y la etiqueta de color de cada receta. No son los empaques reales. Para usar las fotos reales, reemplaza cada archivo por la foto oficial (fondo transparente, WebP, unos 800 × 1000 px) con el mismo nombre.
 
 Si cambia el catálogo y todavía no hay foto, se puede generar el render de un producto nuevo:
 
@@ -97,6 +110,10 @@ node herramientas/render-bolsas.mjs nm-perro-nuevo-id   # requiere Playwright co
 ```
 
 Sin argumentos regenera todas, así que pásale solo los `id` que no tengan foto real.
+
+### Imágenes entregadas
+
+Las fotos de `img/marca/` y `img/comunidad/` salen de las cinco imágenes entregadas (recortadas y con el fondo quitado). **Ojo:** en al menos tres de ellas (el bulldog con el sobre, el perro con la lata Vet Care y la estantería) los textos de los empaques están deformados, como pasa con las imágenes generadas por IA. Se ven bien en tamaño pequeño, pero antes de publicar conviene reemplazarlas por fotos reales o regenerarlas con los empaques correctos. Vet Care aparece en una publicación, pero no está en el catálogo hasta confirmar que se vende en Perú.
 
 ## Pendientes antes de publicar
 
@@ -112,29 +129,30 @@ Sin argumentos regenera todas, así que pásale solo los `id` que no tengan foto
    - Natural Moments **Adulto razas pequeñas** sale de la ficha "Farm & Field Adult Mini". Hay que confirmar su nombre actual en la gama 5 Star.
    - Formatos que faltan: Sense Conejo y Wild; Natural Moments Cachorro razas grandes, Adulto razas pequeñas, Ultralight, Gatito, Complete Care y Esterilizado.
    - Sense Cordero mini: confirmar si lleva aceite de salmón, como la receta estándar. Si lo lleva, hay que sumar `"pescado"` a su `contiene` para que el filtro "Sin pescado" lo excluya.
+   - El color de etiqueta (`acento`) de cada receta, contra los empaques reales.
 2. **Confirmar las afirmaciones de marca:**
-   - "Hasta 95 % de proteína de origen animal".
-   - "Cocinado a baja temperatura".
-   - "Más de 40 años" y "65 países".
-   - El premio de la gama Sense para gatos en los Pet Innovation Awards 2024.
-3. **Fotos reales de las 24 bolsas** (ver arriba) y fotos de ambiente (ver `img/fotos/LEEME.md`).
-4. **Logo oficial.** El encabezado usa el nombre "DIBAQ" en texto. Con el SVG oficial se reemplaza en `.marca` de `index.html`.
-5. **Contacto:** completar `whatsapp`, `email` (o `formEndpoint`), redes, distribuidor y tiendas en `DIBAQ_CONFIG`. Mientras `email` esté vacío, el formulario avisa que falta configurarlo.
-6. **Aprobación de marca de Dibaq España** para el uso de nombres, claims y la línea gráfica en Perú.
-7. **No incluido por ahora:** comida húmeda (latas), la línea Sense Low Grain y snacks. El catálogo admite más productos con los mismos campos.
+   - "56 % de carne total en Sense Cachorro" (dato de la bolsa entregada).
+   - "Hasta 95 % de proteína de origen animal" y "cocinado a baja temperatura" (Natural Moments).
+   - "65 países" y la sede en Fuentepelayo, Segovia.
+3. **Fotos reales** de las 24 bolsas y de marca (ver arriba).
+4. **Logo oficial.** El encabezado escribe "Dibaq" con una letra parecida. Con el SVG oficial se reemplaza en `.marca` de `index.html`.
+5. **Licencias web** de Circular y Authenia (ver Tipografía).
+6. **Contacto:** completar `whatsapp`, `email` (o `formEndpoint`), redes, distribuidor y tiendas en `DIBAQ_CONFIG`. Mientras `email` esté vacío, el formulario avisa que falta configurarlo.
+7. **Aprobación de marca de Dibaq España** para el uso de nombres, claims y la línea gráfica en Perú.
+8. **No incluido por ahora:** comida húmeda (latas y sobres), Vet Care, la línea Sense Low Grain y snacks. El catálogo admite más productos con los mismos campos.
 
 ## Notas técnicas
 
-- **Sin dependencias de compilación.** HTML, CSS y JavaScript. three.js r170 viene incluido en `vendor/` (licencia MIT) y carga solo para la escena 3D.
-- **Croquetas generadas por código:** no hay modelos 3D externos. La textura de poros también se dibuja al cargar. Si el equipo no da abasto, la escena baja la resolución sola. Deja de dibujarse fuera de las secciones donde aparece y cuando la pestaña no está visible.
-- **Sin WebGL**, o si la escena no arranca, el inicio muestra una imagen fija de las croquetas (`img/croquetas.webp`).
-- **Movimiento reducido:** si el sistema lo pide, la entrada del título no se anima y las croquetas quedan quietas.
+- **Sin dependencias de compilación.** HTML, CSS y JavaScript. three.js r170 viene incluido en `vendor/` (licencia MIT) y carga solo para las escenas 3D.
+- **Ingredientes generados por código:** la S no usa modelos 3D externos; las texturas (vetas del salmón, nervaduras de las hojas) se dibujan al cargar. Deja de dibujarse cuando sale de pantalla o la pestaña no está visible.
+- **Sin WebGL**, o si una animación no arranca, cada sección muestra una imagen fija equivalente (`img/marca/perro-bolsa.webp`, `img/marca/ese-ingredientes.webp`).
+- **Movimiento reducido:** si el sistema lo pide, la entrada del título no se anima, la S aparece ya armada y la animación del inicio queda en su cuadro final.
 - **Accesibilidad:**
   - Enlace para saltar al contenido y foco visible en todo el recorrido.
   - Pestañas y conmutadores con roles ARIA.
   - La ficha es un diálogo que atrapa el foco, se cierra con Esc y devuelve el foco a la tarjeta.
   - El resumen de resultados se anuncia a lectores de pantalla.
-  - Los textos cumplen contraste AA.
+  - Los textos cumplen contraste AA (el color de cada receta se oscurece solo cuando se usa como texto).
 - **SEO:** título, descripción y Open Graph en español de Perú, con un `h1` real.
 
 ## Fuentes de datos

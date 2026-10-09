@@ -1,5 +1,5 @@
-/* Dibaq Perú: interfaz (cabecera, paginado por secciones, líneas, especies, proteínas, buscador, ficha y contacto).
-   La escena 3D vive en escena.js y escucha los eventos "dibaq:*" que se emiten aquí. */
+/* Dibaq Perú: interfaz (cabecera, paginado por secciones, líneas, especies, proteínas, buscador, ficha,
+   comunidad, tiendas y contacto). Las escenas animadas viven en escena.js. */
 (function () {
 "use strict";
 
@@ -12,9 +12,10 @@ const phone = matchMedia("(max-width: 767px)");
 const desk = matchMedia("(min-width: 1024px)");
 const num = new Intl.NumberFormat("es-PE", { maximumFractionDigits: 1 });
 const emit = (name, detail) => dispatchEvent(new CustomEvent("dibaq:" + name, { detail }));
+const waURL = texto => `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(texto)}`;
 
 /* ---------- vocabulario ---------- */
-// el único color de la página: el de cada proteína, en tonos legibles sobre negro y sobre blanco
+// color de cada proteína (puntos de las tarjetas y botones de proteína)
 const FOOD = {
   "Salmón": "#EE8B62", "Arenque": "#8FA9BA", "Atún": "#6A98BD", "Krill": "#E06A4E",
   "Cordero": "#C47D6E", "Pavo": "#D4A05A", "Pollo": "#E2BC6C", "Pato": "#76A07C",
@@ -41,6 +42,8 @@ const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 // la versión de un solo archivo trae las bolsas incrustadas en window.DIBAQ_IMG
 const imgDe = p => (window.DIBAQ_IMG && window.DIBAQ_IMG[p.id]) || `img/productos/${p.id}.webp`;
+// y el resto de imágenes que se piden desde JS en window.DIBAQ_ASSETS (ruta → data URI)
+const recurso = ruta => (window.DIBAQ_ASSETS && window.DIBAQ_ASSETS[ruta]) || ruta;
 // abierta como archivo local, algunos navegadores no dejan cambiar la dirección: los filtros siguen funcionando igual
 const fijarURL = url => { try { history.replaceState(null, "", url); } catch (e) { /* sin enlace compartible */ } };
 function paraQuien(p) {
@@ -50,85 +53,70 @@ function paraQuien(p) {
   return "Perro " + edad + (tam ? ", " + tam : "");
 }
 
+// el color de cada receta, oscurecido hasta que se lea como texto sobre el papel (4.5:1)
+function lum(hex) { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(x => x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+function mezclar(a, b, t) { const h = x => [1, 3, 5].map(i => parseInt(x.slice(i, i + 2), 16)); const A = h(a), B = h(b); return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, "0")).join(""); }
+function acentoTexto(hex) { const papel = lum("#F7F5F0"); let c = hex, t = 0; while ((papel + 0.05) / (lum(c) + 0.05) < 4.5 && t < 1) { t += 0.08; c = mezclar(hex, "#121110", t); } return c; }
+const acentoDe = p => p.acento || (p.linea === "sense" ? "#6CB8E6" : "#1E1C18");
+
 /* ---------- configuración de marketing ---------- */
 function initConfig() {
   $$("[data-anio]").forEach(n => { n.textContent = new Date().getFullYear(); });
-  const muestra = new URLSearchParams(location.search).has("fotos");
-  if (CFG.fotosEnBN !== false) document.body.classList.add("fotos-bn");
-  if (muestra) document.body.classList.add("muestra-fotos");
-  $$("[data-foto]").forEach(f => {
-    const src = CFG.fotos && CFG.fotos[f.dataset.foto];
-    f.dataset.etiqueta = "Foto: " + f.dataset.foto + " (ver img/fotos/LEEME.md)";
-    if (!src) return;
-    const img = $("img", f);
-    img.src = src;
-    img.addEventListener("load", () => { f.hidden = false; f.closest(".sec, .linea-mitad")?.classList.add("con-foto"); }, { once: true });
+  // WhatsApp: botón flotante y "Asesoría" solo cuando hay número
+  const saludo = "Hola, quiero asesoría para elegir el alimento de mi peludo.";
+  $$("[data-wa]").forEach(a => {
+    if (CFG.whatsapp) { a.href = waURL(saludo); a.target = "_blank"; a.rel = "noopener"; a.hidden = false; }
+    else if (a.classList.contains("wa-flota")) a.hidden = true;
   });
   const canales = $(".canales");
   const add = (href, txt) => { const li = document.createElement("li"); li.innerHTML = `<a class="enlace" href="${esc(href)}"${/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : ""}>${esc(txt)}</a>`; canales.append(li); };
-  if (CFG.whatsapp) add(`https://wa.me/${CFG.whatsapp}`, "Escríbenos por WhatsApp");
+  if (CFG.whatsapp) add(waURL(saludo), "Escríbenos por WhatsApp");
   if (CFG.email) add(`mailto:${CFG.email}`, CFG.email);
   if (CFG.instagram) add(CFG.instagram, "Instagram");
   if (CFG.facebook) add(CFG.facebook, "Facebook");
-  if (CFG.tiendas && CFG.tiendas.length) {
-    $(".tiendas").hidden = false;
-    $(".tiendas__lista").innerHTML = CFG.tiendas.map(t => `<li>${t.mapa ? `<a href="${esc(t.mapa)}" target="_blank" rel="noopener">${esc(t.nombre)}</a>` : esc(t.nombre)}<span>${esc([t.direccion, t.distrito].filter(Boolean).join(", "))}</span></li>`).join("");
-  }
-  if (CFG.distribuidor) { const d = $("[data-distribuidor]"); d.textContent = "Distribuido en Perú por " + CFG.distribuidor + "."; d.hidden = false; }
+  if (CFG.distribuidor) $$("[data-distribuidor]").forEach(d => { d.textContent = "Distribuido en Perú por " + CFG.distribuidor + "."; });
 }
 
 /* ---------- conteos y rangos que salen del catálogo ---------- */
 function initConteos() {
   $$("[data-cuenta]").forEach(n => {
     const [k, v] = n.dataset.cuenta.split(":");
-    const c = CAT.filter(p => k === "necesidad" ? p.necesidades.includes(v) : p[k] === v).length;
-    n.textContent = c;
+    n.textContent = CAT.filter(p => k === "necesidad" ? p.necesidades.includes(v) : p[k] === v).length;
   });
   $$("[data-rango]").forEach(n => {
     const vals = CAT.filter(p => p.especie === n.dataset.rango && p.analisis && p.analisis.proteina).map(p => p.analisis.proteina);
-    n.textContent = vals.length ? `${Math.min(...vals)} a ${Math.max(...vals)} %` : "";
+    n.textContent = vals.length ? `${Math.min(...vals)} a ${Math.max(...vals)}%` : "";
   });
 }
 
 /* ---------- cabecera, riel y menú ---------- */
 const secciones = () => $$("main > .sec");
 function seccionActual() {
-  const y = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hb")) || 72) / 2;
+  const y = innerHeight / 2;
   return secciones().find(s => { const r = s.getBoundingClientRect(); return r.top <= y && r.bottom > y; }) || secciones()[0];
 }
 function initCabecera() {
-  const cab = $(".cab"), rail = $$("[data-riel]"), nav = $$(".cab__nav a");
+  const rail = $$("[data-riel]"), nav = $$(".cab__nav a"), riel = $(".riel");
   let ultima = null;
-  function temaDe(sec) {
-    if (sec.id === "lineas") {
-      if (!phone.matches) return "mixto";
-      return $("#tab-sense").getAttribute("aria-selected") === "true" ? "oscuro" : "claro";
-    }
-    const pie = $(".pie");
-    if (pie && pie.getBoundingClientRect().top < cab.offsetHeight) return "oscuro";
-    return sec.dataset.tema || "claro";
-  }
   function actualizar() {
     const sec = seccionActual();
-    cab.dataset.tema = temaDe(sec);
-    if (sec !== ultima) {
-      ultima = sec;
-      rail.forEach(a => a.setAttribute("aria-current", String(a.dataset.riel === sec.id)));
-      nav.forEach(a => a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + sec.id)));
-      emit("seccion", { id: sec.id });
-    }
+    if (sec === ultima) return;
+    ultima = sec;
+    rail.forEach(a => a.setAttribute("aria-current", String(a.dataset.riel === sec.id)));
+    nav.forEach(a => a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + sec.id)));
+    riel.classList.toggle("sobre-oscuro", false);
+    emit("seccion", { id: sec.id });
   }
   let pend = false;
   addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(() => { pend = false; actualizar(); }); } }, { passive: true });
   addEventListener("resize", actualizar);
-  addEventListener("dibaq:tema", actualizar);
   actualizar();
 
   const btn = $(".cab__menu"), menu = $("#menu-movil");
-  const cerrar = () => { btn.setAttribute("aria-expanded", "false"); menu.hidden = true; cab.classList.remove("menu-abierto"); document.body.classList.remove("bloqueado"); $(".sr", btn).textContent = "Abrir menú"; };
+  const cerrar = () => { btn.setAttribute("aria-expanded", "false"); menu.hidden = true; document.body.classList.remove("bloqueado"); $(".sr", btn).textContent = "Abrir menú"; };
   btn.addEventListener("click", () => {
     if (btn.getAttribute("aria-expanded") === "true") return cerrar();
-    btn.setAttribute("aria-expanded", "true"); menu.hidden = false; cab.classList.add("menu-abierto"); document.body.classList.add("bloqueado"); $(".sr", btn).textContent = "Cerrar menú";
+    btn.setAttribute("aria-expanded", "true"); menu.hidden = false; document.body.classList.add("bloqueado"); $(".sr", btn).textContent = "Cerrar menú";
     $("a", menu).focus();
   });
   $$("a", menu).forEach(a => a.addEventListener("click", cerrar));
@@ -169,29 +157,28 @@ function initPaginado() {
 
 /* ---------- entrada del inicio ---------- */
 function initInicio() {
-  // si la escena 3D no arranca (sin WebGL, sin módulos o abierta como archivo local), queda la imagen fija de las croquetas
-  setTimeout(() => { if (!document.querySelector(".escena.lista")) $$(".respaldo3d").forEach(i => { i.hidden = false; }); }, 3500);
   const go = () => requestAnimationFrame(() => document.body.classList.add("listo"));
   (document.fonts ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]) : Promise.resolve()).then(go);
 }
 
-/* ---------- holístico: los pilares orientan la croqueta ---------- */
-function initPilares() {
-  $$(".pilar").forEach(p => {
-    const on = () => { $$(".pilar").forEach(x => x.classList.toggle("activo", x === p)); emit("pilar", { i: +p.dataset.lado }); };
-    p.addEventListener("mouseenter", on);
-    p.addEventListener("focusin", on);
-    p.addEventListener("mouseleave", () => { p.classList.remove("activo"); emit("pilar", { i: -1 }); });
+/* ---------- las dos líneas: bosque de Natural Moments, pestañas en celular ---------- */
+function bosque(svg) { // tres filas de pinos, como el fondo de las bolsas Natural Moments
+  let a = 7; const r = () => { a = (a * 9301 + 49297) % 233280; return a / 233280; };
+  const filas = [[150, 34, 120], [205, 26, 160], [255, 20, 190]];
+  $$("path", svg).forEach((path, k) => {
+    const [y0, n, alto] = filas[k];
+    let d = `M0 320 L0 ${y0}`;
+    for (let i = 0; i < n; i++) {
+      const cx = (i + 0.2 + r() * 0.6) / n * 1200, h = alto * (0.55 + r() * 0.45), w = h * (0.2 + r() * 0.07);
+      d += ` L${(cx - w).toFixed(1)} ${y0} L${(cx - w * 0.45).toFixed(1)} ${(y0 - h * 0.45).toFixed(1)} L${(cx - w * 0.7).toFixed(1)} ${(y0 - h * 0.45).toFixed(1)} L${cx.toFixed(1)} ${(y0 - h).toFixed(1)} L${(cx + w * 0.7).toFixed(1)} ${(y0 - h * 0.45).toFixed(1)} L${(cx + w * 0.45).toFixed(1)} ${(y0 - h * 0.45).toFixed(1)} L${(cx + w).toFixed(1)} ${y0}`;
+    }
+    path.setAttribute("d", d + " L1200 320 Z");
   });
 }
-
-/* ---------- las dos líneas en celular: pestañas y deslizamiento ---------- */
 function initLineas() {
-  const cont = $(".lineas__in"), tabs = $$(".lineas__selector [role=tab]"), paneles = [$("#linea-nm"), $("#linea-sense")];
-  const marcar = i => {
-    tabs.forEach((t, k) => { t.setAttribute("aria-selected", String(k === i)); t.tabIndex = k === i ? 0 : -1; });
-    emit("linea", { linea: i ? "sense" : "nm" }); emit("tema");
-  };
+  bosque($(".panel__bosque"));
+  const cont = $(".lineas__in"), tabs = $$(".lineas__selector [role=tab]"), paneles = [$("#linea-sense"), $("#linea-nm")];
+  const marcar = i => { tabs.forEach((t, k) => { t.setAttribute("aria-selected", String(k === i)); t.tabIndex = k === i ? 0 : -1; }); };
   tabs.forEach((t, i) => {
     t.addEventListener("click", () => { cont.scrollTo({ left: paneles[i].offsetLeft, behavior: reduce.matches ? "auto" : "smooth" }); marcar(i); });
     t.addEventListener("keydown", e => { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { const j = e.key === "ArrowRight" ? 1 : 0; tabs[j].focus(); tabs[j].click(); } });
@@ -201,18 +188,19 @@ function initLineas() {
     if (pend || !phone.matches) return; pend = true;
     requestAnimationFrame(() => { pend = false; const i = cont.scrollLeft > cont.clientWidth / 2 ? 1 : 0; if (tabs[i].getAttribute("aria-selected") !== "true") marcar(i); });
   }, { passive: true });
-  const sync = () => {
-    paneles.forEach(p => { if (phone.matches) p.setAttribute("role", "tabpanel"); else p.removeAttribute("role"); });
-  };
+  const sync = () => paneles.forEach((p, i) => { if (phone.matches) { p.setAttribute("role", "tabpanel"); p.setAttribute("aria-labelledby", tabs[i].id); } else p.removeAttribute("role"); });
   phone.addEventListener("change", sync); sync();
 }
 
 /* ---------- perro o gato ---------- */
 function initEspecies() {
-  const btns = $$(".conmutador [data-especie]");
+  const sec = $("#especies"), btns = $$(".conmutador [data-especie]", sec);
+  sec.dataset.especie = "perro";
   const elegir = esp => {
+    sec.dataset.especie = esp;
     btns.forEach(b => b.setAttribute("aria-checked", String(b.dataset.especie === esp)));
-    $$(".especie").forEach(p => { p.hidden = p.dataset.panel !== esp; });
+    $$(".especie", sec).forEach(p => { p.hidden = p.dataset.panel !== esp; });
+    $$("[data-foto-especie]", sec).forEach(i => { i.hidden = i.dataset.fotoEspecie !== esp; });
     emit("especie", { especie: esp });
   };
   btns.forEach(b => {
@@ -227,13 +215,13 @@ function initProteinas() {
   const original = txt.innerHTML;
   ul.innerHTML = PROTEINAS.map(n => {
     const c = CAT.filter(p => p.proteinas.includes(n)).length;
-    return `<li><button class="proteina" type="button" aria-pressed="false" data-p="${n}" style="--c:${FOOD[n]}">${n}<sup>${c}</sup></button></li>`;
+    return `<li><button class="proteina" type="button" aria-pressed="false" data-p="${n}" style="--c:${FOOD[n]}"><i aria-hidden="true"></i>${n} <small>${c}</small></button></li>`;
   }).join("");
   ul.addEventListener("click", e => {
     const b = e.target.closest(".proteina"); if (!b) return;
     const ya = b.getAttribute("aria-pressed") === "true";
     $$(".proteina", ul).forEach(x => x.setAttribute("aria-pressed", "false"));
-    if (ya) { txt.innerHTML = original; acc.innerHTML = ""; return; }
+    if (ya) { txt.innerHTML = original; acc.innerHTML = ""; emit("proteina", { p: null }); return; }
     b.setAttribute("aria-pressed", "true");
     const n = b.dataset.p, con = CAT.filter(p => p.proteinas.includes(n));
     const lineas = [...new Set(con.map(p => LINEA_TXT[p.linea]))];
@@ -242,6 +230,7 @@ function initProteinas() {
     const nSin = sin ? CAT.filter(p => !p.contiene.includes(sin)).length : 0;
     acc.innerHTML = `<button class="enlace enlace--sm" type="button" data-ir="con=${encodeURIComponent(n)}">Ver las recetas con ${n.toLowerCase()}</button>`
       + (sin ? `<button class="enlace enlace--sm" type="button" data-ir="sin=${sin}">Ver las ${nSin} recetas sin ${SIN_TXT[sin]}</button>` : "");
+    emit("proteina", { p: n });
   });
 }
 
@@ -269,6 +258,12 @@ function filtrar(f = F, sinClave) {
     return true;
   });
 }
+function contar(campo, valor) {
+  const f = { ...F, necesidad: [...F.necesidad], sin: [...F.sin] };
+  if (campo === "necesidad" || campo === "sin") { if (!f[campo].includes(valor)) f[campo].push(valor); }
+  else { f[campo] = valor; if (campo === "especie" && valor !== "perro") f.tamano = ""; if (campo === "tamano") f.especie = "perro"; }
+  return filtrar(f).length;
+}
 function resumen(n) {
   const r = n === 1 ? "1 receta" : n + " recetas";
   const esp = F.especie;
@@ -287,7 +282,8 @@ function resumen(n) {
   return txt + ".";
 }
 function tarjeta(p, nueva) {
-  return `<li class="tarjeta tarjeta--${p.linea}${nueva ? " nueva" : ""}" data-id="${p.id}">
+  const a = acentoDe(p);
+  return `<li class="tarjeta tarjeta--${p.linea}${nueva ? " nueva" : ""}" data-id="${p.id}" style="--acento:${a};--acento-texto:${acentoTexto(a)}">
     <button class="tarjeta__btn" type="button" data-abrir="${p.id}" aria-label="${esc(LINEA_TXT[p.linea] + ", " + p.nombre + ". Ver ficha")}">
       <span class="tarjeta__img"><img src="${imgDe(p)}" alt="" width="800" height="1000" loading="lazy" decoding="async"></span>
       <span class="tarjeta__linea">${p.linea === "sense" ? "Dibaq Sense" : "Natural Moments"}</span>
@@ -343,6 +339,13 @@ function initBuscador() {
     ul.innerHTML = resultados.map(p => tarjeta(p, animar && !reduce.matches && !previos.has(p.id))).join("");
     previos = new Set(ids);
     $("#resumen").innerHTML = resumen(resultados.length);
+    // cuántas recetas quedarían al elegir cada opción (como en el buscador de Taste of the Wild)
+    $$("[data-n]", form).forEach(el => {
+      const [campo, valor] = el.dataset.n.split(":"), input = el.closest("label").querySelector("input");
+      const n = contar(campo, valor);
+      el.textContent = n;
+      el.closest("span").classList.toggle("sin-resultados", n === 0 && !input.checked);
+    });
     $$("[data-n-resultados]").forEach(n => { n.textContent = resultados.length; });
     const activos = (F.especie ? 1 : 0) + (F.edad ? 1 : 0) + (F.tamano ? 1 : 0) + (F.linea ? 1 : 0) + (F.con ? 1 : 0) + F.necesidad.length + F.sin.length;
     $$("[data-n-filtros]").forEach(n => { n.textContent = activos ? `(${activos})` : ""; });
@@ -439,7 +442,8 @@ function abrirFicha(id, desde) {
   const ficha = $("#ficha"), panel = $(".ficha__panel", ficha), cuerpo = $(".ficha__cuerpo", ficha);
   fichaActual = id;
   if (desde) origenFoco = desde;
-  panel.dataset.tema = p.linea === "sense" ? "oscuro" : "claro";
+  const ac = acentoDe(p);
+  panel.style.setProperty("--acento", ac); panel.style.setProperty("--acento-texto", acentoTexto(ac));
   const a = p.analisis || {};
   const filas = [["Proteína", a.proteina], ["Grasa", a.grasa], ["Fibra", a.fibra], ["Ceniza", a.ceniza]].filter(r => r[1] != null);
   const etiquetas = [paraQuien(p), ...p.necesidades.map(n => cap(NEC_TXT[n]))];
@@ -463,7 +467,7 @@ function abrirFicha(id, desde) {
       ${p.formatos ? `<ul class="etiquetas" role="list">${p.formatos.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : `<p class="ficha__kcal">Consulta los formatos disponibles en Perú.</p>`}
       <p class="ficha__nota">Datos referenciales. Revisa la tabla de ración del empaque y consulta a tu veterinario si tiene una condición de salud.</p>
       <div class="ficha__acciones">
-        ${CFG.whatsapp ? `<a class="btn" href="https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(consulta)}" target="_blank" rel="noopener">Consultar por WhatsApp</a>` : `<a class="btn" href="#contacto" data-consulta="${esc(consulta)}">Consultar por esta receta</a>`}
+        ${CFG.whatsapp ? `<a class="btn" href="${waURL(consulta)}" target="_blank" rel="noopener">Consultar por WhatsApp</a>` : `<a class="btn" href="#contacto" data-consulta="${esc(consulta)}">Consultar por esta receta</a>`}
       </div>
     </div>`;
   const nav = $$(".ficha__nav", ficha), i = resultados.findIndex(x => x.id === id);
@@ -515,6 +519,40 @@ function initFicha() {
   });
 }
 
+/* ---------- peludines: publicaciones de redes ---------- */
+function initComunidad() {
+  const ul = $(".posts"), redes = $(".comunidad__redes");
+  ul.innerHTML = (CFG.publicaciones || []).map(p => {
+    const src = recurso(p.img);
+    const img = `<img src="${esc(src)}" alt="${esc(p.alt || "")}" width="864" height="1080" loading="lazy" decoding="async">`;
+    return `<li>${p.url ? `<a class="post" href="${esc(p.url)}" target="_blank" rel="noopener">${img}</a>` : `<span class="post">${img}</span>`}</li>`;
+  }).join("");
+  if (CFG.instagram) redes.insertAdjacentHTML("beforeend", `<a class="btn" href="${esc(CFG.instagram)}" target="_blank" rel="noopener">Seguir en Instagram</a>`);
+  if (CFG.facebook) redes.insertAdjacentHTML("beforeend", `<a class="enlace" href="${esc(CFG.facebook)}" target="_blank" rel="noopener">Facebook</a>`);
+  if (!CFG.instagram && !CFG.facebook) redes.hidden = true;
+}
+
+/* ---------- tiendas por distrito ---------- */
+function initTiendas() {
+  const ts = CFG.tiendas || [];
+  if (!ts.length) return;
+  const box = $(".tiendas"), sel = $("#f-distrito"), ul = $(".tiendas__lista");
+  box.hidden = false;
+  const distritos = [...new Set(ts.map(t => t.distrito).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+  sel.innerHTML = `<option value="">Todos</option>` + distritos.map(d => `<option>${esc(d)}</option>`).join("");
+  const pintar = () => {
+    const d = sel.value;
+    ul.innerHTML = ts.filter(t => !d || t.distrito === d).map(t => {
+      const tags = [t.delivery && "Delivery", t.online && "Tienda online", t.veterinaria && "Veterinaria"].filter(Boolean);
+      const tel = (t.telefono || "").replace(/\D/g, "");
+      return `<li class="tienda"><p class="tienda__nombre">${esc(t.nombre)}</p><p class="tienda__dir">${esc([t.direccion, t.distrito].filter(Boolean).join(", "))}</p>
+        ${tags.length ? `<p class="tienda__tags">${tags.map(x => `<span>${x}</span>`).join("")}</p>` : ""}
+        <p class="tienda__acciones">${t.mapa ? `<a class="enlace enlace--sm" href="${esc(t.mapa)}" target="_blank" rel="noopener">Cómo llegar</a>` : ""}${tel ? `<a class="enlace enlace--sm" href="https://wa.me/${tel.length === 9 ? "51" + tel : tel}" target="_blank" rel="noopener">WhatsApp</a>` : ""}</p></li>`;
+    }).join("");
+  };
+  sel.addEventListener("change", pintar); pintar();
+}
+
 /* ---------- contacto ---------- */
 function initForm() {
   const form = $("#form"), estado = $("#form-estado");
@@ -559,12 +597,13 @@ initConfig();
 initConteos();
 initCabecera();
 initPaginado();
-initPilares();
 initLineas();
 initEspecies();
 initProteinas();
 initBuscador();
 initFicha();
+initComunidad();
+initTiendas();
 initForm();
 initInicio();
 })();
