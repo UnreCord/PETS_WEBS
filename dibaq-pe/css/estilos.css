@@ -338,6 +338,8 @@ button{cursor:pointer;touch-action:manipulation}
 .seg input,.chips input{position:absolute;opacity:0;width:1px;height:1px}
 .seg span{display:flex;align-items:center;justify-content:center;gap:5px;min-height:38px;padding:0 8px;border-radius:999px;font-size:var(--fs-sm);cursor:pointer;text-align:center;line-height:1.15;transition:background-color .2s,color .2s}
 .seg input:checked + span{background:var(--tinta);color:var(--papel)}
+.filtros .seg label{flex:1 1 auto}
+.filtros .seg span{padding:0 9px}
 .seg input:focus-visible + span,.chips input:focus-visible + span{outline:2px solid var(--magenta);outline-offset:2px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips label{position:relative}
