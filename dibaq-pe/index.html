@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dibaq Perú | Nutrición holística para perros y gatos</title>
+<meta name="description" content="Dibaq Natural Moments y Dibaq Sense: alimento holístico para perros y gatos, hecho en España con carne y pescado frescos. Encuentra la receta según su edad, su peso, su raza y lo que no tolera.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_PE">
+<meta property="og:site_name" content="Dibaq Perú">
+<meta property="og:title" content="Dibaq: lo cuidas como a un hijo, aliméntalo igual">
+<meta property="og:description" content="Natural Moments y Sense: nutrición holística para perros y gatos. Encuentra su alimento en segundos.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Cpath d='M32 14c-11 0-19 7.6-19 18s8 18 19 18 19-7.6 19-18-8-18-19-18zm0 24.5c-3.9 0-6.5-2.8-6.5-6.5s2.6-6.5 6.5-6.5 6.5 2.8 6.5 6.5-2.6 6.5-6.5 6.5z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/cormorant-infant-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/estilos.css">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+<script>
+document.documentElement.classList.add("js");
+/* Ajustes editables por marketing. Vacío = no se muestra. */
+window.DIBAQ_CONFIG = {
+  whatsapp: "",            // número con código de país, solo dígitos: "51999999999"
+  email: "",               // correo que recibe las consultas del formulario
+  formEndpoint: "",        // URL que recibe el formulario en JSON (si está vacía, se abre el correo del visitante)
+  instagram: "",           // URL completa
+  facebook: "",            // URL completa
+  distribuidor: "",        // "Distribuido en Perú por …"
+  tiendas: [],             // [{ nombre: "Tienda", distrito: "Miraflores", direccion: "Av. …", mapa: "https://maps.google.com/?q=…" }]
+  fotosEnBN: true,         // las fotos se muestran en blanco y negro: el único color de la página es el alimento
+  fotos: {                 // ruta de cada foto cuando marketing la entregue (ver img/fotos/LEEME.md)
+    inicio: "",
+    natural: "",
+    sense: "",
+    origen: "",
+    contacto: ""
+  }
+};
+</script>
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<header class="cab" data-tema="claro">
+  <div class="cab__in">
+    <a class="marca" href="#inicio" aria-label="Dibaq Perú, inicio">
+      <span class="marca__nombre">DIBAQ</span>
+      <span class="marca__pais">Perú</span>
+    </a>
+    <nav class="cab__nav" aria-label="Principal">
+      <ul>
+        <li><a href="#lineas">Las dos líneas</a></li>
+        <li><a href="#especies">Perro o gato</a></li>
+        <li><a href="#ingredientes">Ingredientes</a></li>
+        <li><a href="#origen">Origen</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--sm cab__cta" href="#buscador">Encontrar su alimento</a>
+    <button class="cab__menu" type="button" aria-expanded="false" aria-controls="menu-movil"><span class="sr">Abrir menú</span><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="menu-movil" id="menu-movil" hidden>
+  <nav aria-label="Menú">
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#holistico">Holístico</a></li>
+      <li><a href="#lineas">Las dos líneas</a></li>
+      <li><a href="#especies">Perro o gato</a></li>
+      <li><a href="#ingredientes">Ingredientes</a></li>
+      <li><a href="#buscador">Encontrar su alimento</a></li>
+      <li><a href="#origen">Origen</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+</div>
+
+<nav class="riel" aria-label="Secciones">
+  <ol>
+    <li><a href="#inicio" data-riel="inicio"><span>Inicio</span></a></li>
+    <li><a href="#holistico" data-riel="holistico"><span>Holístico</span></a></li>
+    <li><a href="#lineas" data-riel="lineas"><span>Las dos líneas</span></a></li>
+    <li><a href="#especies" data-riel="especies"><span>Perro o gato</span></a></li>
+    <li><a href="#ingredientes" data-riel="ingredientes"><span>Ingredientes</span></a></li>
+    <li><a href="#buscador" data-riel="buscador"><span>Su alimento</span></a></li>
+    <li><a href="#origen" data-riel="origen"><span>Origen</span></a></li>
+    <li><a href="#contacto" data-riel="contacto"><span>Contacto</span></a></li>
+  </ol>
+</nav>
+
+<canvas class="escena" aria-hidden="true"></canvas>
+
+<main id="contenido">
+
+  <!-- ============ Inicio ============ -->
+  <section class="sec sec--claro inicio" id="inicio" data-tema="claro" aria-labelledby="t-inicio">
+    <div class="sec__in inicio__in">
+      <div class="inicio__texto">
+        <h1 class="h1" id="t-inicio"><span class="linea"><span>Lo cuidas como</span></span> <span class="linea"><span>a un hijo.</span></span> <span class="linea"><span>Aliméntalo igual.</span></span></h1>
+        <p class="lead inicio__lead">Nutrición holística para perros y gatos, hecha en España con carne y pescado frescos. Dos líneas, Natural Moments y Sense, para cada etapa y cada sensibilidad.</p>
+        <div class="acciones">
+          <a class="btn" href="#buscador">Encontrar su alimento</a>
+          <a class="enlace" href="#lineas">Conocer las dos líneas</a>
+        </div>
+      </div>
+      <img class="respaldo3d" src="img/croquetas.webp" alt="" width="900" height="900" decoding="async" hidden>
+    </div>
+    <figure class="foto foto--inicio" data-foto="inicio" hidden><img alt="" decoding="async"></figure>
+    <div class="ancla" data-ancla="inicio" aria-hidden="true"></div>
+    <a class="bajar" href="#holistico" aria-label="Ir a la siguiente sección"><span></span></a>
+  </section>
+
+  <!-- ============ Holístico ============ -->
+  <section class="sec sec--oscuro holistico" id="holistico" data-tema="oscuro" aria-labelledby="t-holistico">
+    <div class="sec__in holistico__in">
+      <header class="holistico__cab">
+        <h2 class="h2" id="t-holistico">Holístico es mirarlo entero.</h2>
+        <p class="lead">No alimentamos solo su estómago. Cada receta piensa en su piel, sus articulaciones, su peso y su energía, y empieza por una proteína fresca.</p>
+      </header>
+      <ul class="pilares" role="list">
+        <li class="pilar" data-lado="0" data-necesidad="digestion">
+          <h3 class="h3">Digestión</h3>
+          <p>Carne o pescado fresco como primer ingrediente y, en Sense, cero cereales. Para estómagos que no toleran cualquier cosa.</p>
+          <a class="enlace enlace--sm" href="#buscador" data-ir="necesidad=digestion">Ver <span data-cuenta="necesidad:digestion"></span> recetas</a>
+        </li>
+        <li class="pilar" data-lado="1" data-necesidad="pelaje">
+          <h3 class="h3">Piel y pelo</h3>
+          <p>Omega 3 y 6 del salmón, el arenque y el krill para calmar la piel y dar brillo al pelo.</p>
+          <a class="enlace enlace--sm" href="#buscador" data-ir="necesidad=pelaje">Ver <span data-cuenta="necesidad:pelaje"></span> recetas</a>
+        </li>
+        <li class="pilar" data-lado="2" data-necesidad="articulaciones">
+          <h3 class="h3">Articulaciones</h3>
+          <p>Glucosamina, condroitina, colágeno y MSM. Mobility suma 14,060 mg por kilo.</p>
+          <a class="enlace enlace--sm" href="#buscador" data-ir="necesidad=articulaciones">Ver <span data-cuenta="necesidad:articulaciones"></span> recetas</a>
+        </li>
+        <li class="pilar" data-lado="3" data-necesidad="peso">
+          <h3 class="h3">Peso y energía</h3>
+          <p>L-carnitina, fibra y calorías medidas. Ultralight tiene 25 % menos calorías.</p>
+          <a class="enlace enlace--sm" href="#buscador" data-ir="necesidad=peso">Ver <span data-cuenta="necesidad:peso"></span> recetas</a>
+        </li>
+      </ul>
+      <div class="ancla" data-ancla="holistico" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ============ Las dos líneas ============ -->
+  <section class="sec lineas" id="lineas" data-tema="claro" aria-labelledby="t-lineas">
+    <h2 class="sr" id="t-lineas">Las dos líneas de Dibaq</h2>
+    <div class="lineas__selector" role="tablist" aria-label="Línea">
+      <button type="button" role="tab" id="tab-nm" aria-controls="linea-nm" aria-selected="true">Natural Moments</button>
+      <button type="button" role="tab" id="tab-sense" aria-controls="linea-sense" aria-selected="false">Sense</button>
+    </div>
+    <div class="lineas__in">
+      <article class="linea-mitad linea-mitad--nm" id="linea-nm" role="tabpanel" aria-labelledby="tab-nm" data-linea="nm">
+        <figure class="foto foto--linea" data-foto="natural" hidden><img alt="" decoding="async"></figure>
+        <div class="linea-mitad__texto">
+          <p class="linea-mitad__marca">Dibaq</p>
+          <h3 class="linea-mitad__nombre">Natural Moments</h3>
+          <p class="linea-mitad__lema">Lo natural, todos los días.</p>
+          <ul class="puntos" role="list">
+            <li>Carnes y pescados como primer ingrediente, con hasta 95 % de proteína de origen animal.</li>
+            <li>Arroz como único cereal y hierbas mediterráneas: orégano, romero y tomillo.</li>
+            <li>Ingredientes reales, cocinados a baja temperatura para cuidar sus nutrientes.</li>
+          </ul>
+          <p class="linea-mitad__para">Para perros y gatos sanos, en cada etapa y cada tamaño.</p>
+          <a class="btn" href="#buscador" data-ir="linea=nm">Ver las <span data-cuenta="linea:nm"></span> recetas</a>
+        </div>
+      </article>
+      <article class="linea-mitad linea-mitad--sense" id="linea-sense" role="tabpanel" aria-labelledby="tab-sense" data-linea="sense">
+        <figure class="foto foto--linea" data-foto="sense" hidden><img alt="" decoding="async"></figure>
+        <div class="linea-mitad__texto">
+          <p class="linea-mitad__marca">Dibaq</p>
+          <h3 class="linea-mitad__nombre">Sense</h3>
+          <p class="linea-mitad__lema">Para los más sensibles.</p>
+          <ul class="puntos" role="list">
+            <li>Sin cereales: sin trigo, maíz, soja ni gluten.</li>
+            <li>Carne o pescado fresco como primer ingrediente, en recetas monoproteicas e hipoalergénicas.</li>
+            <li>Proteínas poco habituales, como conejo, ciervo, jabalí o pato, para quienes ya probaron de todo.</li>
+          </ul>
+          <p class="linea-mitad__para">Para alergias, piel reactiva, digestión delicada o intolerancia al pollo. Su gama para gatos fue elegida producto funcional del año en los Pet Innovation Awards 2024.</p>
+          <a class="btn btn--claro" href="#buscador" data-ir="linea=sense">Ver las <span data-cuenta="linea:sense"></span> recetas</a>
+        </div>
+      </article>
+    </div>
+    <div class="ancla" data-ancla="lineas" data-borde=".linea-mitad--nm" aria-hidden="true"></div>
+  </section>
+
+  <!-- ============ Perro o gato ============ -->
+  <section class="sec sec--claro especies" id="especies" data-tema="claro" aria-labelledby="t-especies">
+    <div class="sec__in especies__in">
+      <div class="especies__texto">
+        <h2 class="h2" id="t-especies">Un gato no es un perro pequeño.</h2>
+        <div class="conmutador" role="radiogroup" aria-label="Especie">
+          <button type="button" role="radio" aria-checked="true" data-especie="perro">Perro</button>
+          <button type="button" role="radio" aria-checked="false" data-especie="gato">Gato</button>
+        </div>
+        <div class="especie" data-panel="perro">
+          <p class="lead">Un perro puede pesar 3 o 60 kilos y vivir tres etapas muy distintas. Por eso hay recetas para cachorros, adultos y mayores, y para razas pequeñas, medianas y grandes.</p>
+          <dl class="datos">
+            <div><dt>Recetas</dt><dd data-cuenta="especie:perro"></dd></div>
+            <div><dt>Proteína</dt><dd data-rango="perro"></dd></div>
+          </dl>
+          <a class="btn" href="#buscador" data-ir="especie=perro">Ver recetas para perro</a>
+        </div>
+        <div class="especie" data-panel="gato" hidden>
+          <p class="lead">El gato es carnívoro estricto: sus recetas llevan más proteína animal y taurina, un nutriente que no produce en cantidad suficiente. Si está esterilizado, además necesita menos calorías.</p>
+          <dl class="datos">
+            <div><dt>Recetas</dt><dd data-cuenta="especie:gato"></dd></div>
+            <div><dt>Proteína</dt><dd data-rango="gato"></dd></div>
+          </dl>
+          <a class="btn" href="#buscador" data-ir="especie=gato">Ver recetas para gato</a>
+        </div>
+      </div>
+      <div class="ancla" data-ancla="especies" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ============ Ingredientes ============ -->
+  <section class="sec sec--oscuro ingredientes" id="ingredientes" data-tema="oscuro" aria-labelledby="t-ingredientes">
+    <div class="sec__in ingredientes__in">
+      <header class="ingredientes__cab">
+        <h2 class="h2" id="t-ingredientes">Lo que lleva. Lo que no.</h2>
+        <p class="lead">Elige una proteína para ver en qué recetas está o para encontrar las que no la tienen.</p>
+      </header>
+      <ul class="proteinas" role="list" aria-label="Proteínas"></ul>
+      <div class="proteina-info" aria-live="polite">
+        <p class="proteina-info__txt">Once proteínas animales. Cada receta declara cuáles lleva y en qué proporción, para que sepas exactamente qué come.</p>
+        <div class="proteina-info__acciones"></div>
+      </div>
+      <div class="nunca">
+        <p><strong>Nunca en Sense:</strong> trigo, maíz, soja ni gluten.</p>
+        <p><strong>En Natural Moments 5 Star:</strong> el arroz es el único cereal.</p>
+        <p class="nunca__mas">Y también arándanos, manzana, mango, zanahoria, espinaca, champiñones, yuca, romero, orégano y tomillo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Buscador ============ -->
+  <section class="sec sec--claro buscador" id="buscador" data-tema="claro" aria-labelledby="t-buscador">
+    <div class="sec__in buscador__in">
+      <header class="buscador__cab">
+        <h2 class="h2" id="t-buscador">Encuentra su alimento.</h2>
+        <p class="buscador__resumen" id="resumen" aria-live="polite"></p>
+        <button class="btn btn--sm btn--borde buscador__abrir" type="button" aria-controls="filtros" aria-expanded="false">Filtros <span class="buscador__n" data-n-filtros></span></button>
+      </header>
+
+      <form class="filtros" id="filtros" aria-label="Filtros" novalidate>
+        <div class="filtros__cab">
+          <p class="filtros__titulo">Filtros</p>
+          <button class="filtros__cerrar" type="button" aria-label="Cerrar filtros"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="filtros__cuerpo">
+          <fieldset class="grupo">
+            <legend>Para</legend>
+            <div class="seg" data-campo="especie">
+              <label><input type="radio" name="especie" value="" checked><span>Ambos</span></label>
+              <label><input type="radio" name="especie" value="perro"><span>Perro</span></label>
+              <label><input type="radio" name="especie" value="gato"><span>Gato</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend>Edad</legend>
+            <div class="chips" data-campo="edad">
+              <label><input type="radio" name="edad" value="cachorro"><span data-cachorro>Cachorro</span></label>
+              <label><input type="radio" name="edad" value="adulto"><span>Adulto</span></label>
+              <label><input type="radio" name="edad" value="senior"><span data-senior>Senior, +7 años</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo" data-solo="perro">
+            <legend>Raza y peso</legend>
+            <div class="raza">
+              <label class="sr" for="f-raza">Raza</label>
+              <input class="raza__input" id="f-raza" type="text" list="razas" placeholder="Escribe su raza" autocomplete="off" spellcheck="false">
+              <datalist id="razas"></datalist>
+            </div>
+            <div class="peso">
+              <div class="peso__fila">
+                <label for="f-peso">Peso</label>
+                <output id="f-peso-txt" for="f-peso">Sin definir</output>
+              </div>
+              <input id="f-peso" type="range" min="1" max="70" step="1" value="12" aria-describedby="f-peso-txt">
+              <button class="enlace enlace--sm peso__quitar" type="button" hidden>Quitar peso</button>
+            </div>
+            <div class="chips chips--tamano" data-campo="tamano">
+              <label><input type="radio" name="tamano" value="mini"><span>Pequeño, hasta 10 kg</span></label>
+              <label><input type="radio" name="tamano" value="mediano"><span>Mediano, 11 a 25 kg</span></label>
+              <label><input type="radio" name="tamano" value="grande"><span>Grande, más de 25 kg</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend>Necesita</legend>
+            <div class="chips" data-campo="necesidad">
+              <label><input type="checkbox" name="necesidad" value="alergias"><span>Alergias o piel sensible</span></label>
+              <label><input type="checkbox" name="necesidad" value="digestion"><span>Digestión delicada</span></label>
+              <label><input type="checkbox" name="necesidad" value="peso"><span>Control de peso</span></label>
+              <label><input type="checkbox" name="necesidad" value="articulaciones"><span>Articulaciones</span></label>
+              <label><input type="checkbox" name="necesidad" value="pelaje"><span>Pelo y piel brillantes</span></label>
+              <label data-solo="gato"><input type="checkbox" name="necesidad" value="esterilizado"><span>Está esterilizado</span></label>
+              <label data-solo="gato"><input type="checkbox" name="necesidad" value="urinario"><span>Salud urinaria</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend>No puede comer</legend>
+            <div class="chips chips--sin" data-campo="sin">
+              <label><input type="checkbox" name="sin" value="salmon"><span>salmón</span></label>
+              <label><input type="checkbox" name="sin" value="pescado"><span>pescado</span></label>
+              <label><input type="checkbox" name="sin" value="pavo"><span>pavo</span></label>
+              <label><input type="checkbox" name="sin" value="pollo"><span>pollo</span></label>
+              <label><input type="checkbox" name="sin" value="cordero"><span>cordero</span></label>
+              <label><input type="checkbox" name="sin" value="pato"><span>pato</span></label>
+              <label><input type="checkbox" name="sin" value="cereales"><span>cereales</span></label>
+            </div>
+            <p class="grupo__nota">Pescado también excluye krill y aceites de pescado.</p>
+          </fieldset>
+
+          <fieldset class="grupo">
+            <legend>Línea</legend>
+            <div class="seg" data-campo="linea">
+              <label><input type="radio" name="linea" value="" checked><span>Las dos</span></label>
+              <label><input type="radio" name="linea" value="nm"><span>Natural Moments</span></label>
+              <label><input type="radio" name="linea" value="sense"><span>Sense</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="filtros__pie">
+          <button class="enlace enlace--sm" type="reset">Quitar filtros</button>
+          <button class="btn btn--sm filtros__ver" type="button">Ver <span data-n-resultados></span> recetas</button>
+        </div>
+      </form>
+
+      <div class="resultados">
+        <ul class="tarjetas" id="tarjetas" role="list" aria-label="Recetas"></ul>
+        <div class="vacio" hidden>
+          <p class="vacio__txt">Ninguna receta cumple todos los filtros.</p>
+          <div class="vacio__sugerencias"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Origen ============ -->
+  <section class="sec sec--oscuro origen" id="origen" data-tema="oscuro" aria-labelledby="t-origen">
+    <div class="sec__in origen__in">
+      <h2 class="h2" id="t-origen">Desde Segovia, con oficio.</h2>
+      <p class="origen__relato">Dibaq nace en Fuentepelayo, Segovia, y lleva más de 40 años formulando alimento para perros y gatos. Hoy está en 65 países, y su gama Sense para gatos fue elegida producto funcional del año en los Pet Innovation Awards 2024.</p>
+      <figure class="ruta" aria-label="Ruta de Fuentepelayo, Segovia, a Lima">
+        <svg viewBox="0 0 1000 420" role="img" aria-hidden="true">
+          <path class="ruta__arco" d="M 840 150 C 700 -40, 300 -10, 170 300" />
+          <circle class="ruta__punto" cx="840" cy="150" r="7" />
+          <circle class="ruta__punto" cx="170" cy="300" r="7" />
+          <circle class="ruta__onda" cx="170" cy="300" r="7" />
+        </svg>
+        <figcaption>
+          <span class="ruta__lugar ruta__lugar--es">Fuentepelayo, Segovia</span>
+          <span class="ruta__lugar ruta__lugar--pe">Lima</span>
+        </figcaption>
+      </figure>
+      <p class="origen__dist" data-distribuidor hidden></p>
+    </div>
+    <figure class="foto foto--origen" data-foto="origen" hidden><img alt="" decoding="async" loading="lazy"></figure>
+  </section>
+
+  <!-- ============ Contacto ============ -->
+  <section class="sec sec--claro contacto" id="contacto" data-tema="claro" aria-labelledby="t-contacto">
+    <div class="sec__in contacto__in">
+      <div class="contacto__texto">
+        <h2 class="h2" id="t-contacto">¿Dudas sobre qué darle?</h2>
+        <p class="lead">Cuéntanos su edad, su peso y lo que no tolera. Te respondemos con la receta indicada y dónde encontrarla.</p>
+        <ul class="canales" role="list"></ul>
+        <div class="tiendas" hidden>
+          <h3 class="h4">Dónde comprar</h3>
+          <ul class="tiendas__lista" role="list"></ul>
+        </div>
+        <figure class="foto foto--contacto" data-foto="contacto" hidden><img alt="" decoding="async" loading="lazy"></figure>
+      </div>
+      <form class="form" id="form" novalidate>
+        <div class="campo">
+          <label for="c-nombre">Tu nombre</label>
+          <input id="c-nombre" name="nombre" type="text" autocomplete="name" required>
+          <p class="campo__error" id="e-nombre"></p>
+        </div>
+        <div class="campo campo--mitad">
+          <label for="c-email">Correo</label>
+          <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <p class="campo__error" id="e-email"></p>
+        </div>
+        <div class="campo campo--mitad">
+          <label for="c-telefono">Teléfono <span class="opcional">(opcional)</span></label>
+          <input id="c-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel">
+          <p class="campo__error" id="e-telefono"></p>
+        </div>
+        <fieldset class="campo">
+          <legend>Tu mascota</legend>
+          <div class="seg seg--form">
+            <label><input type="radio" name="mascota" value="Perro" checked><span>Perro</span></label>
+            <label><input type="radio" name="mascota" value="Gato"><span>Gato</span></label>
+          </div>
+        </fieldset>
+        <div class="campo">
+          <label for="c-mensaje">Tu consulta</label>
+          <textarea id="c-mensaje" name="mensaje" rows="4" required placeholder="Por ejemplo: tengo un shih tzu de 6 años, 7 kg, alérgico al pollo."></textarea>
+          <p class="campo__error" id="e-mensaje"></p>
+        </div>
+        <div class="form__pie">
+          <button class="btn" type="submit">Enviar consulta</button>
+          <p class="form__estado" id="form-estado" role="status"></p>
+        </div>
+      </form>
+    </div>
+    <footer class="pie" data-tema="oscuro">
+      <div class="pie__in">
+        <p class="pie__marca">DIBAQ</p>
+        <p class="pie__nota">Natural Moments y Sense son marcas de Dibaq. Los datos nutricionales son referenciales: revisa siempre el empaque y consulta a tu veterinario.</p>
+        <p class="pie__copy">© <span data-anio></span> Dibaq Perú</p>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<!-- Ficha de producto -->
+<div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="ficha-nombre" hidden>
+  <div class="ficha__velo" data-cerrar></div>
+  <article class="ficha__panel" tabindex="-1">
+    <div class="ficha__barra">
+      <button class="ficha__nav" type="button" data-paso="-1" aria-label="Receta anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="ficha__nav" type="button" data-paso="1" aria-label="Receta siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      <button class="ficha__cerrar" type="button" data-cerrar aria-label="Cerrar ficha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="ficha__cuerpo"></div>
+  </article>
+</div>
+
+<script src="js/catalogo.js"></script>
+<script src="js/app.js"></script>
+<script type="module" src="js/escena.js"></script>
+</body>
+</html>
