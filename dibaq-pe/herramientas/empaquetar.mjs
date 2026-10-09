@@ -14,7 +14,7 @@ catch { console.error("Falta esbuild. Instálalo con: npm i -D esbuild"); proces
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const leer = p => readFile(join(root, p), "utf8");
-const TIPOS = { ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2" };
+const TIPOS = { ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".bin": "application/octet-stream", ".json": "application/json" };
 const dataURI = async p => `data:${TIPOS[extname(p)]};base64,${(await readFile(join(root, p))).toString("base64")}`;
 const reemplazar = (html, buscado, nuevo) => {
   if (!html.includes(buscado)) throw new Error("No se encontró en index.html: " + buscado);
@@ -49,13 +49,13 @@ const escena = (await esbuild.build({
   alias: { three: "./vendor/three.module.min.js" }
 })).outputFiles[0].text;
 
-// imágenes que se piden desde JS: bolsas por id (DIBAQ_IMG) y el resto por ruta (DIBAQ_ASSETS)
+// archivos que se piden desde JS: bolsas por id (DIBAQ_IMG) y el resto por ruta (DIBAQ_ASSETS), incluida la malla del perro
 const bolsas = {};
 for (const f of (await readdir(join(root, "img/productos"))).filter(f => f.endsWith(".webp")).sort()) {
   bolsas[f.replace(/\.webp$/, "")] = await dataURI("img/productos/" + f);
 }
 const recursos = {};
-for (const m of (html + app + escena).matchAll(/["'`](img\/(?!productos\/)[\w\/.-]+\.(?:webp|png|jpg|svg))["'`]/g)) {
+for (const m of (html + app + escena).matchAll(/["'`](img\/(?!productos\/)[\w\/.-]+\.(?:webp|png|jpg|svg|bin|json))["'`]/g)) {
   recursos[m[1]] ??= await dataURI(m[1]);
 }
 
@@ -68,4 +68,4 @@ html = html.replace("<!doctype html>", "<!doctype html>\n<!-- Archivo generado c
 const salida = join(root, "dist", "dibaq-peru.html");
 await mkdir(join(root, "dist"), { recursive: true });
 await writeFile(salida, html);
-console.log(`dist/dibaq-peru.html ${(Buffer.byteLength(html) / 1024 / 1024).toFixed(2)} MB · ${Object.keys(recursos).length} imágenes para JS`);
+console.log(`dist/dibaq-peru.html ${(Buffer.byteLength(html) / 1024 / 1024).toFixed(2)} MB · ${Object.keys(recursos).length} archivos para JS`);

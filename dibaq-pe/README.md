@@ -29,7 +29,7 @@ node herramientas/empaquetar.mjs
 La primera versión era en blanco y negro con croquetas 3D en forma de anillo. Se descartó: el blanco y negro cansaba y el alimento holístico de Dibaq nunca tiene esa forma. Esta versión toma la identidad de los propios empaques y redes de Dibaq.
 
 - **Una paleta cálida, sacada del empaque y de las redes.** El fondo es papel (`#F7F5F0`) y crema (`#F2E8D5`); el texto es casi negro, pero los bloques negros se reservan para lo que es negro en la realidad: el bosque de las bolsas Natural Moments y el pie de página. El acento es el pasto dorado y el roble de las fotos, más un magenta para las notas escritas a mano (como en las publicaciones de Dibaq). Cada receta trae además su color de etiqueta (celeste para salmón, granate para cordero…).
-- **El perro que te trae su comida.** En el inicio, un perro llega con la bolsa de Dibaq en la boca: "Lo cuidas como a un hijo. Aliméntalo igual. ¡Y te lo trae!".
+- **El perro que te trae su comida.** En el inicio, el bulldog de la foto entregada llega al trote desde el fondo de un parque a contraluz, con su bolsa Sense en el hocico, y se sienta junto al título: "Lo cuidas como a un hijo. Aliméntalo igual. ¡Y te lo trae!". Es la foto real animada (respira, ladea la cabeza, la bolsa se balancea) sobre un parque pintado por código, no un dibujo.
 - **La S de ingredientes, en 3D.** Como en el frente de cada bolsa Sense: salmón, pavo, hojas de espinaca, zanahoria, camote, arándanos, manzana y romero se arman en una S cuando la sección entra en pantalla y se desarman al salir. Nada de croquetas con forma de dona.
 - **Las dos líneas, cada una con su mundo.** Sense en blanco, con el dato de carne y el sello Grain Free. Natural Moments con su bosque entre la niebla y el sello Five Star Menu.
 - **Mensajes para quien lo cuida como a un hijo.** Los textos son concretos (porcentajes, ingredientes, lo que no contiene) porque este público lee la etiqueta.
@@ -94,7 +94,7 @@ Las fuentes están en `fonts/` en WOFF2. Authenia va recortada a los caracteres 
 | Fotos de marca (perro con la bolsa, gato, cachorro) | `img/marca/` |
 | Fotos de las bolsas | `img/productos/<id>.webp`, con el mismo nombre que el `id` del producto |
 | Colores, tamaños y espacios | `css/estilos.css` (variables al inicio) |
-| Animación del inicio | `js/entrega.js` |
+| Animación del inicio | `js/entrega.js` (movimiento y revelado) y `js/entrega-pintura.js` (parque, pasto y sombra) |
 | S de ingredientes | `js/ingredientes3d.js` |
 
 Cuando `whatsapp` tiene un número, aparecen el botón flotante, el botón "Asesoría" del encabezado y el canal en "¿Dónde lo encuentro?". Con `tiendas` cargadas, se puede filtrar por distrito.

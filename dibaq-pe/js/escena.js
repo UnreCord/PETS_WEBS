@@ -1,6 +1,6 @@
 /* Dibaq Perú: escenas animadas.
    - La S de ingredientes (sección "Lo que lleva"): se arma cuando la sección entra en pantalla y se desarma al salir.
-   - La entrega (inicio): el perro que trae la bolsa, en entrega.js.
+   - La entrega (inicio): el bulldog llega al trote con su bolsa Sense en el hocico, en entrega.js.
    Sin WebGL o si algo falla, cada sección muestra su imagen fija. */
 import { montarS } from "./ingredientes3d.js";
 
@@ -29,7 +29,8 @@ async function iniciarEntrega() {
     const { montarEntrega } = await import("./entrega.js");
     await montarEntrega(cont, { reducido: reduce.matches, webgl });
     cont.classList.add("viva");
-  } catch (e) { console.warn("Animación del inicio no disponible; se muestra la imagen fija.", e && e.message); }
+  } catch (e) {
+    cont.classList.add("sin-animacion"); console.warn("Animación del inicio no disponible; se muestra la imagen fija.", e && e.message); }
 }
 
 iniciarS();
