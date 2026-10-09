@@ -1,5 +1,5 @@
 /* Dibaq Perú, versión 2
-   La base es el blanco cálido de la bolsa Sense. El negro es tinta: textos, líneas y el panel Natural Moments.
+   La base es el blanco cálido de la bolsa Sense. El negro es tinta: textos y líneas. Natural Moments tiene su verde de niebla y pinos.
    El color lo ponen las fotos y cada receta, que usa su propio color solo en su tarjeta.
    Tipografías: Fraunces (títulos, como el "Sense" del empaque), Circular Book (textos), Authenia (un solo
    apunte a mano por sección, como en las redes de Dibaq). */
@@ -194,7 +194,7 @@ html:not(.js) .entrega__panel,.entrega.sin-animacion .entrega__panel{display:non
 
 /* ============ Las dos líneas ============ */
 .lineas{background:var(--papel)}
-.lineas__in{position:relative;flex:1;display:flex;min-height:100vh;min-height:100svh}
+.lineas__in{position:relative;flex:1;display:flex;height:100vh;height:100svh}
 .panel{position:relative;flex:1 1 50%;display:flex;flex-direction:column;overflow:hidden}
 .panel__texto{position:relative;z-index:2;padding:calc(var(--hb) + clamp(22px, 4vh, 52px)) var(--g) 32px;max-width:640px}
 .panel__marca{font-family:var(--f-logo);font-weight:800;font-size:1.5rem;letter-spacing:-.035em;line-height:1}
@@ -214,15 +214,20 @@ html:not(.js) .entrega__panel,.entrega.sin-animacion .entrega__panel{display:non
 .panel__producto{position:absolute;right:0;bottom:0;height:86%;width:44%;z-index:1;pointer-events:none}
 .panel__producto img{position:absolute;right:0;bottom:-2%;height:100%;width:auto;max-width:none;filter:drop-shadow(-18px 22px 26px rgba(80,58,24,.2))}
 .sello-grain{position:absolute;z-index:2;left:-6%;top:24%;width:clamp(78px, 7vw, 108px);aspect-ratio:1;border-radius:50%;border:1.5px solid var(--tinta);display:grid;place-items:center;text-align:center;font-family:var(--f-titulo);font-weight:600;font-size:clamp(.95rem, .8vw + .5rem, 1.2rem);line-height:1.05;background:rgba(247,245,240,.82)}
-.panel--nm{order:1;background:linear-gradient(180deg, #F3F3F1 0%, var(--niebla) 46%, #B9BBB7 58%, var(--carbon) 74%, var(--carbon) 100%);color:var(--tinta)}
-.panel__niebla{position:absolute;inset:0;z-index:0;pointer-events:none}
-.panel__bosque{position:absolute;left:0;right:0;top:46%;width:100%;height:30%}
-.panel__bosque path:nth-child(1){fill:#A9ACA7}
-.panel__bosque path:nth-child(2){fill:#5D615C}
-.panel__bosque path:nth-child(3){fill:var(--carbon)}
-.panel--nm .puntos li::before{border-color:var(--tinta)}
-.panel__bolsas{position:absolute;z-index:1;left:0;right:0;bottom:0;height:46%;display:flex;justify-content:center;align-items:flex-end;padding:0 var(--g) 3vh;pointer-events:none}
-.panel__bolsas img{height:100%;width:auto;margin:0 -3%;filter:drop-shadow(0 18px 22px rgba(0,0,0,.45))}
+/* Natural Moments: niebla verde y bosque de pinos, como sus bolsas; Sense queda en blanco cálido con celeste */
+.panel--nm{order:1;background:linear-gradient(180deg, #EDF0E9 0%, #DDE3D7 60%, #CDD5C6 100%);color:#16201A;box-shadow:inset -1px 0 0 rgba(31,42,34,.18)}
+.panel--nm .sobre{color:#4E5C4C}
+.panel--nm .puntos li::before{border-color:#3E6B48}
+.btn--pino{background:#1F2A22;color:var(--papel);border-color:#1F2A22}
+.btn--pino:hover{background:#2E3D31;border-color:#2E3D31}
+/* las bolsas ocupan solo el espacio que deja el texto: nunca quedan debajo del botón */
+.panel__bolsas{position:relative;z-index:1;flex:1 1 0;min-height:0;display:flex;justify-content:center;align-items:flex-end;margin-top:clamp(10px, 2.5vh, 28px);padding:clamp(18px, 4vh, 44px) var(--g) 3vh;pointer-events:none}
+.panel__niebla{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg, rgba(31,42,34,0) 0%, rgba(31,42,34,0) 36%, #1F2A22 64%)}
+.panel__bosque{position:absolute;left:0;right:0;top:0;width:100%;height:58%}
+.panel__bosque path:nth-child(1){fill:#AEB8A8}
+.panel__bosque path:nth-child(2){fill:#66745F}
+.panel__bosque path:nth-child(3){fill:#1F2A22}
+.panel__bolsas img{height:100%;width:auto;min-width:0;margin:0 -3%;filter:drop-shadow(0 18px 22px rgba(0,0,0,.45))}
 .panel__bolsas img:nth-child(2){height:108%;z-index:1}
 .lineas__selector{display:none}
 @media (max-width:1023px) and (min-width:768px){
@@ -248,9 +253,6 @@ html:not(.js) .entrega__panel,.entrega.sin-animacion .entrega__panel{display:non
   .panel__producto{width:46%;height:42%}
   .sello-grain{left:-30%;top:10%;width:70px}
   .dato__num{font-size:2.7rem}
-  .panel__bolsas{height:30%}
-  .panel__bosque{top:52%;height:24%}
-  .panel--nm{background:linear-gradient(180deg, #F3F3F1 0%, var(--niebla) 52%, #B9BBB7 62%, var(--carbon) 76%, var(--carbon) 100%)}
 }
 
 /* ============ Ingredientes ============ */
