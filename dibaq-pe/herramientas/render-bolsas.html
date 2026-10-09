@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Render de bolsas Dibaq</title>
+<style>
+  @font-face{font-family:"Cormorant Infant";src:url(../fonts/cormorant-infant-latin-300-normal.woff2) format("woff2");font-weight:300}
+  @font-face{font-family:"Hanken Grotesk";src:url(../fonts/hanken-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:100 900}
+  html,body{margin:0;background:transparent}
+  canvas{display:block}
+</style>
+<script type="importmap">{"imports":{"three":"../vendor/three.module.min.js"}}</script>
+</head>
+<body>
+<script src="../js/catalogo.js"></script>
+<script type="module">
+/* Renders a provisional 3D bag for each product in the catalog (window.renderBag(id) -> PNG data URL).
+   Driven by render-bolsas.mjs; open with ?id=<product id> to preview one bag in the browser. */
+import * as THREE from "three";
+import { RoomEnvironment } from "../vendor/RoomEnvironment.js";
+
+const SIZE = { w: 1000, h: 1250 };
+const FOOD = { // the only color on the page is the food: one color per protein (same values as js/app.js)
+  "Salmón": "#EE8B62", "Arenque": "#8FA9BA", "Atún": "#6A98BD", "Krill": "#E06A4E",
+  "Cordero": "#C47D6E", "Pavo": "#D4A05A", "Pollo": "#E2BC6C", "Pato": "#76A07C",
+  "Conejo": "#C4AA8E", "Ciervo": "#A97D5D", "Jabalí": "#9C7A62"
+};
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE.w, SIZE.h);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.85;
+
+const camera = new THREE.PerspectiveCamera(24, SIZE.w / SIZE.h, 0.1, 50);
+camera.position.set(0.55, 1.05, 4.6);
+camera.lookAt(0, 0.74, 0);
+
+const key = new THREE.DirectionalLight(0xffffff, 1.6);
+key.position.set(-0.5, 5, 3.4); // high and frontal so the shadow falls behind the bag
+key.castShadow = true;
+key.shadow.mapSize.set(1024, 1024);
+key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 3; key.shadow.camera.bottom = -3;
+key.shadow.radius = 18; key.shadow.blurSamples = 24; key.shadow.bias = -0.0006;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 0.9);
+rim.position.set(2.5, 1.6, -2.4);
+scene.add(rim);
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(8, 8), new THREE.ShadowMaterial({ opacity: 0.22 }));
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+/* ---------- Bag geometry: a gusseted pillow pouch with a crimped top seal ---------- */
+const W = 1.0, HB = 1.42, D = 0.40, SEAL = 0.075;
+function noise2(x, y) { // cheap smooth value noise
+  const s = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return s - Math.floor(s);
+}
+function smooth(a, b, x) { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+function depthAt(v) { return (D / 2) * Math.pow(Math.max(0, 1 - Math.pow(v, 2.4)), 0.85) * (0.86 + 0.14 * smooth(0, 0.22, v)); }
+function wrinkle(u, v) {
+  const top = smooth(0.62, 1, v), edge = smooth(0.7, 1, Math.abs(u));
+  return (Math.sin(u * 23 + v * 7) * 0.5 + Math.sin(u * 41 - v * 13) * 0.3 + (noise2(Math.round(u * 30), Math.round(v * 30)) - 0.5) * 0.4) * 0.0045 * (top + edge * 0.6);
+}
+function panel(sign) {
+  const nx = 90, ny = 140, pos = [], uv = [], idx = [];
+  for (let j = 0; j <= ny; j++) {
+    const v = j / ny;
+    for (let i = 0; i <= nx; i++) {
+      const u = i / nx * 2 - 1;
+      const dz = depthAt(v);
+      const x = u * (W / 2) * (1 - 0.035 * (dz / (D / 2)) * Math.pow(Math.abs(u), 6)); // the seams pull in where the bag is fullest
+      const z = sign * (dz * Math.pow(Math.max(0, 1 - u * u), 0.5) + wrinkle(u, v));
+      pos.push(x, v * HB, z);
+      uv.push(sign > 0 ? (u + 1) / 2 : 1 - (u + 1) / 2, v);
+    }
+  }
+  for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
+    const a = j * (nx + 1) + i, b = a + 1, c = a + nx + 1, d = c + 1;
+    if (sign > 0) idx.push(a, b, d, a, d, c); else idx.push(a, d, b, a, c, d);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+function bottom() { // oval gusset floor joining the bottom rows of both panels
+  const nx = 90, pos = [], idx = [];
+  for (let i = 0; i <= nx; i++) {
+    const u = i / nx * 2 - 1, dz = depthAt(0) * Math.sqrt(Math.max(0, 1 - u * u));
+    pos.push(u * W / 2, 0.0015, dz, u * W / 2, 0.0015, -dz);
+  }
+  for (let i = 0; i < nx; i++) { const a = i * 2; idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+
+/* ---------- Label texture ---------- */
+function luminance(hex) {
+  const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(x => x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+function spaced(ctx, text, x, y, spacing) { // letter-spaced text centered on x
+  const chars = [...text], widths = chars.map(ch => ctx.measureText(ch).width);
+  const total = widths.reduce((a, b) => a + b, 0) + spacing * (chars.length - 1);
+  let cx = x - total / 2;
+  chars.forEach((ch, i) => { ctx.fillText(ch, cx + widths[i] / 2, y); cx += widths[i] + spacing; });
+}
+function wrapLines(ctx, text, maxW) { // one line if it fits, otherwise the most balanced two lines
+  if (ctx.measureText(text).width <= maxW) return [text];
+  const words = text.split(" ");
+  let best = null;
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(" "), b = words.slice(i).join(" ");
+    const worst = Math.max(ctx.measureText(a).width, ctx.measureText(b).width);
+    if (!best || worst < best.worst) best = { worst, lines: [a, b] };
+  }
+  return best.lines;
+}
+const AGE = { cachorro: { perro: "Cachorro", gato: "Gatito" }, adulto: { perro: "Adulto", gato: "Adulto" }, senior: { perro: "Senior", gato: "Senior" } };
+function labelTexture(p) {
+  const cw = 1200, ch = Math.round(cw * HB / W);
+  const c = document.createElement("canvas"); c.width = cw; c.height = ch;
+  const x = c.getContext("2d");
+  const sense = p.linea === "sense";
+  const base = sense ? "#141414" : "#F4F3EF", ink = sense ? "#FFFFFF" : "#0A0A0A", soft = sense ? "#9A9A9A" : "#6A6A6A";
+  x.fillStyle = base; x.fillRect(0, 0, cw, ch);
+  // fine paper grain
+  const img = x.getImageData(0, 0, cw, ch), d = img.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * (sense ? 7 : 5); d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  x.putImageData(img, 0, 0);
+  x.textAlign = "center"; x.textBaseline = "alphabetic";
+  const top = ch; // canvas y=0 is the top of the bag (v=1)
+  // food color block at the bottom, split when the recipe has two proteins
+  const cols = p.proteinas.slice(0, 2).map(n => FOOD[n] || "#B08A5E");
+  const by = Math.round(ch * 0.66);
+  const wave = (dy, color) => { x.fillStyle = color; x.beginPath(); x.moveTo(0, by + 60 + dy); x.quadraticCurveTo(cw / 2, by - 60 + dy, cw, by + 60 + dy); x.lineTo(cw, ch); x.lineTo(0, ch); x.closePath(); x.fill(); };
+  if (cols.length > 1) { wave(0, cols[1]); wave(34, cols[0]); } // second protein as a thin band over the main one
+  else wave(0, cols[0]);
+  // brand
+  x.fillStyle = ink; x.font = "700 54px 'Hanken Grotesk'"; spaced(x, "DIBAQ", cw / 2, 190, 26);
+  x.font = "300 " + (sense ? 250 : 170) + "px 'Cormorant Infant'";
+  if (sense) x.fillText("Sense", cw / 2, 420);
+  else { x.fillText("Natural", cw / 2, 360); x.fillText("Moments", cw / 2, 505); }
+  x.fillStyle = soft; x.font = "500 38px 'Hanken Grotesk'";
+  x.fillText(sense ? "Grain free · hipoalergénico" : "5 Star · ingredientes naturales", cw / 2, sense ? 500 : 580);
+  // product
+  x.fillStyle = ink; x.font = "300 118px 'Cormorant Infant'";
+  const lines = wrapLines(x, p.nombre.charAt(0).toUpperCase() + p.nombre.slice(1), cw - 260);
+  const ny = (sense ? 745 : 790) - (lines.length - 1) * 58;
+  lines.forEach((l, i) => x.fillText(l, cw / 2, ny + i * 112));
+  x.fillStyle = soft; x.font = "500 40px 'Hanken Grotesk'";
+  const ages = p.edad.map(e => AGE[e][p.especie].toLowerCase()).join(" y ");
+  const who = (p.especie === "gato" && p.edad[0] === "cachorro" ? "Gatito" : (p.especie === "perro" ? "Perro " : "Gato ") + ages)
+    + (p.especie === "perro" ? (p.tamano.length === 3 ? " · todas las razas" : p.tamano[0] === "mini" ? " · razas pequeñas" : p.tamano[0] === "mediano" ? " · razas medianas" : " · razas grandes") : "");
+  x.fillText(who, cw / 2, ny + (lines.length - 1) * 112 + 82);
+  // weight on the color block
+  const onBlock = luminance(cols[0]) > 0.33 ? "#0A0A0A" : "#FFFFFF";
+  x.fillStyle = onBlock; x.font = "600 64px 'Hanken Grotesk'";
+  const big = p.formatos ? p.formatos[p.formatos.length - 1] : "";
+  if (big) x.fillText(big, cw / 2, ch - 120);
+  x.font = "500 34px 'Hanken Grotesk'";
+  x.fillText(p.proteinas.join(" · "), cw / 2, ch - 210);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  return { tex: t, base };
+}
+function crimpTexture(base) {
+  const c = document.createElement("canvas"); c.width = 512; c.height = 32;
+  const x = c.getContext("2d"); x.fillStyle = base; x.fillRect(0, 0, 512, 32);
+  for (let i = 0; i < 512; i += 4) { x.fillStyle = "rgba(0,0,0,.18)"; x.fillRect(i, 4, 1.5, 24); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+
+let current = null;
+function build(p) {
+  if (current) { scene.remove(current); current.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }
+  const { tex, base } = labelTexture(p);
+  const sense = p.linea === "sense";
+  const film = { roughness: sense ? 0.55 : 0.42, clearcoat: sense ? 0.2 : 0.45, clearcoatRoughness: 0.35, sheen: 0.25, sheenRoughness: 0.6, sheenColor: new THREE.Color(sense ? 0x444444 : 0xffffff) };
+  const front = new THREE.Mesh(panel(1), new THREE.MeshPhysicalMaterial({ map: tex, ...film }));
+  const back = new THREE.Mesh(panel(-1), new THREE.MeshPhysicalMaterial({ color: new THREE.Color(base), ...film }));
+  const floor = new THREE.Mesh(bottom(), new THREE.MeshPhysicalMaterial({ color: new THREE.Color(base), ...film, side: THREE.DoubleSide }));
+  const seal = new THREE.Mesh(new THREE.BoxGeometry(W * 0.985, SEAL, 0.012), new THREE.MeshPhysicalMaterial({ map: crimpTexture(base), ...film }));
+  seal.position.y = HB + SEAL / 2 - 0.004;
+  const g = new THREE.Group();
+  [front, back, floor, seal].forEach(m => { m.castShadow = true; m.receiveShadow = false; g.add(m); });
+  g.rotation.y = -0.32;
+  scene.add(g);
+  current = g;
+}
+
+await document.fonts.load("300 100px 'Cormorant Infant'");
+await document.fonts.load("600 40px 'Hanken Grotesk'");
+window.renderBag = id => {
+  const p = window.DIBAQ_CATALOGO.find(x => x.id === id);
+  build(p);
+  renderer.render(scene, camera);
+  return renderer.domElement.toDataURL("image/png");
+};
+window.ready = true;
+const q = new URLSearchParams(location.search).get("id");
+if (q) window.renderBag(q);
+</script>
+</body>
+</html>
