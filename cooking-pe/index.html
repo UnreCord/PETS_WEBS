@@ -157,6 +157,7 @@ main{overflow-x:clip}
   .mnav.is-open{display:block}
   .mnav ul{list-style:none;margin:0;padding:0}
   .mnav a{display:block;padding:14px 6px;font-size:1.1rem;font-weight:600;text-decoration:none;border-bottom:1px solid var(--linea)}
+  .mnav a.btn{display:flex;margin-top:18px;padding:.7em 1.4em;border-bottom:0}
 }
 
 /* ============ Hero ============ */
@@ -182,6 +183,7 @@ main{overflow-x:clip}
 .hero__bags img{width:100%;height:auto}
 .hero__bags.is-missing{display:none}
 .hero__ground{position:absolute;left:0;right:0;bottom:0;height:62%;z-index:2}
+.hero__pets{display:none}
 /* load sequence */
 .hero__kicker,.hero__script,.hero__lead,.hero__ctas{opacity:0;transform:translateY(16px)}
 .is-ready .hero__kicker,.is-ready .hero__script,.is-ready .hero__lead,.is-ready .hero__ctas{opacity:1;transform:none;transition:opacity .7s,transform .8s cubic-bezier(.2,.8,.2,1)}
@@ -404,7 +406,7 @@ main{overflow-x:clip}
 .panel.is-in .rcard{opacity:1;translate:0 0;transition:opacity .5s calc(var(--i) * .08s),translate .6s calc(var(--i) * .08s) cubic-bezier(.2,.9,.3,1.15)}
 .rcard__stage{position:relative;border-radius:20px;aspect-ratio:1/1.02;overflow:hidden;background:radial-gradient(circle at 50% 42%,var(--c3) 0 38%,var(--c2) 70%)}
 .rcard__stage::after{content:"";position:absolute;left:18%;right:18%;bottom:9%;height:7%;border-radius:50%;background:rgba(58,40,28,.22);filter:blur(6px)}
-.rcard__pill{position:absolute;left:12px;top:12px;z-index:3;padding:5px 12px;border-radius:999px;background:var(--blanco);font-size:var(--fs-xs);font-weight:700}
+.rcard__pill{position:absolute;left:12px;top:12px;z-index:4;padding:5px 12px;border-radius:999px;background:var(--blanco);font-size:var(--fs-xs);font-weight:700}
 .rcard__bag{position:absolute;left:50%;bottom:12%;width:54%;translate:-50% 0;z-index:2;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
 .rcard:hover .rcard__bag{transform:translateY(-5px) rotate(-3deg)}
 .rcard__bag svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 10px rgba(58,40,28,.3))}
@@ -1091,18 +1093,24 @@ html{scroll-padding-top:var(--hb)}
   .hero__ctas .btn{min-height:44px;padding:.45em .5em;font-size:.86rem}
   .hero__stage{flex:1;height:auto;min-height:110px;margin-top:min(10px,calc(1.2svh / var(--z,1)));container-type:size}
   .hero__bags{width:min(calc(96vw / var(--z,1)),190cqh);bottom:5cqh}
+  /* the chefs stand behind the bags; hidden when the bags already fill the stage */
+  .hero__pets{display:flex;position:absolute;left:0;right:0;top:2cqh;bottom:calc(5cqh + min(calc(96vw / var(--z,1)),190cqh) * .22);z-index:3;justify-content:center;align-items:flex-end;gap:0;opacity:0;translate:0 24px;transition:opacity .9s .3s,translate 1.1s .3s cubic-bezier(.2,.8,.2,1)}
+  .is-ready .hero__pets{opacity:1;translate:0 0}
+  .hero__pets img{height:100%;max-height:calc(64vw / var(--z,1));width:auto;min-width:0;object-fit:cover;object-position:50% 15%;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent);mask-image:radial-gradient(closest-side,#000 62%,transparent)}
+  @container (min-aspect-ratio:3/2){.hero__pets{display:none}}
 
   /* conócenos (its second paragraph repeats in "Los ingredientes", so it is shown there) */
   .know{gap:min(14px,calc(1.8svh / var(--z,1)))}
-  .know__art{width:min(calc(68vw / var(--z,1)),calc(29svh / var(--z,1)),300px);max-width:none}
+  .know__art{width:min(calc(68vw / var(--z,1)),calc(28svh / var(--z,1)),300px);max-width:none}
   .arch{outline-width:6px}
   .badge-rot{width:clamp(64px,calc(19vw / var(--z,1)),92px)}
   .facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:min(14px,calc(1.8svh / var(--z,1)))}
-  .fact{flex-direction:column;align-items:center;text-align:center;gap:4px;padding:10px 6px;border-radius:16px}
+  .fact{flex-direction:column;align-items:flex-start;text-align:left;gap:6px;padding:10px 10px 12px;border-radius:16px}
   .fact .badge-ico{width:32px;height:32px}
   .fact .badge-ico svg{width:17px;height:17px}
   .fact b{font-size:1.1rem}
   .fact span{font-size:11px}
+  .fact div span{display:block;margin-top:4px;line-height:1.3}
   .know__copy .btn{margin-top:min(14px,calc(1.8svh / var(--z,1)));min-height:44px}
 
   /* ingredientes: text, the pan, and the arc on the bottom edge with the pan tucked into it */
@@ -1130,7 +1138,10 @@ html{scroll-padding-top:var(--hb)}
 
   /* beneficios: image + 2×4 compact list */
   .orbit{gap:10px 12px;margin-top:min(12px,calc(1.6svh / var(--z,1)))}
-  .orbit__pets{width:min(calc(46vw / var(--z,1)),calc(23svh / var(--z,1)),210px);padding:6%;margin-bottom:2px}
+  .orbit__pets{width:100%;height:min(calc(46vw / var(--z,1)),calc(23svh / var(--z,1)),210px);aspect-ratio:auto;padding:0;place-items:stretch;border-radius:22px;overflow:hidden;margin-bottom:2px}
+  .orbit__pets > img{height:100%;object-fit:cover;object-position:50% 18%}
+  .orbit__pets.is-missing .orbit__alt{aspect-ratio:auto;height:100%;border-radius:0;box-shadow:none}
+  .orbit__alt img{border-radius:0}
   .perk{flex-direction:row;align-items:flex-start;gap:8px;text-align:left}
   .perk__ico{width:40px;height:40px;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.7),0 10px 18px -12px rgba(58,40,28,.6)}
   .perk__ico .ico{width:20px;height:20px}
@@ -1143,18 +1154,18 @@ html{scroll-padding-top:var(--hb)}
   .tabs{margin:0}
   .tab{min-height:42px;padding:0 18px;font-size:.92rem}
   .tab .ico{width:22px;height:22px}
-  .rfilters{flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:16px;overflow-x:auto;margin:0 calc(-1 * var(--gutter));padding:0 var(--gutter);scrollbar-width:none}
-  .rfilters::-webkit-scrollbar{display:none}
-  .rfilter{flex-direction:row;align-items:center;gap:6px;flex:none}
-  .rfilter__opts{flex-wrap:nowrap;overflow:visible;margin:0;padding:0;max-width:none}
-  .rfilter__label{font-size:12px}
+  .rfilters{flex-direction:column;align-items:stretch;gap:6px;margin:0}
+  .rfilter{flex-direction:row;align-items:center;gap:8px}
+  .rfilter__opts{flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;margin:0 calc(-1 * var(--gutter)) 0 0;padding:0 var(--gutter) 0 0;max-width:none;scrollbar-width:none}
+  .rfilter__label{flex:none;width:66px;white-space:normal;font-size:12px;line-height:1.2}
   .fopt{min-height:34px;padding:0 11px;font-size:12px}
   .rcount{margin-top:0;font-size:12px;min-height:0}
   .rgrid,.rgrid--3{margin-top:min(10px,calc(1.2svh / var(--z,1)));padding-bottom:8px}
   .rcard{flex-basis:80%;padding:8px 8px 6px;border-radius:22px}
-  .rcard__stage{aspect-ratio:auto;height:clamp(84px,calc(15svh / var(--z,1)),160px);border-radius:16px}
+  .rcard__stage{aspect-ratio:auto;height:clamp(84px,calc(16svh / var(--z,1)),180px);border-radius:16px}
   .rcard__bag{width:auto;height:76%;bottom:12%}
   .rcard__bag svg{width:auto;height:100%}
+  .rcard__kib--b{left:7%;bottom:6%}
   .rcard h3{font-size:1.08rem;margin-top:8px}
   .rcard__for{font-size:12px;margin-top:2px}
   .bars{gap:3px;margin-top:6px}
@@ -1289,7 +1300,8 @@ html{scroll-padding-top:var(--hb)}
   .ingr__arcbox{width:calc(140vw / var(--z,1));margin-top:calc(-20vw / var(--z,1))}
   .know__art{width:min(calc(56vw / var(--z,1)),calc(24svh / var(--z,1)))}
   .know__copy .lead{font-size:.82rem}
-  .fact .badge-ico{display:none}
+  .fact .badge-ico{width:28px;height:28px}
+  .fact .badge-ico svg{width:15px;height:15px}
   .fact span{font-size:10px}
   .rcard__for,.swipe-hint{display:none}
   .rcard__stage{height:calc(12svh / var(--z,1))}
@@ -1303,7 +1315,7 @@ html{scroll-padding-top:var(--hb)}
   .planr__for{display:none}
   .stat__big{font-size:1.7rem}
   .switch__note{display:none}
-  .orbit__pets{width:min(calc(40vw / var(--z,1)),calc(20svh / var(--z,1)))}
+  .orbit__pets{height:min(calc(40vw / var(--z,1)),calc(20svh / var(--z,1)))}
   .planr__why,.planr__switch-mix{display:none}
   .planr__note{margin-top:6px}
   /* the four questions as a 2×2 grid */
@@ -1354,9 +1366,9 @@ html{scroll-padding-top:var(--hb)}
         <li><a href="#conocenos">Conócenos</a></li>
         <li><a href="#dog">Para perros</a></li>
         <li><a href="#cat">Para gatos</a></li>
-        <li><a href="#plan">Su plan CooKing</a></li>
         <li><a href="#comprar">Dónde comprar</a></li>
         <li><a href="#contactanos">Contáctanos</a></li>
+        <li><a class="btn btn--orange" href="#comprar">Encuentra tu tienda</a></li>
       </ul>
     </div>
   </nav>
@@ -1388,6 +1400,7 @@ html{scroll-padding-top:var(--hb)}
     </div>
 
     <div class="hero__stage" aria-hidden="false">
+      <div class="hero__pets" aria-hidden="true"><img data-photo="chef-perro" alt="" width="540" height="578"><img data-photo="chef-gato" alt="" width="300" height="410"></div>
       <svg class="hero__ground" viewBox="0 0 1440 260" preserveAspectRatio="none" aria-hidden="true"><path d="M0,120 C220,40 420,30 620,70 C820,110 1020,150 1220,110 C1320,90 1390,60 1440,50 L1440,260 L0,260 Z" fill="#FFF8EF"/><path d="M0,150 C260,80 480,70 700,105 C900,135 1120,175 1440,95" fill="none" stroke="#F4C9A0" stroke-width="3" opacity=".7"/></svg>
       <div class="hero__bags media" data-caption="">
         <img src="https://cooking.pe/wp-content/uploads/2026/07/img-prin.png"

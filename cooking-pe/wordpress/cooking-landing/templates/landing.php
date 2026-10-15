@@ -60,9 +60,9 @@ $ck_media = cooking_landing_media_base();
         <li><a href="#conocenos">Conócenos</a></li>
         <li><a href="#dog">Para perros</a></li>
         <li><a href="#cat">Para gatos</a></li>
-        <li><a href="#plan">Su plan CooKing</a></li>
         <li><a href="#comprar">Dónde comprar</a></li>
         <li><a href="#contactanos">Contáctanos</a></li>
+        <li><a class="btn btn--orange" href="#comprar">Encuentra tu tienda</a></li>
       </ul>
     </div>
   </nav>
@@ -94,6 +94,7 @@ $ck_media = cooking_landing_media_base();
     </div>
 
     <div class="hero__stage" aria-hidden="false">
+      <div class="hero__pets" aria-hidden="true"><img data-photo="chef-perro" alt="" width="540" height="578"><img data-photo="chef-gato" alt="" width="300" height="410"></div>
       <svg class="hero__ground" viewBox="0 0 1440 260" preserveAspectRatio="none" aria-hidden="true"><path d="M0,120 C220,40 420,30 620,70 C820,110 1020,150 1220,110 C1320,90 1390,60 1440,50 L1440,260 L0,260 Z" fill="#FFF8EF"/><path d="M0,150 C260,80 480,70 700,105 C900,135 1120,175 1440,95" fill="none" stroke="#F4C9A0" stroke-width="3" opacity=".7"/></svg>
       <div class="hero__bags media" data-caption="">
         <img src="<?php echo esc_url( $ck_media ); ?>2026/07/img-prin.png"
