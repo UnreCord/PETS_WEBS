@@ -13,11 +13,13 @@
                   pavo, pollo, cordero, pato, cereales
    - necesidades: alergias, digestion, peso, articulaciones, urinario, esterilizado, pelaje
    - analisis:    porcentajes del análisis garantizado; kcal = energía metabolizable por kg (null si no se tiene)
+   - acento:      color de la receta en su empaque (banda de la tarjeta, nombre y ficha); por confirmar con fotos reales
    - verificar:   true mientras los datos vengan de fichas de tiendas y no del empaque */
 window.DIBAQ_CATALOGO = [
   /* ================= DIBAQ SENSE · PERROS ================= */
   {
     id: "sense-perro-cachorro-salmon-pavo",
+    acento: "#6CB8E6",
     linea: "sense", especie: "perro", edad: ["cachorro"], tamano: ["mini", "mediano", "grande"],
     nombre: "Cachorro salmón y pavo",
     completo: "Dibaq Sense Grain Free Puppy Salmón y Pavo",
@@ -34,6 +36,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-salmon",
+    acento: "#6CB8E6",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Salmón",
     completo: "Dibaq Sense Grain Free Salmón Adulto",
@@ -50,6 +53,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-salmon-mini",
+    acento: "#62ABC9",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini"],
     nombre: "Salmón mini",
     completo: "Dibaq Sense Grain Free Salmón Mini",
@@ -66,6 +70,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-cordero",
+    acento: "#B8324A",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Cordero",
     completo: "Dibaq Sense Grain Free Cordero Adulto",
@@ -82,6 +87,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-cordero-mini",
+    acento: "#C2405A",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini"],
     nombre: "Cordero mini",
     completo: "Dibaq Sense Grain Free Cordero Mini",
@@ -98,6 +104,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-pollo-pato",
+    acento: "#DFB91A",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Pollo y pato",
     completo: "Dibaq Sense Grain Free Pollo y Pato",
@@ -114,6 +121,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-conejo",
+    acento: "#62ABC9",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Conejo",
     completo: "Dibaq Sense Grain Free Sensitive Digestion Conejo",
@@ -130,6 +138,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-wild",
+    acento: "#BC5208",
     linea: "sense", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Wild ciervo y jabalí",
     completo: "Dibaq Sense Grain Free Wild",
@@ -146,6 +155,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-perro-light-senior",
+    acento: "#0B2440",
     linea: "sense", especie: "perro", edad: ["adulto", "senior"], tamano: ["mini", "mediano", "grande"],
     nombre: "Light y senior pato y pavo",
     completo: "Dibaq Sense Grain Free Light & Senior Pato y Pavo",
@@ -164,6 +174,7 @@ window.DIBAQ_CATALOGO = [
   /* ================= DIBAQ SENSE · GATOS ================= */
   {
     id: "sense-gato-kitten",
+    acento: "#C77B8B",
     linea: "sense", especie: "gato", edad: ["cachorro"], tamano: [],
     nombre: "Gatito pavo y salmón",
     completo: "Dibaq Sense Grain Free Kitten Pavo y Salmón",
@@ -180,6 +191,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-gato-esterilizado",
+    acento: "#DFB91A",
     linea: "sense", especie: "gato", edad: ["adulto"], tamano: [],
     nombre: "Esterilizado pollo y pato",
     completo: "Dibaq Sense Grain Free Sterilized Pollo y Pato",
@@ -196,6 +208,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "sense-gato-urinary",
+    acento: "#5B3A82",
     linea: "sense", especie: "gato", edad: ["adulto"], tamano: [],
     nombre: "Urinary salmón y atún",
     completo: "Dibaq Sense Grain Free Urinary Salmón y Atún",
@@ -214,6 +227,7 @@ window.DIBAQ_CATALOGO = [
   /* ================= NATURAL MOMENTS · PERROS (5 Star) ================= */
   {
     id: "nm-perro-cachorro-mediano",
+    acento: "#6BB5D9",
     linea: "nm", especie: "perro", edad: ["cachorro"], tamano: ["mediano"],
     nombre: "Cachorro razas medianas",
     completo: "Dibaq Natural Moments 5 Star Pavo y Pollo Cachorro Razas Medianas",
@@ -230,6 +244,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-cachorro-grande",
+    acento: "#2E4C8C",
     linea: "nm", especie: "perro", edad: ["cachorro"], tamano: ["grande"],
     nombre: "Cachorro razas grandes",
     completo: "Dibaq Natural Moments 5 Star Pavo y Pollo Cachorro Razas Grandes",
@@ -246,6 +261,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-adulto-mini",
+    acento: "#E77D5E",
     linea: "nm", especie: "perro", edad: ["adulto"], tamano: ["mini"],
     nombre: "Adulto razas pequeñas",
     completo: "Dibaq Natural Moments Pavo y Pollo Adulto Razas Pequeñas",
@@ -262,6 +278,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-adulto-mediano",
+    acento: "#D79A2A",
     linea: "nm", especie: "perro", edad: ["adulto"], tamano: ["mediano"],
     nombre: "Adulto razas medianas",
     completo: "Dibaq Natural Moments 5 Star Pavo y Pollo Adulto Razas Medianas",
@@ -278,6 +295,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-ocean",
+    acento: "#2F8FB8",
     linea: "nm", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Ocean salmón",
     completo: "Dibaq Natural Moments 5 Star Ocean",
@@ -294,6 +312,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-mountain",
+    acento: "#5E8B3E",
     linea: "nm", especie: "perro", edad: ["adulto"], tamano: ["mini", "mediano", "grande"],
     nombre: "Mountain cordero",
     completo: "Dibaq Natural Moments 5 Star Mountain",
@@ -310,6 +329,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-mobility",
+    acento: "#C8453A",
     linea: "nm", especie: "perro", edad: ["adulto", "senior"], tamano: ["mini", "mediano", "grande"],
     nombre: "Mobility pavo y krill",
     completo: "Dibaq Natural Moments 5 Star Mobility",
@@ -326,6 +346,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-perro-ultralight",
+    acento: "#8DBF5A",
     linea: "nm", especie: "perro", edad: ["adulto", "senior"], tamano: ["mini", "mediano", "grande"],
     nombre: "Ultralight",
     completo: "Dibaq Natural Moments 5 Star Ultralight",
@@ -344,6 +365,7 @@ window.DIBAQ_CATALOGO = [
   /* ================= NATURAL MOMENTS · GATOS (5 Star) ================= */
   {
     id: "nm-gato-kitten",
+    acento: "#C77B8B",
     linea: "nm", especie: "gato", edad: ["cachorro"], tamano: [],
     nombre: "Gatito pollo y pavo",
     completo: "Dibaq Natural Moments 5 Star Kitten",
@@ -360,6 +382,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-gato-complete-care",
+    acento: "#3E5A9A",
     linea: "nm", especie: "gato", edad: ["adulto", "senior"], tamano: [],
     nombre: "Complete Care",
     completo: "Dibaq Natural Moments 5 Star Complete Care",
@@ -376,6 +399,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-gato-esterilizado",
+    acento: "#C9A020",
     linea: "nm", especie: "gato", edad: ["adulto"], tamano: [],
     nombre: "Esterilizado pollo y pavo",
     completo: "Dibaq Natural Moments 5 Star Esterilizado Pollo y Pavo",
@@ -392,6 +416,7 @@ window.DIBAQ_CATALOGO = [
   },
   {
     id: "nm-gato-ocean-esterilizado",
+    acento: "#D2712A",
     linea: "nm", especie: "gato", edad: ["adulto"], tamano: [],
     nombre: "Ocean esterilizado",
     completo: "Dibaq Natural Moments 5 Star Ocean Esterilizado",

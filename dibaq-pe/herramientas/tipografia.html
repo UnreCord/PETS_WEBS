@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Sistema tipográfico Dibaq Perú</title>
+<!-- Lámina de docs/tipografia.webp. Captura a 1600×900 desde un servidor en dibaq-pe/. -->
+<style>
+@font-face{font-family:"Fraunces";src:url(../fonts/fraunces-latin-normal.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"Circular";src:url(../fonts/circular-book.woff2) format("woff2")}
+@font-face{font-family:"Authenia";src:url(../fonts/authenia-es.woff2) format("woff2")}
+@font-face{font-family:"Dibaq Logo";src:url(../fonts/jakarta-logo.woff2) format("woff2");font-weight:200 800}
+*{box-sizing:border-box;margin:0}
+body{width:1600px;height:900px;background:#F7F5F0;color:#121110;font-family:"Circular",sans-serif;display:grid;grid-template-columns:1.25fr 1fr;overflow:hidden}
+.izq{padding:70px 70px 60px}
+.der{background:#F2E8D5;padding:70px 64px;display:flex;flex-direction:column;gap:34px}
+.sobre{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#5E5A52;margin-bottom:26px}
+h1{font-family:"Fraunces";font-weight:700;font-variation-settings:"SOFT" 0,"WONK" 0;font-size:92px;line-height:.98;letter-spacing:-.01em}
+.mano{font-family:"Authenia";color:#B0104A;font-size:64px;transform:rotate(-5deg);display:inline-block;margin:6px 0 18px 300px}
+p.lead{font-size:22px;line-height:1.5;color:#3d3a34;max-width:640px}
+.btn{display:inline-block;margin-top:34px;background:#121110;color:#F7F5F0;border-radius:999px;padding:18px 30px;font-size:18px}
+.f{border-top:1px solid #D9C9A8;padding-top:18px}
+.f__nom{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:#5E5A52;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.f__nom b{font-weight:400;color:#8A5A30}
+.m1{font-family:"Fraunces";font-weight:700;font-variation-settings:"SOFT" 0,"WONK" 0;font-size:46px;line-height:1.05}
+.m2{font-size:30px;line-height:1.2}
+.m2 small{display:block;font-size:17px;color:#5E5A52;margin-top:8px;line-height:1.5}
+.m3{font-family:"Authenia";font-size:56px;color:#B0104A;line-height:1}
+.m4{font-family:"Dibaq Logo";font-weight:700;font-size:40px;letter-spacing:-.02em}
+.m4 span{font-family:"Circular";font-weight:400;font-size:18px;color:#5E5A52;margin-left:8px}
+.paleta{display:flex;gap:10px;margin-top:auto}
+.paleta i{flex:1;height:46px;border-radius:10px;border:1px solid rgba(0,0,0,.06)}
+</style></head><body>
+<div class="izq">
+  <p class="sobre">Nutrición holística para perros y gatos</p>
+  <h1>Lo cuidas como<br>a un hijo.<br>Aliméntalo igual.</h1>
+  <span class="mano">¡y te lo trae!</span>
+  <p class="lead">Carne o pescado fresco como primer ingrediente, recetas sin cereales en Sense y naturales en Natural Moments. Hecho en España por Dibaq.</p>
+  <span class="btn">Encontrar su alimento</span>
+</div>
+<div class="der">
+  <div class="f"><div class="f__nom">Fraunces 700 <b>Títulos</b></div><div class="m1">Un gato no es un perro pequeño.</div></div>
+  <div class="f"><div class="f__nom">Circular Book <b>Textos, filtros y datos</b></div><div class="m2">Salmón fresco 20 % · Sin trigo, maíz ni soja<small>Proteína 28 % · Grasa 16 % · 3,850 kcal/kg · Sacos de 2 y 12 kg</small></div></div>
+  <div class="f"><div class="f__nom">Authenia <b>Solo notas cortas a mano</b></div><div class="m3">sin trucos · síguenos :)</div></div>
+  <div class="f"><div class="f__nom">Plus Jakarta Sans (recorte) <b>Nombre en el encabezado</b></div><div class="m4">Dibaq<span>Perú</span></div></div>
+  <div class="paleta"><i style="background:#F7F5F0"></i><i style="background:#F2E8D5"></i><i style="background:#D9B56E"></i><i style="background:#8A5A30"></i><i style="background:#B0104A"></i><i style="background:#6CB8E6"></i><i style="background:#1E1C18"></i></div>
+</div>
+</body></html>

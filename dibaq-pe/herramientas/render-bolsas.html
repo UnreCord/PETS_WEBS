@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <title>Render de bolsas Dibaq</title>
 <style>
-  @font-face{font-family:"Cormorant Infant";src:url(../fonts/cormorant-infant-latin-300-normal.woff2) format("woff2");font-weight:300}
+  @font-face{font-family:"Fraunces";src:url(../fonts/fraunces-latin-normal.woff2) format("woff2");font-weight:100 900}
   @font-face{font-family:"Hanken Grotesk";src:url(../fonts/hanken-grotesk-latin-wght-normal.woff2) format("woff2");font-weight:100 900}
+  @font-face{font-family:"Authenia";src:url(../fonts/authenia.woff2) format("woff2")}
   html,body{margin:0;background:transparent}
   canvas{display:block}
 </style>
@@ -14,17 +15,14 @@
 <body>
 <script src="../js/catalogo.js"></script>
 <script type="module">
-/* Renders a provisional 3D bag for each product in the catalog (window.renderBag(id) -> PNG data URL).
+/* Renders a provisional 3D bag for each product in the catalog (window.renderBag(id) -> PNG data URL), in the
+   language of the real packaging: Sense is a white bag with the "S" of fresh ingredients and a colored variety name;
+   Natural Moments is a charcoal bag with the script logo, the "5 Star" seal and a colored recipe label.
    Driven by render-bolsas.mjs; open with ?id=<product id> to preview one bag in the browser. */
 import * as THREE from "three";
 import { RoomEnvironment } from "../vendor/RoomEnvironment.js";
 
 const SIZE = { w: 1000, h: 1250 };
-const FOOD = { // the only color on the page is the food: one color per protein (same values as js/app.js)
-  "Salmón": "#EE8B62", "Arenque": "#8FA9BA", "Atún": "#6A98BD", "Krill": "#E06A4E",
-  "Cordero": "#C47D6E", "Pavo": "#D4A05A", "Pollo": "#E2BC6C", "Pato": "#76A07C",
-  "Conejo": "#C4AA8E", "Ciervo": "#A97D5D", "Jabalí": "#9C7A62"
-};
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1);
@@ -108,6 +106,16 @@ function bottom() { // oval gusset floor joining the bottom rows of both panels
 }
 
 /* ---------- Label texture ---------- */
+const cargar = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+const ESE = await cargar("../img/marca/ese-ingredientes.webp");
+const GATO = await cargar("../img/marca/gato.webp");
+// color of each Natural Moments recipe label, as on the shelf: blue Complete Care, yellow sterilized, orange Ocean, pink kitten
+const NM_COLOR = {
+  "nm-gato-complete-care": "#3A6FB5", "nm-gato-esterilizado": "#E9B92F", "nm-gato-ocean-esterilizado": "#EE7D2B", "nm-gato-kitten": "#E58A9A",
+  "nm-perro-ocean": "#2F8FB8", "nm-perro-mountain": "#5E8B3E", "nm-perro-mobility": "#C8453A", "nm-perro-ultralight": "#8DBF5A",
+  "nm-perro-adulto-mediano": "#D9A53A", "nm-perro-adulto-mini": "#E77D5E", "nm-perro-cachorro-mediano": "#6BB5D9", "nm-perro-cachorro-grande": "#2E4C8C"
+};
+const SENSE_PERRO = "#3E9AD0", SENSE_GATO = "#7D5BA6";
 function luminance(hex) {
   const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(x => x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4));
   return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
@@ -129,50 +137,98 @@ function wrapLines(ctx, text, maxW) { // one line if it fits, otherwise the most
   }
   return best.lines;
 }
-const AGE = { cachorro: { perro: "Cachorro", gato: "Gatito" }, adulto: { perro: "Adulto", gato: "Adulto" }, senior: { perro: "Senior", gato: "Senior" } };
+function etapa(p) {
+  if (p.especie === "gato") return p.edad[0] === "cachorro" ? "GATITO" : p.necesidades.includes("esterilizado") ? "GATO ESTERILIZADO" : "GATO ADULTO";
+  const e = p.edad[0] === "cachorro" ? "CACHORRO" : p.edad.includes("senior") ? "ADULTO Y SENIOR" : "ADULTO";
+  const t = p.tamano.length === 3 ? "" : p.tamano[0] === "mini" ? " MINI" : p.tamano[0] === "mediano" ? " MEDIANO" : " GRANDE";
+  return e + t;
+}
 function labelTexture(p) {
   const cw = 1200, ch = Math.round(cw * HB / W);
   const c = document.createElement("canvas"); c.width = cw; c.height = ch;
   const x = c.getContext("2d");
   const sense = p.linea === "sense";
-  const base = sense ? "#141414" : "#F4F3EF", ink = sense ? "#FFFFFF" : "#0A0A0A", soft = sense ? "#9A9A9A" : "#6A6A6A";
+  const base = sense ? "#F4F2EC" : "#1E1C18";
   x.fillStyle = base; x.fillRect(0, 0, cw, ch);
-  // fine paper grain
-  const img = x.getImageData(0, 0, cw, ch), d = img.data;
-  for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * (sense ? 7 : 5); d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  const img = x.getImageData(0, 0, cw, ch), d = img.data; // fine paper grain
+  for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * (sense ? 6 : 7); d[i] += n; d[i + 1] += n; d[i + 2] += n; }
   x.putImageData(img, 0, 0);
   x.textAlign = "center"; x.textBaseline = "alphabetic";
-  const top = ch; // canvas y=0 is the top of the bag (v=1)
-  // food color block at the bottom, split when the recipe has two proteins
-  const cols = p.proteinas.slice(0, 2).map(n => FOOD[n] || "#B08A5E");
-  const by = Math.round(ch * 0.66);
-  const wave = (dy, color) => { x.fillStyle = color; x.beginPath(); x.moveTo(0, by + 60 + dy); x.quadraticCurveTo(cw / 2, by - 60 + dy, cw, by + 60 + dy); x.lineTo(cw, ch); x.lineTo(0, ch); x.closePath(); x.fill(); };
-  if (cols.length > 1) { wave(0, cols[1]); wave(34, cols[0]); } // second protein as a thin band over the main one
-  else wave(0, cols[0]);
-  // brand
-  x.fillStyle = ink; x.font = "700 54px 'Hanken Grotesk'"; spaced(x, "DIBAQ", cw / 2, 190, 26);
-  x.font = "300 " + (sense ? 250 : 170) + "px 'Cormorant Infant'";
-  if (sense) x.fillText("Sense", cw / 2, 420);
-  else { x.fillText("Natural", cw / 2, 360); x.fillText("Moments", cw / 2, 505); }
-  x.fillStyle = soft; x.font = "500 38px 'Hanken Grotesk'";
-  x.fillText(sense ? "Grain free · hipoalergénico" : "5 Star · ingredientes naturales", cw / 2, sense ? 500 : 580);
-  // product
-  x.fillStyle = ink; x.font = "300 118px 'Cormorant Infant'";
-  const lines = wrapLines(x, p.nombre.charAt(0).toUpperCase() + p.nombre.slice(1), cw - 260);
-  const ny = (sense ? 745 : 790) - (lines.length - 1) * 58;
-  lines.forEach((l, i) => x.fillText(l, cw / 2, ny + i * 112));
-  x.fillStyle = soft; x.font = "500 40px 'Hanken Grotesk'";
-  const ages = p.edad.map(e => AGE[e][p.especie].toLowerCase()).join(" y ");
-  const who = (p.especie === "gato" && p.edad[0] === "cachorro" ? "Gatito" : (p.especie === "perro" ? "Perro " : "Gato ") + ages)
-    + (p.especie === "perro" ? (p.tamano.length === 3 ? " · todas las razas" : p.tamano[0] === "mini" ? " · razas pequeñas" : p.tamano[0] === "mediano" ? " · razas medianas" : " · razas grandes") : "");
-  x.fillText(who, cw / 2, ny + (lines.length - 1) * 112 + 82);
-  // weight on the color block
-  const onBlock = luminance(cols[0]) > 0.33 ? "#0A0A0A" : "#FFFFFF";
-  x.fillStyle = onBlock; x.font = "600 64px 'Hanken Grotesk'";
+  const nombre = p.nombre.charAt(0).toUpperCase() + p.nombre.slice(1);
   const big = p.formatos ? p.formatos[p.formatos.length - 1] : "";
-  if (big) x.fillText(big, cw / 2, ch - 120);
-  x.font = "500 34px 'Hanken Grotesk'";
-  x.fillText(p.proteinas.join(" · "), cw / 2, ch - 210);
+  if (sense) {
+    const acento = p.acento || (p.especie === "gato" ? SENSE_GATO : SENSE_PERRO), tinta = "#33261F";
+    x.fillStyle = tinta; x.font = "700 86px 'Hanken Grotesk'"; x.fillText("Dibaq", cw / 2, 205);
+    x.font = "800 280px Fraunces"; x.fillText("Sense", cw / 2, 455);
+    x.fillStyle = "#7A746E"; x.font = "600 30px 'Hanken Grotesk'"; spaced(x, p.especie === "gato" ? "HOLISTIC CAT FOOD" : "HOLISTIC DOG FOOD", cw / 2, 525, 9);
+    // Grain Free badge
+    x.strokeStyle = tinta; x.lineWidth = 4; x.beginPath(); x.arc(215, 690, 92, 0, 7); x.stroke();
+    x.fillStyle = tinta; x.font = "600 50px Fraunces"; x.fillText("Grain", 215, 682); x.fillText("Free", 215, 732);
+    // the S of fresh ingredients
+    const sh = 700, sw = sh * ESE.width / ESE.height;
+    x.drawImage(ESE, cw / 2 - sw / 2 + 80, 555, sw, sh);
+    // variety name and stage
+    x.textAlign = "left";
+    x.fillStyle = acento; x.font = "700 92px 'Hanken Grotesk'";
+    const lines = wrapLines(x, nombre, cw - 200);
+    const y0 = 1395 + (lines.length === 1 ? 60 : 0);
+    lines.forEach((l, i) => x.fillText(l, 100, y0 + i * 92));
+    x.font = "600 30px 'Hanken Grotesk'"; x.fillStyle = acento; x.fillText("HIPOALERGÉNICO · GRAIN FREE", 102, y0 + (lines.length - 1) * 92 + 52);
+    // stage pill
+    x.font = "700 30px 'Hanken Grotesk'";
+    const et = etapa(p), pw = x.measureText(et).width + 56;
+    x.fillStyle = acento; x.beginPath(); x.roundRect(cw - 100 - pw, ch - 150, pw, 62, 31); x.fill();
+    x.fillStyle = "#fff"; x.textAlign = "center"; x.fillText(et, cw - 100 - pw / 2, ch - 108);
+    if (big) { x.fillStyle = tinta; x.font = "700 52px 'Hanken Grotesk'"; x.textAlign = "left"; x.fillText(big, 100, ch - 104); }
+  } else {
+    // Natural Moments: misty white top fading into a dark forest, black script logo, the pet in the mist, colored recipe label
+    const col = p.acento || NM_COLOR[p.id] || "#C9A94E";
+    const niebla = x.createLinearGradient(0, 0, 0, ch * 0.62);
+    niebla.addColorStop(0, "#F4F4F2"); niebla.addColorStop(0.7, "#E2E3E0"); niebla.addColorStop(1, "#C9CBC7");
+    x.fillStyle = niebla; x.fillRect(0, 0, cw, ch * 0.62);
+    const r = (() => { let a = p.id.length * 97; return () => { a = (a * 9301 + 49297) % 233280; return a / 233280; }; })();
+    const capa = (y0, alto, color, n) => { // a row of pines, each one narrow with a few tiers
+      x.fillStyle = color; x.fillRect(0, y0, cw, ch - y0);
+      for (let i = 0; i < n; i++) {
+        const cx = (i + r() * 0.8) / n * cw, h = alto * (0.5 + r() * 0.6), wv = h * (0.22 + r() * 0.08);
+        x.beginPath(); x.moveTo(cx, y0 - h);
+        for (let k = 1; k <= 3; k++) { const yy = y0 - h + h * k / 3; x.lineTo(cx + wv * k / 3 + 6, yy); x.lineTo(cx + wv * k / 3 * 0.55, yy - 4); }
+        for (let k = 3; k >= 1; k--) { const yy = y0 - h + h * k / 3; x.lineTo(cx - wv * k / 3 * 0.55, yy - 4); x.lineTo(cx - wv * k / 3 - 6, yy); }
+        x.closePath(); x.fill();
+      }
+    };
+    capa(ch * 0.6, 170, "#B8BCB7", 26);
+    capa(ch * 0.645, 200, "#7B807B", 22);
+    capa(ch * 0.69, 220, "#3A3C38", 18);
+    capa(ch * 0.725, 160, "#22231F", 14);
+    x.fillStyle = "#1E1C18"; x.fillRect(0, ch * 0.74, cw, ch * 0.26);
+    // logo
+    x.fillStyle = "#121110"; x.textAlign = "left"; x.font = "800 64px 'Hanken Grotesk'"; x.fillText("Dibaq", 110, 190);
+    x.save(); x.translate(100, 330); x.rotate(-0.04); x.font = "150px Authenia"; x.fillText("Natural Moments", 0, 0); x.restore();
+    // Five Star Menu seal
+    x.fillStyle = "#121110"; x.beginPath(); x.arc(cw - 150, 470, 92, 0, 7); x.fill();
+    x.fillStyle = "#E7D3A0"; x.textAlign = "center"; x.font = "700 34px 'Hanken Grotesk'"; x.fillText("★★★★★", cw - 150, 462);
+    x.font = "700 21px 'Hanken Grotesk'"; spaced(x, "FIVE STAR", cw - 150, 500, 2); spaced(x, "MENU", cw - 150, 526, 2);
+    // the pet in the mist (cats); dogs get the first ingredients
+    if (p.especie === "gato") { const gh = 700, gw = gh * GATO.width / GATO.height; x.drawImage(GATO, cw / 2 - gw / 2, ch * 0.62 - gh + 120, gw, gh); }
+    else {
+      x.fillStyle = "#2B2A27"; x.textAlign = "left"; x.font = "500 44px 'Hanken Grotesk'";
+      p.ingredientes.slice(0, 3).forEach(([n, v], i) => x.fillText(n + (v ? "  " + v : ""), 120, 560 + i * 70));
+      x.fillStyle = "#5A5A56"; x.font = "500 32px 'Hanken Grotesk'"; x.fillText("Hierbas mediterráneas · Ingredientes naturales", 120, 560 + 3 * 70 + 6);
+    }
+    // recipe label on the dark band
+    x.font = "800 88px Fraunces";
+    const lines = wrapLines(x, nombre, cw - 320);
+    const ly = Math.round(ch * 0.755) - (lines.length - 1) * 88; // two-line names get a taller label
+    x.fillStyle = col; x.beginPath(); x.roundRect(90, ly, cw - 180, ch - ly - 80, 26); x.fill();
+    const onCol = luminance(col) > 0.42 ? "#1A1A1A" : "#FFFFFF";
+    x.fillStyle = onCol; x.textAlign = "left";
+    x.font = "700 30px 'Hanken Grotesk'"; x.fillText(etapa(p), 142, ly + 70);
+    x.font = "800 88px Fraunces";
+    lines.forEach((l, i) => x.fillText(l, 140, ly + 160 + i * 88));
+    x.font = "500 32px 'Hanken Grotesk'"; x.fillText(p.proteinas.join(" · "), 142, ch - 118);
+    if (big) { x.textAlign = "right"; x.font = "700 50px 'Hanken Grotesk'"; x.fillText(big, cw - 140, ch - 118); }
+  }
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
   return { tex: t, base };
@@ -189,7 +245,7 @@ function build(p) {
   if (current) { scene.remove(current); current.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }
   const { tex, base } = labelTexture(p);
   const sense = p.linea === "sense";
-  const film = { roughness: sense ? 0.55 : 0.42, clearcoat: sense ? 0.2 : 0.45, clearcoatRoughness: 0.35, sheen: 0.25, sheenRoughness: 0.6, sheenColor: new THREE.Color(sense ? 0x444444 : 0xffffff) };
+  const film = { roughness: sense ? 0.62 : 0.5, clearcoat: sense ? 0.12 : 0.3, clearcoatRoughness: 0.35, sheen: 0.25, sheenRoughness: 0.6, sheenColor: new THREE.Color(sense ? 0xffffff : 0x666666) };
   const front = new THREE.Mesh(panel(1), new THREE.MeshPhysicalMaterial({ map: tex, ...film }));
   const back = new THREE.Mesh(panel(-1), new THREE.MeshPhysicalMaterial({ color: new THREE.Color(base), ...film }));
   const floor = new THREE.Mesh(bottom(), new THREE.MeshPhysicalMaterial({ color: new THREE.Color(base), ...film, side: THREE.DoubleSide }));
@@ -202,8 +258,9 @@ function build(p) {
   current = g;
 }
 
-await document.fonts.load("300 100px 'Cormorant Infant'");
+await document.fonts.load("800 100px Fraunces");
 await document.fonts.load("600 40px 'Hanken Grotesk'");
+await document.fonts.load("100px Authenia");
 window.renderBag = id => {
   const p = window.DIBAQ_CATALOGO.find(x => x.id === id);
   build(p);
