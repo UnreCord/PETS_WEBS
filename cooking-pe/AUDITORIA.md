@@ -71,14 +71,18 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
     - la calculadora en dos paneles, "Tu mascota" y "Su plan", con el botón "Ver su plan →";
     - el mapa con el selector "Mapa | Lista de tiendas"; al tocar una tienda de la lista se abre en el mapa.
   - El menú tiene las mismas opciones que en computadora y termina con el botón naranja "Encuentra tu tienda".
-  - En el hero, el perro y el gato chefs aparecen detrás de las bolsas y ocupan el espacio entre los botones y las bolsas. En celulares bajos, donde las bolsas ya llenan ese espacio, no se muestran.
+  - En el hero, la foto de la cocina va como una franja al pie, con el perro a la izquierda y el gato a la derecha, y las bolsas entre los dos. El título queda centrado en el espacio de arriba. La foto no se agranda más porque se cortarían el perro o el gato.
   - En "Conócenos", las tres cifras llevan su ícono como en computadora, también en celulares bajos.
   - En "Lo que cuida cada receta", la foto del perro y el gato va en formato horizontal, a todo el ancho.
   - El contacto tiene dos paradas: primero el formulario y después los datos de Solpet con el pie de página.
   - En celulares bajos (667 px de alto o menos) se ocultan detalles secundarios. Por ejemplo, las razones de la receta dentro de la calculadora.
   - En tablets las secciones conservan su altura natural y el inicio de cada una se acomoda solo cuando el scroll se detiene cerca.
 
-- **Hero en la línea del original:** el perro y el gato chefs entran desde los lados y se funden con el fondo. El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras. Las bolsas suben desde una ola.
+- **Hero con la foto de la cocina** que entregó marketing: el perro chef a la izquierda, el gato chef a la derecha y la mesa con los ingredientes. Ocupa todo el hero, sin la franja blanca de antes.
+  - Las bolsas suben y quedan paradas sobre la mesa, en el espacio libre del centro, y flotan suavemente.
+  - La foto entra con un acercamiento lento. Con el mouse, foto y bolsas se mueven en sentidos opuestos, para dar profundidad.
+  - En laptops bajas, las bolsas bajan un poco sobre las tablas de la mesa para no achicarse. En tablets y celulares la foto es una franja al pie que se funde con el fondo.
+  - El subrayado naranja de "Cocina Nutricional" se dibuja al cargar, por debajo del texto, sin tocar las letras.
 - **Cinta de ingredientes en movimiento** con los ingredientes reales de las composiciones. Cada uno tiene su propio ícono de línea: pollo, salmón, cordero, papa, legumbres, zanahoria, habas, frutos rojos, manzana, romero y cítricos. La achicoria sigue en las composiciones, pero no está en la cinta porque es una palabra poco conocida.
 - **"Conócenos"** con la foto del perro y el gato con gorro de chef en un marco de arco, y un sello circular giratorio con el logo.
 - **"¡Los ingredientes marcan la diferencia!"**, con la distribución que pidió marketing:
@@ -163,7 +167,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 5. **Implementación en WordPress:** lista en `wordpress/cooking-landing.zip`, un plugin que reproduce este archivo tal cual. Agrega puntos de venta editables, guarda los mensajes del formulario y los envía con `wp_mail`, y tiene una página de ajustes. Los pasos para el proveedor están en `wordpress/GUIA-PROVEEDOR.md` (y en `.pdf`): instalación, fotos de producto, SMTP, exclusiones de caché y lista de revisión. Se probó en WordPress 6.5 con un tema de bloques y con un tema clásico. cooking.pe usa WordPress 7.1.2 con Astra Pro y Elementor Pro, así que conviene instalarlo primero en staging.
 6. **Datos del mapa:** INEI 2007 vía [peru-geojson](https://github.com/juaneladio/peru-geojson) (MPL-2.0). En esa fuente, Santa Anita y La Punta no tienen polígono propio, y Breña se corrigió a mano porque venía incompleta.
 7. **Imágenes de marca tomadas de capturas:**
-   - El perro y el gato chefs del hero están definidos en los CSS de Elementor, así que no tienen URL pública. Para la propuesta los recorté de las capturas del sitio (`img/marca/`). Al publicar, conviene reemplazarlos por los archivos originales en alta resolución, con el mismo nombre.
+   - La foto de la cocina del hero (`img/marca/hero-cocina.webp`) es la imagen que entregó marketing, en 1800 × 874 px. Si hay una versión más grande, conviene reemplazarla con el mismo nombre para monitores 4K.
    - El arco de ingredientes (`img/marca/ingredientes-arco.webp`) es la imagen original que entregó marketing.
 8. **Renders 3D e íconos:** los platos y croquetas son renders 3D propios (`img/render/`), incluidos el plato vacío y las croquetas del "alimento anterior" de la animación de 7 días. El logo de los renders y el de los marcadores del mapa vienen de una captura (el del mapa se pasó a vector). Si se entrega el logo oficial en SVG, se reemplazan y quedan más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más íconos propios en el mismo estilo para patata, habas, romero y "Hecho en Europa".
 9. **Mapa de calles:**
