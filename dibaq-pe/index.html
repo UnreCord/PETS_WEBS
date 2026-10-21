@@ -26,7 +26,8 @@ window.DIBAQ_CONFIG = {
   formEndpoint: "",        // URL que recibe el formulario en JSON (si está vacía, se abre el correo del visitante)
   instagram: "",           // URL completa del perfil
   facebook: "",            // URL completa de la página
-  distribuidor: "",        // "Distribuido en Perú por …"
+  distribuidor: "",        // "Distribuido en Perú por …"; también figura como responsable en la política de privacidad
+  libroReclamaciones: "",  // URL del Libro de Reclamaciones virtual de la empresa (se muestra en el pie)
   tiendas: [],             // [{ nombre: "Tienda", distrito: "Miraflores", direccion: "Av. …", telefono: "…", mapa: "https://maps.google.com/?q=…", delivery: true, online: false, veterinaria: false }]
   publicaciones: [         // publicaciones de redes que se muestran en "Peludines"
     { img: "img/comunidad/post-1.webp", alt: "Cachorro comiendo junto a una bolsa de Dibaq Sense Pavo y Salmón en el parque" },
@@ -49,7 +50,8 @@ window.DIBAQ_CONFIG = {
         <li><a href="#lineas">Las líneas</a></li>
         <li><a href="#ingredientes">Ingredientes</a></li>
         <li><a href="#buscador">Su alimento</a></li>
-        <li><a href="#comunidad">Peludines</a></li>
+        <li><a href="#guia">Cuánto darle</a></li>
+        <li><a href="#preguntas">Preguntas</a></li>
         <li><a href="#contacto">Dónde comprar</a></li>
       </ul>
     </nav>
@@ -67,7 +69,9 @@ window.DIBAQ_CONFIG = {
       <li><a href="#holistico">Holístico</a></li>
       <li><a href="#especies">Perro o gato</a></li>
       <li><a href="#buscador">Encuentra su alimento</a></li>
+      <li><a href="#guia">Cuánto darle</a></li>
       <li><a href="#comunidad">Peludines</a></li>
+      <li><a href="#preguntas">Preguntas frecuentes</a></li>
       <li><a href="#contacto">Dónde comprar</a></li>
     </ul>
   </nav>
@@ -81,7 +85,9 @@ window.DIBAQ_CONFIG = {
     <li><a href="#holistico" data-riel="holistico"><span>Holístico</span></a></li>
     <li><a href="#especies" data-riel="especies"><span>Perro o gato</span></a></li>
     <li><a href="#buscador" data-riel="buscador"><span>Su alimento</span></a></li>
+    <li><a href="#guia" data-riel="guia"><span>Cuánto darle</span></a></li>
     <li><a href="#comunidad" data-riel="comunidad"><span>Peludines</span></a></li>
+    <li><a href="#preguntas" data-riel="preguntas"><span>Preguntas</span></a></li>
     <li><a href="#contacto" data-riel="contacto"><span>Dónde comprar</span></a></li>
   </ol>
 </nav>
@@ -112,6 +118,11 @@ window.DIBAQ_CONFIG = {
           <a class="btn" href="#buscador">Encontrar su alimento</a>
           <a class="enlace" href="#lineas">Conocer las dos líneas</a>
         </div>
+        <ul class="sellos" role="list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c9 0 14-6 14-14C10 5 5 10 5 19z"/><path d="M5 19l8-8"/></svg>Carne o pescado fresco, primer ingrediente</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V9"/><path d="M12 13c-3 0-4-2-4-4 3 0 4 2 4 4zm0 0c3 0 4-2 4-4-3 0-4 2-4 4zm0-4c-2 0-3-2-3-4 2 0 3 2 3 4zm0 0c2 0 3-2 3-4-2 0-3 2-3 4z"/><path d="M4 4l16 16"/></svg>Sin trigo ni maíz</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/></svg>Hecho en España</li>
+        </ul>
       </div>
     </div>
     <a class="bajar" href="#lineas" aria-label="Ir a la siguiente sección"><span></span></a>
@@ -371,6 +382,64 @@ window.DIBAQ_CONFIG = {
     </div>
   </section>
 
+  <!-- ============ Guía de alimentación ============ -->
+  <section class="sec guia" id="guia" aria-labelledby="t-guia">
+    <div class="sec__in guia__in">
+      <header class="guia__cab">
+        <h2 class="h2" id="t-guia">¿Cuánto le doy?</h2>
+        <p class="aparte aparte--magenta" aria-hidden="true">ni más, ni menos</p>
+        <p class="lead">Una ración orientativa según su peso y su etapa, y cómo pasarlo a Dibaq sin molestar su estómago.</p>
+        <div class="pestanas" role="tablist" aria-label="Guía de alimentación">
+          <button type="button" role="tab" id="tab-racion" aria-controls="guia-racion" aria-selected="true">Su ración diaria</button>
+          <button type="button" role="tab" id="tab-cambio" aria-controls="guia-cambio" aria-selected="false" tabindex="-1">Cambio de alimento</button>
+        </div>
+      </header>
+
+      <div class="guia__panel" id="guia-racion" role="tabpanel" aria-labelledby="tab-racion">
+        <form class="calc" id="calc" novalidate>
+          <fieldset class="grupo">
+            <legend>Es un</legend>
+            <div class="seg" data-calc="especie">
+              <label><input type="radio" name="c-especie" value="perro" checked><span>Perro</span></label>
+              <label><input type="radio" name="c-especie" value="gato"><span>Gato</span></label>
+            </div>
+          </fieldset>
+          <div class="grupo peso">
+            <div class="peso__fila">
+              <label for="c-peso">Su peso</label>
+              <output id="c-peso-txt" for="c-peso">10 kg</output>
+            </div>
+            <input id="c-peso" type="range" min="1" max="70" step="0.5" value="10" aria-describedby="c-peso-txt">
+          </div>
+          <fieldset class="grupo">
+            <legend>Etapa</legend>
+            <div class="chips" data-calc="etapa"></div>
+          </fieldset>
+        </form>
+        <div class="calc__res" aria-live="polite">
+          <p class="calc__kcal"><b class="calc__num"></b> <span>kcal al día</span></p>
+          <p class="calc__tomas"></p>
+          <ul class="calc__recetas" role="list"></ul>
+          <p class="calc__nota"></p>
+        </div>
+      </div>
+
+      <div class="guia__panel" id="guia-cambio" role="tabpanel" aria-labelledby="tab-cambio" hidden>
+        <ol class="cambio" role="list">
+          <li><span class="cambio__dia">Días 1 y 2</span><span class="cambio__barra" style="--n:25%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>25 %</b> Dibaq, 75 % su alimento de antes</span></li>
+          <li><span class="cambio__dia">Días 3 y 4</span><span class="cambio__barra" style="--n:50%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>50 %</b> Dibaq, 50 % su alimento de antes</span></li>
+          <li><span class="cambio__dia">Días 5 y 6</span><span class="cambio__barra" style="--n:75%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>75 %</b> Dibaq, 25 % su alimento de antes</span></li>
+          <li><span class="cambio__dia">Día 7</span><span class="cambio__barra" style="--n:100%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>100 %</b> Dibaq</span></li>
+        </ol>
+        <ul class="consejos" role="list">
+          <li>Si notas heces blandas, quédate un par de días más en el paso anterior.</li>
+          <li>Agua fresca y limpia siempre a su alcance, sobre todo con alimento seco.</li>
+          <li>Si tiene una condición de salud, haz el cambio con su veterinario.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Peludines ============ -->
   <section class="sec comunidad" id="comunidad" aria-labelledby="t-comunidad">
     <div class="sec__in comunidad__in">
@@ -381,6 +450,52 @@ window.DIBAQ_CONFIG = {
         <div class="acciones comunidad__redes"></div>
       </header>
       <ul class="posts" role="list"></ul>
+    </div>
+  </section>
+
+  <!-- ============ Preguntas frecuentes ============ -->
+  <section class="sec preguntas" id="preguntas" aria-labelledby="t-preguntas">
+    <div class="sec__in preguntas__in">
+      <header class="preguntas__cab">
+        <h2 class="h2" id="t-preguntas">Preguntas frecuentes.</h2>
+        <p class="aparte aparte--ladrillo" aria-hidden="true">sin rodeos</p>
+        <p class="lead">Y si tu duda no está aquí, escríbenos: te respondemos con nombre y apellido.</p>
+        <div class="acciones"><a class="btn btn--sm" href="#contacto" data-wa>Hacer una consulta</a></div>
+      </header>
+      <div class="faq">
+        <details name="faq" open>
+          <summary>¿Qué significa que un alimento sea holístico?</summary>
+          <div class="faq__r"><p>Que la receta se piensa para el animal entero: su digestión, su piel y su pelo, sus articulaciones, su peso y su energía, y no solo para llenarlo. En Dibaq eso significa carne o pescado fresco como primer ingrediente e ingredientes que reconoces en la etiqueta. «Holístico» no es una categoría regulada, así que lo que vale es leer la composición.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cuál elijo: Sense o Natural Moments?</summary>
+          <div class="faq__r"><p><b>Sense</b> es para los más sensibles: sin cereales, con recetas hipoalergénicas y monoproteicas, y proteínas poco habituales como conejo o ciervo. <b>Natural Moments</b> es una alimentación natural para el día a día, con arroz como único cereal y hierbas mediterráneas. Si no sabes por dónde empezar, <a href="#buscador">usa el buscador</a> o escríbenos.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Sin cereales es mejor?</summary>
+          <div class="faq__r"><p>No necesariamente. Es útil si tu peludo no tolera algún cereal o tiene la piel o la digestión sensibles. Si come bien con cereales, Natural Moments es una muy buena opción. Ante cualquier condición de salud, consúltalo con su veterinario.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cuánto debo darle?</summary>
+          <div class="faq__r"><p>Depende de su peso, su edad y cuánto se mueve. <a href="#guia">La guía de alimentación</a> te da una ración orientativa, y la tabla del empaque la precisa para cada receta. Pésalo una vez al mes: si sube o baja de peso sin buscarlo, ajusta la ración en un 10 %.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cómo cambio su alimento a Dibaq?</summary>
+          <div class="faq__r"><p>De a pocos, en unos siete días, mezclando cada vez más del nuevo con el de antes. Así su estómago se adapta sin molestias. <a href="#guia" data-guia-cambio>Mira el cambio día por día</a>.</p></div>
+        </details>
+        <details name="faq">
+          <summary>Tiene alergias, ¿cuál le doy?</summary>
+          <div class="faq__r"><p>Primero, que su veterinario confirme a qué reacciona. Luego, en el buscador marca lo que no puede comer (pollo, pescado, cereales…) y verás solo las recetas que no lo llevan. Las recetas monoproteicas de Sense, con una sola proteína animal, son las más usadas en estos casos.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cómo lo guardo una vez abierto?</summary>
+          <div class="faq__r"><p>En su bolsa original, bien cerrada, en un lugar fresco y seco, lejos del sol. Así conserva su aroma y sus nutrientes. Lo ideal es terminarla en unas cuatro a seis semanas después de abrirla.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Dónde lo compro en Perú?</summary>
+          <div class="faq__r"><p>En tiendas de mascotas y veterinarias. Mira <a href="#contacto">las tiendas por distrito</a> o escríbenos y te decimos cuál te queda más cerca.</p></div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -425,6 +540,11 @@ window.DIBAQ_CONFIG = {
           <textarea id="c-mensaje" name="mensaje" rows="4" required placeholder="Por ejemplo: tengo un shih tzu de 6 años, 7 kg, alérgico al pollo. Vivo en Surco."></textarea>
           <p class="campo__error" id="e-mensaje"></p>
         </div>
+        <div class="campo campo--check">
+          <label class="check"><input id="c-acepto" name="acepto" type="checkbox" value="sí" required><span>Acepto que usen mis datos para responderme.</span></label>
+          <button class="enlace enlace--sm check__ver" type="button" data-privacidad>Política de privacidad</button>
+          <p class="campo__error" id="e-acepto"></p>
+        </div>
         <div class="form__pie">
           <button class="btn" type="submit">Enviar consulta</button>
           <p class="form__estado" id="form-estado" role="status"></p>
@@ -435,6 +555,7 @@ window.DIBAQ_CONFIG = {
       <div class="pie__in">
         <p class="pie__marca">Dibaq</p>
         <p class="pie__nota">Sense y Natural Moments son marcas de Dibaq. Los datos nutricionales son referenciales: revisa siempre el empaque y consulta a tu veterinario.</p>
+        <p class="pie__legal"><button type="button" data-privacidad>Política de privacidad</button><a data-reclamaciones href="#" hidden>Libro de Reclamaciones</a></p>
         <p class="pie__copy">© <span data-anio></span> Dibaq Perú</p>
       </div>
     </footer>
@@ -453,6 +574,24 @@ window.DIBAQ_CONFIG = {
     <div class="ficha__cuerpo"></div>
   </article>
 </div>
+
+<!-- Política de privacidad -->
+<dialog class="privacidad" id="privacidad" aria-labelledby="t-privacidad">
+  <div class="privacidad__in">
+    <button class="ficha__cerrar privacidad__cerrar" type="button" data-cerrar-priv aria-label="Cerrar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 class="h3" id="t-privacidad">Política de privacidad</h2>
+    <p>Tratamos tus datos según la Ley N.° 29733, Ley de Protección de Datos Personales, y su reglamento.</p>
+    <h3>Quién los trata</h3>
+    <p><span data-responsable>El distribuidor oficial de Dibaq en Perú</span>.</p>
+    <h3>Qué datos y para qué</h3>
+    <p>Tu nombre, tu correo, tu teléfono si lo dejas, los datos de tu mascota y tu consulta. Los usamos solo para responderte y recomendarte una receta o una tienda. No los vendemos ni los usamos para publicidad sin tu permiso.</p>
+    <h3>Cuánto tiempo</h3>
+    <p>El necesario para atender tu consulta.</p>
+    <h3>Tus derechos</h3>
+    <p>Puedes pedir acceder a tus datos, corregirlos, eliminarlos u oponerte a su uso escribiendo a <span data-correo-priv>nuestro correo de contacto</span>.</p>
+    <p>Esta web no usa cookies de seguimiento ni de publicidad.</p>
+  </div>
+</dialog>
 
 <script src="js/catalogo.js"></script>
 <script src="js/app.js"></script>

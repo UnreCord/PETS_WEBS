@@ -53,23 +53,41 @@ En la primera versión se descartaron Authenia y Circular. Al estudiar mejor la 
 
 Las fuentes están en `fonts/` en WOFF2. Authenia va recortada a los caracteres del español (264 KB).
 
+## Lo mínimo de una web de alimento holístico
+
+La versión 3 revisa la web contra lo que se espera de una marca holística premium (Taste of the Wild, Nutram, Acana y similares) y suma lo que faltaba:
+
+| Se espera | Dónde está |
+|---|---|
+| Propuesta clara y sellos de confianza | Inicio: título, "¡y te lo trae!" y tres sellos (carne o pescado fresco primero, sin trigo ni maíz, hecho en España) |
+| Líneas y catálogo | Las dos líneas y el buscador con filtros por especie, edad, raza, peso, necesidad y lo que no puede comer |
+| Transparencia de ingredientes | La S de ingredientes, las proteínas con su número de recetas y la ficha con composición y análisis |
+| Guía de alimentación | Nueva sección "¿Cuánto le doy?": ración diaria orientativa y cambio de alimento en 7 días. La ficha de cada receta también calcula su ración |
+| Preguntas frecuentes | Nueva sección con 8 respuestas cortas |
+| Dónde comprar y asesoría | Tiendas por distrito, WhatsApp y formulario |
+| Datos personales (Ley N.° 29733) | Casilla de aceptación en el formulario y política de privacidad |
+| Libro de Reclamaciones | Enlace en el pie, se activa con `libroReclamaciones` en `DIBAQ_CONFIG` |
+
 ## Secciones
 
-1. **Inicio:** el perro que trae la bolsa, el título y el acceso directo al buscador.
+1. **Inicio:** el perro que trae la bolsa, el título, los sellos y el acceso directo al buscador.
 2. **Las dos líneas:** Sense y Natural Moments lado a lado en computadora; en celular, con pestañas.
 3. **Lo que lleva:** la S de ingredientes en 3D y las proteínas, cada una con el número de recetas en que aparece. Al tocar una, ofrece "Ver las recetas con…" y "Ver las recetas sin…".
 4. **Holístico es mirarlo entero:** digestión, piel y pelo, articulaciones, peso y energía. Cada pilar enlaza al buscador ya filtrado.
 5. **Un gato no es un perro pequeño:** conmutador Perro / Gato, conteo de recetas y rango de proteína calculado del catálogo.
 6. **Encuentra su alimento:** el buscador (detalle abajo).
-7. **Tips, consejos y muchos peludines:** publicaciones de redes.
-8. **¿Dónde lo encuentro?:** tiendas por distrito, WhatsApp, redes y formulario de consulta.
+7. **¿Cuánto le doy?:** la guía de alimentación (detalle abajo).
+8. **Tips, consejos y muchos peludines:** publicaciones de redes.
+9. **Preguntas frecuentes:** qué es holístico, Sense o Natural Moments, sin cereales, cuánto darle, el cambio de alimento, alergias, conservación y dónde comprar.
+10. **¿Dónde lo encuentro?:** tiendas por distrito, WhatsApp, redes, formulario de consulta y pie con la política de privacidad y el Libro de Reclamaciones.
 
 ### Una sección por gesto
 
 - En computadora, cada giro de la rueda o gesto del touchpad lleva exactamente a la sección siguiente o anterior. La inercia del mismo gesto no salta dos secciones. Las listas con scroll propio (resultados, filtros, ficha) se recorren primero.
 - En celulares y tablets, cada deslizamiento lleva a la sección siguiente (`scroll-snap` con `scroll-snap-stop: always`).
 - Teclado, barra de desplazamiento, menú y riel lateral también caen al inicio de cada sección.
-- Cada sección mide una pantalla. Probado en 1920×1080, 1440×900, 1280×680, 1024×768, 820×1180, 412×915, 390×844, 375×667 y 360×740.
+- Cada sección mide una pantalla. Probado en 1920×1080, 1440×900, 1280×680, 1024×768, 820×1180, 412×915, 390×844, 375×667 y 360×740. La última (contacto con el pie) es algo más alta en celulares y laptops bajas, y se recorre normalmente hasta el final.
+- La guía y las preguntas frecuentes tienen su propio desplazamiento interno en el celular.
 
 ### Buscador
 
@@ -84,12 +102,20 @@ Las fuentes están en `fonts/` en WOFF2. Authenia va recortada a los caracteres 
 - Los filtros quedan en la dirección (`?especie=perro&edad=adulto&sin=pollo`) y cada ficha también (`?producto=sense-perro-cordero`), así se pueden compartir por WhatsApp.
 - La **ficha** de cada producto muestra la bolsa, para quién es, ingredientes principales con porcentaje, lo que no contiene, análisis garantizado, energía y formatos. Tiene botones para pasar a la receta anterior o siguiente y un botón de consulta (WhatsApp si está configurado; si no, lleva al formulario con el mensaje listo).
 
+### Guía de alimentación
+
+- **Ración diaria:** se elige perro o gato, el peso y la etapa (cachorro hasta 4 meses, cachorro de 4 a 12 meses, adulto esterilizado o no, que engorda fácil, muy activo, senior). La energía diaria sale de la fórmula veterinaria de uso común: 70 × peso^0,75 × un factor por etapa (de 1 a 3). Los gramos de cada receta se calculan con su energía metabolizable (`analisis.kcal` del catálogo).
+- **Hoy solo 6 recetas tienen ese dato** (Sense Salmón mini y cinco Natural Moments de perro). Las demás remiten a la tabla del empaque. Cuando se completen los `kcal` en `js/catalogo.js`, la guía y las fichas las incluyen solas. Conviene que el equipo veterinario de Dibaq valide los factores (en `ETAPAS`, `js/app.js`) y los compare con las tablas de los empaques.
+- **Cambio de alimento:** 25 %, 50 %, 75 % y 100 % en siete días, con tres consejos.
+
 ## Cómo editar
 
 | Qué | Dónde |
 |---|---|
 | Productos, ingredientes, análisis, formatos, color de cada receta | `js/catalogo.js` (un arreglo comentado; los conteos de toda la página salen de ahí) |
-| WhatsApp, correo, redes, distribuidor, tiendas, publicaciones | `window.DIBAQ_CONFIG` al inicio de `index.html` |
+| WhatsApp, correo, redes, distribuidor, tiendas, publicaciones, Libro de Reclamaciones | `window.DIBAQ_CONFIG` al inicio de `index.html` |
+| Preguntas frecuentes | Sección `#preguntas` de `index.html` (un `<details>` por pregunta) |
+| Política de privacidad | `<dialog id="privacidad">` al final de `index.html`; el responsable y el correo salen de `distribuidor` y `email` |
 | Publicaciones de "Peludines" | `img/comunidad/` (864 × 1080, WebP) y la lista `publicaciones` de `DIBAQ_CONFIG` |
 | Fotos de marca (perro con la bolsa, gato, cachorro) | `img/marca/` |
 | Fotos de las bolsas | `img/productos/<id>.webp`, con el mismo nombre que el `id` del producto |
@@ -134,12 +160,15 @@ Las fotos de `img/marca/` y `img/comunidad/` salen de las cinco imágenes entreg
    - "56 % de carne total en Sense Cachorro" (dato de la bolsa entregada).
    - "Hasta 95 % de proteína de origen animal" y "cocinado a baja temperatura" (Natural Moments).
    - "65 países" y la sede en Fuentepelayo, Segovia.
+   - Los sellos del inicio: "Carne o pescado fresco, primer ingrediente" y "Sin trigo ni maíz" valen para todas las recetas de las dos líneas.
 3. **Fotos reales** de las 24 bolsas y de marca (ver arriba).
 4. **Logo oficial.** El encabezado escribe "Dibaq" con una letra parecida. Con el SVG oficial se reemplaza en `.marca` de `index.html`.
 5. **Licencias web** de Circular y Authenia (ver Tipografía).
-6. **Contacto:** completar `whatsapp`, `email` (o `formEndpoint`), redes, distribuidor y tiendas en `DIBAQ_CONFIG`. Mientras `email` esté vacío, el formulario avisa que falta configurarlo.
-7. **Aprobación de marca de Dibaq España** para el uso de nombres, claims y la línea gráfica en Perú.
-8. **No incluido por ahora:** comida húmeda (latas y sobres), Vet Care, la línea Sense Low Grain y snacks. El catálogo admite más productos con los mismos campos.
+6. **Legal en Perú:** revisar con el área legal la política de privacidad (razón social y RUC del responsable, registro del banco de datos ante la Autoridad Nacional de Protección de Datos Personales si corresponde) y completar el enlace del Libro de Reclamaciones.
+7. **Guía de alimentación:** completar la energía (`kcal`) de las 18 recetas que no la tienen y validar los factores por etapa y el consejo de conservación ("terminar la bolsa en 4 a 6 semanas") con el equipo veterinario.
+8. **Contacto:** completar `whatsapp`, `email` (o `formEndpoint`), redes, distribuidor y tiendas en `DIBAQ_CONFIG`. Mientras `email` esté vacío, el formulario avisa que falta configurarlo.
+9. **Aprobación de marca de Dibaq España** para el uso de nombres, claims y la línea gráfica en Perú.
+10. **No incluido por ahora:** comida húmeda (latas y sobres), Vet Care, la línea Sense Low Grain y snacks. El catálogo admite más productos con los mismos campos.
 
 ## Notas técnicas
 

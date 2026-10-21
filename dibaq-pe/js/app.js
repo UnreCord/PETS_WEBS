@@ -463,6 +463,12 @@ function abrirFicha(id, desde) {
       ${filas.length || a.kcal ? `<h3>Análisis garantizado</h3>
       ${filas.length ? `<ul class="analisis" role="list">${filas.map(([n, v]) => `<li><span>${n}</span><span class="barra" aria-hidden="true"><i style="--v:${Math.min(100, v / 40 * 100)}%"></i></span><span>${num.format(v)} %</span></li>`).join("")}</ul>` : ""}
       ${a.kcal ? `<p class="ficha__kcal">Energía metabolizable: ${num.format(a.kcal)} kcal/kg</p>` : ""}` : ""}
+      <h3>¿Cuánto darle?</h3>
+      ${a.kcal ? `<div class="racion" data-kcal="${a.kcal}">
+        <label class="racion__peso">Si pesa <input type="number" min="1" max="${p.especie === "gato" ? 12 : 80}" step="0.5" value="${p.especie === "gato" ? 4 : 10}" inputmode="decimal" aria-label="Peso en kilos"> kg</label>
+        <p class="racion__res"><b></b> al día, aprox.</p>
+      </div>` : `<p class="ficha__kcal">Su tabla de ración viene en el empaque.</p>`}
+      <a class="enlace enlace--sm" href="#guia" data-guia="${p.especie}" data-edad="${p.edad[0]}">Calcular su ración y ver cómo hacer el cambio</a>
       <h3>Formatos</h3>
       ${p.formatos ? `<ul class="etiquetas" role="list">${p.formatos.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : `<p class="ficha__kcal">Consulta los formatos disponibles en Perú.</p>`}
       <p class="ficha__nota">Datos referenciales. Revisa la tabla de ración del empaque y consulta a tu veterinario si tiene una condición de salud.</p>
@@ -477,6 +483,13 @@ function abrirFicha(id, desde) {
     document.body.classList.add("bloqueado");
     requestAnimationFrame(() => requestAnimationFrame(() => ficha.classList.add("abierta")));
     panel.focus({ preventScroll: true });
+  }
+  const racion = $(".racion", cuerpo);
+  if (racion) {
+    const inp = $("input", racion), sal = $("b", racion), et = etapaDe(p.especie, p.edad[0]);
+    const pintar = () => { const kg = Math.min(+inp.max, Math.max(1, parseFloat(inp.value) || 0)); sal.textContent = `≈ ${num.format(gramos(kcalDia(kg, et.f), p))} g`; };
+    inp.addEventListener("input", pintar); pintar();
+    racion.insertAdjacentHTML("beforeend", `<p class="racion__nota">Para ${et.txt.toLowerCase()}. Ajústala según su actividad.</p>`);
   }
   cuerpo.scrollTop = 0;
   const q = new URLSearchParams(location.search); q.set("producto", id);
@@ -506,6 +519,8 @@ function initFicha() {
     }
     const c = e.target.closest("[data-consulta]");
     if (c) { const m = $("#c-mensaje"); if (!m.value) m.value = c.dataset.consulta + " "; cerrarFicha(); }
+    const g = e.target.closest("[data-guia]");
+    if (g) { cerrarFicha(); if (calcEspecie) calcEspecie(g.dataset.guia, g.dataset.edad); }
   });
   addEventListener("keydown", e => {
     if (ficha.hidden) return;
@@ -517,6 +532,106 @@ function initFicha() {
       else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
     }
   });
+}
+
+/* ---------- guía de alimentación: ración orientativa y cambio de alimento ---------- */
+// Energía diaria = 70 × peso^0,75 (energía en reposo) × factor de etapa, según las tablas veterinarias de uso común.
+// Los gramos salen de la energía de cada receta (analisis.kcal); sin ese dato, se remite a la tabla del empaque.
+const ETAPAS = {
+  perro: [
+    { id: "cachorro-4", txt: "Cachorro, hasta 4 meses", f: 3, edad: "cachorro", tomas: "Repártelo en 3 o 4 comidas." },
+    { id: "cachorro", txt: "Cachorro, 4 a 12 meses", f: 2, edad: "cachorro", tomas: "Repártelo en 3 comidas." },
+    { id: "esterilizado", txt: "Adulto esterilizado", f: 1.6, edad: "adulto", tomas: "Repártelo en 2 comidas." },
+    { id: "adulto", txt: "Adulto no esterilizado", f: 1.8, edad: "adulto", tomas: "Repártelo en 2 comidas." },
+    { id: "engorda", txt: "Adulto que engorda fácil", f: 1.4, edad: "adulto", tomas: "Repártelo en 2 comidas y usa su peso ideal." },
+    { id: "activo", txt: "Adulto muy activo", f: 2, edad: "adulto", tomas: "Repártelo en 2 comidas." },
+    { id: "senior", txt: "Senior, +7 años", f: 1.4, edad: "senior", tomas: "Repártelo en 2 comidas." }
+  ],
+  gato: [
+    { id: "gatito", txt: "Gatito, hasta 12 meses", f: 2.5, edad: "cachorro", tomas: "Repártelo en 3 o 4 comidas pequeñas." },
+    { id: "esterilizado", txt: "Adulto esterilizado", f: 1.2, edad: "adulto", tomas: "Repártelo en 2 a 4 comidas pequeñas." },
+    { id: "adulto", txt: "Adulto no esterilizado", f: 1.4, edad: "adulto", tomas: "Repártelo en 2 a 4 comidas pequeñas." },
+    { id: "engorda", txt: "Adulto que engorda fácil", f: 1, edad: "adulto", tomas: "Repártelo en 2 a 4 comidas y usa su peso ideal." },
+    { id: "senior", txt: "Senior, +7 años", f: 1.1, edad: "senior", tomas: "Repártelo en 2 a 4 comidas pequeñas." }
+  ]
+};
+const kcalDia = (kg, f) => Math.round(70 * Math.pow(kg, 0.75) * f / 10) * 10;
+const gramos = (kcal, p) => Math.round(kcal / p.analisis.kcal * 1000 / 5) * 5;
+const etapaDe = (especie, edad) => ETAPAS[especie].find(e => e.edad === edad && e.id !== "cachorro-4") || ETAPAS[especie][2];
+let calcEspecie = null;
+function initGuia() {
+  const sec = $("#guia"); if (!sec) return;
+  const tabs = $$(".pestanas [role=tab]", sec), paneles = tabs.map(t => $("#" + t.getAttribute("aria-controls")));
+  const elegir = i => {
+    tabs.forEach((t, k) => { t.setAttribute("aria-selected", String(k === i)); t.tabIndex = k === i ? 0 : -1; paneles[k].hidden = k !== i; });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => elegir(i));
+    t.addEventListener("keydown", e => { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { const j = (i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length; tabs[j].focus(); elegir(j); } });
+  });
+  $$("[data-guia-cambio]").forEach(a => a.addEventListener("click", () => elegir(1)));
+
+  const form = $("#calc"), peso = $("#c-peso"), pesoTxt = $("#c-peso-txt"), cajaEtapa = $("[data-calc=etapa]", form);
+  const res = $(".calc__res", sec);
+  let especie = "perro", etapa = "esterilizado";
+  const pintarEtapas = () => {
+    cajaEtapa.innerHTML = ETAPAS[especie].map(e => `<label><input type="radio" name="c-etapa" value="${e.id}"${e.id === etapa ? " checked" : ""}><span>${esc(e.txt)}</span></label>`).join("");
+  };
+  const calcular = () => {
+    const kg = parseFloat(peso.value), et = ETAPAS[especie].find(e => e.id === etapa);
+    pesoTxt.textContent = num.format(kg) + " kg";
+    const kcal = kcalDia(kg, et.f);
+    $(".calc__num", res).textContent = num.format(kcal);
+    $(".calc__tomas", res).textContent = et.tomas;
+    const propias = CAT.filter(p => p.especie === especie && p.edad.includes(et.edad) && (especie === "gato" || !p.tamano || p.tamano.includes(tamanoDe(kg))));
+    const conDato = propias.filter(p => p.analisis && p.analisis.kcal);
+    $(".calc__recetas", res).innerHTML = conDato.map(p => `<li><button type="button" class="calc__receta" data-id="${p.id}" style="--acento:${acentoDe(p)}"><span><small>${LINEA_TXT[p.linea]}</small>${esc(cap(p.nombre))}</span><b>≈ ${num.format(gramos(kcal, p))} g</b></button></li>`).join("");
+    const resto = propias.length - conDato.length;
+    const para = especie === "perro" ? "su tamaño y su etapa" : "su etapa";
+    const otras = !resto ? "" : resto === 1
+      ? `${conDato.length ? "La otra receta" : "La receta"} para ${para} trae su tabla de ración en el empaque. `
+      : `${conDato.length ? "Las otras" : "Las"} ${resto} recetas para ${para} traen su tabla de ración en el empaque. `;
+    $(".calc__nota", res).textContent = (conDato.length ? "Gramos de alimento seco al día. " : "") + otras +
+      "Es una referencia: ajústala según su condición y consulta a su veterinario.";
+  };
+  form.addEventListener("change", e => {
+    if (e.target.name === "c-especie") {
+      especie = e.target.value; etapa = "esterilizado";
+      peso.max = especie === "gato" ? 12 : 70; peso.value = especie === "gato" ? 4 : 10;
+      pintarEtapas();
+    }
+    if (e.target.name === "c-etapa") etapa = e.target.value;
+    calcular();
+  });
+  peso.addEventListener("input", calcular);
+  $(".calc__recetas", res).addEventListener("click", e => { const b = e.target.closest("[data-id]"); if (b) abrirFicha(b.dataset.id, b); });
+  // desde la ficha: abre la guía con su especie y su etapa
+  calcEspecie = (esp, edad) => {
+    const r = $(`input[name=c-especie][value=${esp}]`, form); r.checked = true;
+    especie = esp; etapa = etapaDe(esp, edad).id;
+    peso.max = esp === "gato" ? 12 : 70; if (esp === "gato" && +peso.value > 12) peso.value = 4;
+    pintarEtapas(); calcular(); elegir(0);
+  };
+  pintarEtapas(); calcular();
+}
+
+/* ---------- política de privacidad ---------- */
+function initPrivacidad() {
+  const dlg = $("#privacidad"); if (!dlg) return;
+  if (CFG.distribuidor) $$("[data-responsable]").forEach(n => { n.textContent = CFG.distribuidor; });
+  if (CFG.email) $$("[data-correo-priv]").forEach(n => { n.innerHTML = `<a href="mailto:${esc(CFG.email)}">${esc(CFG.email)}</a>`; });
+  let desde = null;
+  const cerrar = () => dlg.close();
+  $$("[data-privacidad]").forEach(b => b.addEventListener("click", () => {
+    desde = b;
+    if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+    document.body.classList.add("bloqueado");
+  }));
+  $("[data-cerrar-priv]", dlg).addEventListener("click", cerrar);
+  dlg.addEventListener("click", e => { if (e.target === dlg) cerrar(); });
+  dlg.addEventListener("close", () => { document.body.classList.remove("bloqueado"); if (desde) desde.focus(); });
+  const libro = $("[data-reclamaciones]");
+  if (CFG.libroReclamaciones && libro) { libro.href = CFG.libroReclamaciones; libro.target = "_blank"; libro.rel = "noopener"; libro.hidden = false; }
 }
 
 /* ---------- peludines: publicaciones de redes ---------- */
@@ -567,12 +682,21 @@ function initForm() {
     return !mal;
   };
   const campos = $$("input[type=text], input[type=email], input[type=tel], textarea", form);
+  const acepto = $("#c-acepto"), errAcepto = $("#e-acepto");
+  const validarAcepto = () => {
+    const ok = acepto.checked;
+    acepto.setAttribute("aria-invalid", String(!ok));
+    errAcepto.textContent = ok ? "" : "Necesitamos tu permiso para responderte.";
+    if (ok) acepto.removeAttribute("aria-describedby"); else acepto.setAttribute("aria-describedby", errAcepto.id);
+    return ok;
+  };
+  acepto.addEventListener("change", () => { if (acepto.getAttribute("aria-invalid") === "true") validarAcepto(); });
   campos.forEach(i => { i.addEventListener("blur", () => { if (i.value) validar(i); }); i.addEventListener("input", () => { if (i.getAttribute("aria-invalid") === "true") validar(i); }); });
   form.addEventListener("submit", async e => {
     e.preventDefault();
     estado.textContent = "";
-    const malos = campos.filter(i => !validar(i));
-    if (malos.length) { malos[0].focus(); estado.textContent = "Revisa los campos marcados."; return; }
+    const malos = campos.filter(i => !validar(i)), aceptado = validarAcepto();
+    if (malos.length || !aceptado) { (malos[0] || acepto).focus(); estado.textContent = "Revisa los campos marcados."; return; }
     const d = Object.fromEntries(new FormData(form));
     if (!CFG.formEndpoint) {
       if (!CFG.email) { estado.textContent = "El formulario aún no tiene un correo configurado (DIBAQ_CONFIG.email)."; return; }
@@ -603,6 +727,8 @@ initProteinas();
 initBuscador();
 initFicha();
 initComunidad();
+initGuia();
+initPrivacidad();
 initTiendas();
 initForm();
 initInicio();

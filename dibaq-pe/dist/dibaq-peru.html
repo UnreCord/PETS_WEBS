@@ -461,6 +461,85 @@ html:not(.js) .entrega__panel,.entrega.sin-animacion .entrega__panel{display:non
   .posts li:nth-child(1) .post{aspect-ratio:4 / 5;height:auto}
 }
 
+/* ============ Guía de alimentación ============ */
+.guia{background:var(--crema)}
+/* en el teléfono la guía y las preguntas miden una pantalla: lo que no cabe se desplaza dentro */
+@media (max-width:767px){ .guia,.preguntas{height:100vh;height:100svh} }
+.guia__in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:clamp(28px, 5vw, 96px);align-items:center}
+.guia__cab .lead{margin:6px 0 clamp(18px, 3vh, 28px)}
+.pestanas{display:inline-flex;flex-wrap:wrap;border:1px solid var(--tinta);border-radius:999px;padding:3px;gap:2px}
+.pestanas button{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-size:var(--fs-sm);transition:background-color .25s,color .25s}
+.pestanas button[aria-selected="true"]{background:var(--tinta);color:var(--papel)}
+.pestanas button:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.guia__panel{background:var(--papel);border-radius:26px;padding:clamp(20px, 2.6vw, 36px);box-shadow:var(--sombra);max-height:calc(100svh - var(--hb) - 64px);overflow-y:auto;overscroll-behavior:contain}
+#guia-racion:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px, 2.6vw, 40px)}
+.calc .grupo{border:0;margin:0 0 18px;padding:0;min-width:0}
+.calc legend,.calc .peso__fila label{font-size:var(--fs-sm);margin-bottom:8px;padding:0}
+.calc .seg{max-width:260px}
+.calc .peso__fila output{font-family:var(--f-titulo);font-weight:700;font-size:1.35rem}
+.calc input[type=range]{width:100%;accent-color:var(--tinta)}
+.calc__res{border-left:1px solid var(--hilo);padding-left:clamp(20px, 2.6vw, 40px);display:flex;flex-direction:column}
+.calc__kcal{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.calc__num{font-family:var(--f-titulo);font-weight:700;font-size:clamp(2.6rem, 3vw + 1rem, 3.8rem);line-height:1;letter-spacing:-.02em}
+.calc__kcal span{color:var(--gris);font-size:var(--fs-sm)}
+.calc__tomas{font-size:var(--fs-sm);margin:6px 0 16px}
+.calc__recetas{display:grid;gap:8px}
+.calc__receta{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border:1px solid var(--hilo);border-left:5px solid var(--acento);border-radius:12px;background:var(--tarjeta);padding:10px 14px;font-size:var(--fs-sm);line-height:1.3;transition:border-color .2s}
+.calc__receta:hover{border-color:var(--tinta);border-left-color:var(--acento)}
+.calc__receta small{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.calc__receta b{font-family:var(--f-titulo);font-size:1.15rem;white-space:nowrap}
+.calc__nota{font-size:var(--fs-xs);color:var(--gris);margin-top:14px}
+.cambio{display:grid;gap:14px}
+.cambio li{display:grid;grid-template-columns:7.5em minmax(0,1fr);align-items:center;gap:6px 16px}
+.cambio__dia{font-family:var(--f-titulo);font-weight:700;font-size:1.1rem}
+.cambio__barra{height:16px;border-radius:999px;background:repeating-linear-gradient(135deg, #E6DDCB 0 6px, #EFE8DA 6px 12px);overflow:hidden}
+.cambio__barra i{display:block;height:100%;width:var(--n);background:var(--pasto);border-radius:999px}
+.cambio__txt{grid-column:2;font-size:var(--fs-sm);color:var(--gris)}
+.cambio__txt b{color:var(--tinta);font-weight:400}
+.consejos{display:grid;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid var(--hilo)}
+.consejos li{position:relative;padding-left:22px;font-size:var(--fs-sm)}
+.consejos li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--pasto)}
+@media (max-width:1023px){
+  .guia__in{grid-template-columns:1fr;align-content:start;row-gap:16px}
+  #guia-racion:not([hidden]){grid-template-columns:1fr}
+  .calc__res{border-left:0;padding-left:0;border-top:1px solid var(--hilo);padding-top:16px}
+}
+@media (max-width:767px){
+  .guia .lead{display:none}
+  .guia__cab .pestanas{margin-top:10px}
+  .pestanas button{padding:0 14px}
+  .guia__panel{padding:16px;border-radius:20px;max-height:none;flex:1;min-height:0}
+  .guia__in{display:flex;flex-direction:column;padding-bottom:16px}
+  .calc .grupo{margin-bottom:12px}
+  .calc .chips span{min-height:32px;padding:0 11px;font-size:var(--fs-xs)}
+  .calc__num{font-size:2.4rem}
+  .cambio li{grid-template-columns:1fr;gap:4px}
+  .cambio__txt{grid-column:1}
+}
+
+/* ============ Preguntas frecuentes ============ */
+.preguntas{background:var(--papel)}
+.preguntas__in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:clamp(28px, 5vw, 96px);align-items:center}
+.preguntas__cab .lead{margin:6px 0 22px}
+.faq{max-height:calc(100svh - var(--hb) - 64px);overflow-y:auto;overscroll-behavior:contain;padding-right:6px;border-top:1px solid var(--hilo)}
+.faq details{border-bottom:1px solid var(--hilo)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 2px;font-family:var(--f-titulo);font-weight:600;font-size:clamp(1.1rem, .5vw + 1rem, 1.35rem);line-height:1.25}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--tinta);background:linear-gradient(var(--tinta),var(--tinta)) center/12px 1.5px no-repeat,linear-gradient(var(--tinta),var(--tinta)) center/1.5px 12px no-repeat;transition:transform .3s var(--ease),background-color .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq summary:focus-visible{outline:2px solid var(--magenta);outline-offset:2px;border-radius:6px}
+.faq__r{padding:0 44px 18px 2px;font-size:var(--fs-sm);color:var(--gris);max-width:68ch}
+.faq__r a{color:var(--roble)}
+.faq__r b{color:var(--tinta);font-weight:400}
+@media (max-width:1023px){ .preguntas__in{grid-template-columns:1fr;align-content:start;row-gap:10px} }
+@media (max-width:767px){
+  .preguntas__in{display:flex;flex-direction:column;padding-bottom:12px}
+  .preguntas .lead,.preguntas__cab .acciones{display:none}
+  .faq{max-height:none;flex:1;min-height:0}
+  .faq summary{padding:14px 2px;font-size:1.05rem}
+  .faq__r{padding-right:8px}
+}
+
 /* ============ Dónde comprar y contacto ============ */
 .contacto{background:var(--crema)}
 .contacto__in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(32px, 6vw, 110px);align-items:center}
@@ -481,10 +560,17 @@ html:not(.js) .entrega__panel,.entrega.sin-animacion .entrega__panel{display:non
 .campo--mitad{grid-column:span 1}
 .campo label,.campo legend{display:block;font-size:var(--fs-sm);margin-bottom:6px;padding:0}
 .opcional{color:var(--gris)}
-.campo textarea{resize:vertical;min-height:110px;line-height:1.5}
+.campo textarea{resize:vertical;min-height:84px;height:84px;line-height:1.5}
 .campo input[aria-invalid="true"],.campo textarea[aria-invalid="true"]{border-color:var(--magenta);border-width:2px}
 .campo__error{min-height:1.4em;font-size:var(--fs-xs);color:var(--magenta)}
 .seg--form{max-width:280px;margin-bottom:12px}
+.campo--check{display:flex;flex-wrap:wrap;align-items:center;gap:0 14px}
+.check{display:flex;align-items:flex-start;gap:10px;font-size:var(--fs-sm);cursor:pointer;margin:0!important}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--tinta);flex:none}
+.check input[aria-invalid="true"]{outline:2px solid var(--magenta);outline-offset:2px}
+.check__ver{padding-block:4px}
+.campo--check{margin-top:4px}
+.campo--check .campo__error{flex-basis:100%;min-height:0}
 .form__pie{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:4px}
 .form__estado{font-size:var(--fs-sm)}
 .pie{position:relative;z-index:2;background:var(--carbon);color:var(--papel)}
@@ -492,6 +578,35 @@ html:not(.js) .entrega__panel,.entrega.sin-animacion .entrega__panel{display:non
 .pie__marca{font-family:var(--f-logo);font-weight:800;font-size:1.35rem;letter-spacing:-.035em}
 .pie__nota{flex:1 1 420px;font-size:var(--fs-xs);color:#BDB6A8}
 .pie__copy{font-size:var(--fs-xs);color:#BDB6A8}
+.pie__legal{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:var(--fs-xs)}
+.pie__legal button,.pie__legal a{background:none;border:0;padding:0;color:var(--papel);text-decoration:underline;text-underline-offset:.3em;text-decoration-color:rgba(247,245,240,.4);cursor:pointer;font-size:inherit}
+.pie__legal [hidden]{display:none}
+
+/* política de privacidad */
+.privacidad{border:0;padding:0;border-radius:24px;width:min(560px, calc(100% - 32px));max-height:min(80vh, 680px);background:var(--papel);color:var(--tinta);box-shadow:0 40px 80px -30px rgba(18,17,16,.5)}
+.privacidad::backdrop{background:rgba(18,17,16,.45)}
+.privacidad__in{position:relative;padding:28px clamp(20px, 4vw, 36px) 30px}
+.privacidad__cerrar{position:absolute;top:14px;right:14px;width:44px;height:44px;display:grid;place-items:center;border:0;background:none;border-radius:50%}
+.privacidad__cerrar:hover{background:var(--crema)}
+.privacidad__cerrar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
+.privacidad h2{margin:0 40px 10px 0}
+.privacidad h3{font-size:var(--fs-sm);font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin:18px 0 4px}
+.privacidad p{font-size:var(--fs-sm)}
+.privacidad a{color:var(--roble)}
+
+/* ración en la ficha */
+.racion{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;background:var(--tarjeta);border:1px solid var(--hilo);border-radius:14px;padding:12px 16px}
+.racion__peso{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm)}
+.racion__peso input{width:5.5em;min-height:40px;border:1px solid var(--hilo);border-radius:10px;background:var(--papel);padding:6px 10px;font-size:var(--fs-base)}
+.racion__res{font-size:var(--fs-sm)}
+.racion__res b{font-family:var(--f-titulo);font-size:1.5rem;font-weight:700;margin-right:4px}
+.racion__nota{flex-basis:100%;font-size:var(--fs-xs);color:var(--gris)}
+
+/* sellos del inicio */
+.sellos{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:clamp(22px, 4vh, 40px);padding-top:clamp(14px, 2.4vh, 20px);border-top:1px solid rgba(138,90,48,.28);max-width:620px}
+.sellos li{display:flex;align-items:center;gap:8px;font-size:var(--fs-xs);color:var(--gris)}
+.sellos svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--roble);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:767px), (max-height:700px){ .sellos{display:none} }
 @media (max-width:767px){
   .contacto__in{grid-template-columns:1fr;align-content:start;gap:8px}
   .contacto .h2{font-size:2.3rem}
@@ -598,7 +713,8 @@ window.DIBAQ_CONFIG = {
   formEndpoint: "",        // URL que recibe el formulario en JSON (si está vacía, se abre el correo del visitante)
   instagram: "",           // URL completa del perfil
   facebook: "",            // URL completa de la página
-  distribuidor: "",        // "Distribuido en Perú por …"
+  distribuidor: "",        // "Distribuido en Perú por …"; también figura como responsable en la política de privacidad
+  libroReclamaciones: "",  // URL del Libro de Reclamaciones virtual de la empresa (se muestra en el pie)
   tiendas: [],             // [{ nombre: "Tienda", distrito: "Miraflores", direccion: "Av. …", telefono: "…", mapa: "https://maps.google.com/?q=…", delivery: true, online: false, veterinaria: false }]
   publicaciones: [         // publicaciones de redes que se muestran en "Peludines"
     { img: "img/comunidad/post-1.webp", alt: "Cachorro comiendo junto a una bolsa de Dibaq Sense Pavo y Salmón en el parque" },
@@ -621,7 +737,8 @@ window.DIBAQ_CONFIG = {
         <li><a href="#lineas">Las líneas</a></li>
         <li><a href="#ingredientes">Ingredientes</a></li>
         <li><a href="#buscador">Su alimento</a></li>
-        <li><a href="#comunidad">Peludines</a></li>
+        <li><a href="#guia">Cuánto darle</a></li>
+        <li><a href="#preguntas">Preguntas</a></li>
         <li><a href="#contacto">Dónde comprar</a></li>
       </ul>
     </nav>
@@ -639,7 +756,9 @@ window.DIBAQ_CONFIG = {
       <li><a href="#holistico">Holístico</a></li>
       <li><a href="#especies">Perro o gato</a></li>
       <li><a href="#buscador">Encuentra su alimento</a></li>
+      <li><a href="#guia">Cuánto darle</a></li>
       <li><a href="#comunidad">Peludines</a></li>
+      <li><a href="#preguntas">Preguntas frecuentes</a></li>
       <li><a href="#contacto">Dónde comprar</a></li>
     </ul>
   </nav>
@@ -653,7 +772,9 @@ window.DIBAQ_CONFIG = {
     <li><a href="#holistico" data-riel="holistico"><span>Holístico</span></a></li>
     <li><a href="#especies" data-riel="especies"><span>Perro o gato</span></a></li>
     <li><a href="#buscador" data-riel="buscador"><span>Su alimento</span></a></li>
+    <li><a href="#guia" data-riel="guia"><span>Cuánto darle</span></a></li>
     <li><a href="#comunidad" data-riel="comunidad"><span>Peludines</span></a></li>
+    <li><a href="#preguntas" data-riel="preguntas"><span>Preguntas</span></a></li>
     <li><a href="#contacto" data-riel="contacto"><span>Dónde comprar</span></a></li>
   </ol>
 </nav>
@@ -684,6 +805,11 @@ window.DIBAQ_CONFIG = {
           <a class="btn" href="#buscador">Encontrar su alimento</a>
           <a class="enlace" href="#lineas">Conocer las dos líneas</a>
         </div>
+        <ul class="sellos" role="list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c9 0 14-6 14-14C10 5 5 10 5 19z"/><path d="M5 19l8-8"/></svg>Carne o pescado fresco, primer ingrediente</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V9"/><path d="M12 13c-3 0-4-2-4-4 3 0 4 2 4 4zm0 0c3 0 4-2 4-4-3 0-4 2-4 4zm0-4c-2 0-3-2-3-4 2 0 3 2 3 4zm0 0c2 0 3-2 3-4-2 0-3 2-3 4z"/><path d="M4 4l16 16"/></svg>Sin trigo ni maíz</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/></svg>Hecho en España</li>
+        </ul>
       </div>
     </div>
     <a class="bajar" href="#lineas" aria-label="Ir a la siguiente sección"><span></span></a>
@@ -943,6 +1069,64 @@ window.DIBAQ_CONFIG = {
     </div>
   </section>
 
+  <!-- ============ Guía de alimentación ============ -->
+  <section class="sec guia" id="guia" aria-labelledby="t-guia">
+    <div class="sec__in guia__in">
+      <header class="guia__cab">
+        <h2 class="h2" id="t-guia">¿Cuánto le doy?</h2>
+        <p class="aparte aparte--magenta" aria-hidden="true">ni más, ni menos</p>
+        <p class="lead">Una ración orientativa según su peso y su etapa, y cómo pasarlo a Dibaq sin molestar su estómago.</p>
+        <div class="pestanas" role="tablist" aria-label="Guía de alimentación">
+          <button type="button" role="tab" id="tab-racion" aria-controls="guia-racion" aria-selected="true">Su ración diaria</button>
+          <button type="button" role="tab" id="tab-cambio" aria-controls="guia-cambio" aria-selected="false" tabindex="-1">Cambio de alimento</button>
+        </div>
+      </header>
+
+      <div class="guia__panel" id="guia-racion" role="tabpanel" aria-labelledby="tab-racion">
+        <form class="calc" id="calc" novalidate>
+          <fieldset class="grupo">
+            <legend>Es un</legend>
+            <div class="seg" data-calc="especie">
+              <label><input type="radio" name="c-especie" value="perro" checked><span>Perro</span></label>
+              <label><input type="radio" name="c-especie" value="gato"><span>Gato</span></label>
+            </div>
+          </fieldset>
+          <div class="grupo peso">
+            <div class="peso__fila">
+              <label for="c-peso">Su peso</label>
+              <output id="c-peso-txt" for="c-peso">10 kg</output>
+            </div>
+            <input id="c-peso" type="range" min="1" max="70" step="0.5" value="10" aria-describedby="c-peso-txt">
+          </div>
+          <fieldset class="grupo">
+            <legend>Etapa</legend>
+            <div class="chips" data-calc="etapa"></div>
+          </fieldset>
+        </form>
+        <div class="calc__res" aria-live="polite">
+          <p class="calc__kcal"><b class="calc__num"></b> <span>kcal al día</span></p>
+          <p class="calc__tomas"></p>
+          <ul class="calc__recetas" role="list"></ul>
+          <p class="calc__nota"></p>
+        </div>
+      </div>
+
+      <div class="guia__panel" id="guia-cambio" role="tabpanel" aria-labelledby="tab-cambio" hidden>
+        <ol class="cambio" role="list">
+          <li><span class="cambio__dia">Días 1 y 2</span><span class="cambio__barra" style="--n:25%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>25 %</b> Dibaq, 75 % su alimento de antes</span></li>
+          <li><span class="cambio__dia">Días 3 y 4</span><span class="cambio__barra" style="--n:50%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>50 %</b> Dibaq, 50 % su alimento de antes</span></li>
+          <li><span class="cambio__dia">Días 5 y 6</span><span class="cambio__barra" style="--n:75%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>75 %</b> Dibaq, 25 % su alimento de antes</span></li>
+          <li><span class="cambio__dia">Día 7</span><span class="cambio__barra" style="--n:100%" aria-hidden="true"><i></i></span><span class="cambio__txt"><b>100 %</b> Dibaq</span></li>
+        </ol>
+        <ul class="consejos" role="list">
+          <li>Si notas heces blandas, quédate un par de días más en el paso anterior.</li>
+          <li>Agua fresca y limpia siempre a su alcance, sobre todo con alimento seco.</li>
+          <li>Si tiene una condición de salud, haz el cambio con su veterinario.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Peludines ============ -->
   <section class="sec comunidad" id="comunidad" aria-labelledby="t-comunidad">
     <div class="sec__in comunidad__in">
@@ -953,6 +1137,52 @@ window.DIBAQ_CONFIG = {
         <div class="acciones comunidad__redes"></div>
       </header>
       <ul class="posts" role="list"></ul>
+    </div>
+  </section>
+
+  <!-- ============ Preguntas frecuentes ============ -->
+  <section class="sec preguntas" id="preguntas" aria-labelledby="t-preguntas">
+    <div class="sec__in preguntas__in">
+      <header class="preguntas__cab">
+        <h2 class="h2" id="t-preguntas">Preguntas frecuentes.</h2>
+        <p class="aparte aparte--ladrillo" aria-hidden="true">sin rodeos</p>
+        <p class="lead">Y si tu duda no está aquí, escríbenos: te respondemos con nombre y apellido.</p>
+        <div class="acciones"><a class="btn btn--sm" href="#contacto" data-wa>Hacer una consulta</a></div>
+      </header>
+      <div class="faq">
+        <details name="faq" open>
+          <summary>¿Qué significa que un alimento sea holístico?</summary>
+          <div class="faq__r"><p>Que la receta se piensa para el animal entero: su digestión, su piel y su pelo, sus articulaciones, su peso y su energía, y no solo para llenarlo. En Dibaq eso significa carne o pescado fresco como primer ingrediente e ingredientes que reconoces en la etiqueta. «Holístico» no es una categoría regulada, así que lo que vale es leer la composición.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cuál elijo: Sense o Natural Moments?</summary>
+          <div class="faq__r"><p><b>Sense</b> es para los más sensibles: sin cereales, con recetas hipoalergénicas y monoproteicas, y proteínas poco habituales como conejo o ciervo. <b>Natural Moments</b> es una alimentación natural para el día a día, con arroz como único cereal y hierbas mediterráneas. Si no sabes por dónde empezar, <a href="#buscador">usa el buscador</a> o escríbenos.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Sin cereales es mejor?</summary>
+          <div class="faq__r"><p>No necesariamente. Es útil si tu peludo no tolera algún cereal o tiene la piel o la digestión sensibles. Si come bien con cereales, Natural Moments es una muy buena opción. Ante cualquier condición de salud, consúltalo con su veterinario.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cuánto debo darle?</summary>
+          <div class="faq__r"><p>Depende de su peso, su edad y cuánto se mueve. <a href="#guia">La guía de alimentación</a> te da una ración orientativa, y la tabla del empaque la precisa para cada receta. Pésalo una vez al mes: si sube o baja de peso sin buscarlo, ajusta la ración en un 10 %.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cómo cambio su alimento a Dibaq?</summary>
+          <div class="faq__r"><p>De a pocos, en unos siete días, mezclando cada vez más del nuevo con el de antes. Así su estómago se adapta sin molestias. <a href="#guia" data-guia-cambio>Mira el cambio día por día</a>.</p></div>
+        </details>
+        <details name="faq">
+          <summary>Tiene alergias, ¿cuál le doy?</summary>
+          <div class="faq__r"><p>Primero, que su veterinario confirme a qué reacciona. Luego, en el buscador marca lo que no puede comer (pollo, pescado, cereales…) y verás solo las recetas que no lo llevan. Las recetas monoproteicas de Sense, con una sola proteína animal, son las más usadas en estos casos.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Cómo lo guardo una vez abierto?</summary>
+          <div class="faq__r"><p>En su bolsa original, bien cerrada, en un lugar fresco y seco, lejos del sol. Así conserva su aroma y sus nutrientes. Lo ideal es terminarla en unas cuatro a seis semanas después de abrirla.</p></div>
+        </details>
+        <details name="faq">
+          <summary>¿Dónde lo compro en Perú?</summary>
+          <div class="faq__r"><p>En tiendas de mascotas y veterinarias. Mira <a href="#contacto">las tiendas por distrito</a> o escríbenos y te decimos cuál te queda más cerca.</p></div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -997,6 +1227,11 @@ window.DIBAQ_CONFIG = {
           <textarea id="c-mensaje" name="mensaje" rows="4" required placeholder="Por ejemplo: tengo un shih tzu de 6 años, 7 kg, alérgico al pollo. Vivo en Surco."></textarea>
           <p class="campo__error" id="e-mensaje"></p>
         </div>
+        <div class="campo campo--check">
+          <label class="check"><input id="c-acepto" name="acepto" type="checkbox" value="sí" required><span>Acepto que usen mis datos para responderme.</span></label>
+          <button class="enlace enlace--sm check__ver" type="button" data-privacidad>Política de privacidad</button>
+          <p class="campo__error" id="e-acepto"></p>
+        </div>
         <div class="form__pie">
           <button class="btn" type="submit">Enviar consulta</button>
           <p class="form__estado" id="form-estado" role="status"></p>
@@ -1007,6 +1242,7 @@ window.DIBAQ_CONFIG = {
       <div class="pie__in">
         <p class="pie__marca">Dibaq</p>
         <p class="pie__nota">Sense y Natural Moments son marcas de Dibaq. Los datos nutricionales son referenciales: revisa siempre el empaque y consulta a tu veterinario.</p>
+        <p class="pie__legal"><button type="button" data-privacidad>Política de privacidad</button><a data-reclamaciones href="#" hidden>Libro de Reclamaciones</a></p>
         <p class="pie__copy">© <span data-anio></span> Dibaq Perú</p>
       </div>
     </footer>
@@ -1025,6 +1261,24 @@ window.DIBAQ_CONFIG = {
     <div class="ficha__cuerpo"></div>
   </article>
 </div>
+
+<!-- Política de privacidad -->
+<dialog class="privacidad" id="privacidad" aria-labelledby="t-privacidad">
+  <div class="privacidad__in">
+    <button class="ficha__cerrar privacidad__cerrar" type="button" data-cerrar-priv aria-label="Cerrar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 class="h3" id="t-privacidad">Política de privacidad</h2>
+    <p>Tratamos tus datos según la Ley N.° 29733, Ley de Protección de Datos Personales, y su reglamento.</p>
+    <h3>Quién los trata</h3>
+    <p><span data-responsable>El distribuidor oficial de Dibaq en Perú</span>.</p>
+    <h3>Qué datos y para qué</h3>
+    <p>Tu nombre, tu correo, tu teléfono si lo dejas, los datos de tu mascota y tu consulta. Los usamos solo para responderte y recomendarte una receta o una tienda. No los vendemos ni los usamos para publicidad sin tu permiso.</p>
+    <h3>Cuánto tiempo</h3>
+    <p>El necesario para atender tu consulta.</p>
+    <h3>Tus derechos</h3>
+    <p>Puedes pedir acceder a tus datos, corregirlos, eliminarlos u oponerte a su uso escribiendo a <span data-correo-priv>nuestro correo de contacto</span>.</p>
+    <p>Esta web no usa cookies de seguimiento ni de publicidad.</p>
+  </div>
+</dialog>
 
 <script>
 /* Catálogo Dibaq Perú: Natural Moments y Sense, perros y gatos.
@@ -1930,6 +2184,12 @@ function abrirFicha(id, desde) {
       ${filas.length || a.kcal ? `<h3>Análisis garantizado</h3>
       ${filas.length ? `<ul class="analisis" role="list">${filas.map(([n, v]) => `<li><span>${n}</span><span class="barra" aria-hidden="true"><i style="--v:${Math.min(100, v / 40 * 100)}%"></i></span><span>${num.format(v)} %</span></li>`).join("")}</ul>` : ""}
       ${a.kcal ? `<p class="ficha__kcal">Energía metabolizable: ${num.format(a.kcal)} kcal/kg</p>` : ""}` : ""}
+      <h3>¿Cuánto darle?</h3>
+      ${a.kcal ? `<div class="racion" data-kcal="${a.kcal}">
+        <label class="racion__peso">Si pesa <input type="number" min="1" max="${p.especie === "gato" ? 12 : 80}" step="0.5" value="${p.especie === "gato" ? 4 : 10}" inputmode="decimal" aria-label="Peso en kilos"> kg</label>
+        <p class="racion__res"><b></b> al día, aprox.</p>
+      </div>` : `<p class="ficha__kcal">Su tabla de ración viene en el empaque.</p>`}
+      <a class="enlace enlace--sm" href="#guia" data-guia="${p.especie}" data-edad="${p.edad[0]}">Calcular su ración y ver cómo hacer el cambio</a>
       <h3>Formatos</h3>
       ${p.formatos ? `<ul class="etiquetas" role="list">${p.formatos.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : `<p class="ficha__kcal">Consulta los formatos disponibles en Perú.</p>`}
       <p class="ficha__nota">Datos referenciales. Revisa la tabla de ración del empaque y consulta a tu veterinario si tiene una condición de salud.</p>
@@ -1944,6 +2204,13 @@ function abrirFicha(id, desde) {
     document.body.classList.add("bloqueado");
     requestAnimationFrame(() => requestAnimationFrame(() => ficha.classList.add("abierta")));
     panel.focus({ preventScroll: true });
+  }
+  const racion = $(".racion", cuerpo);
+  if (racion) {
+    const inp = $("input", racion), sal = $("b", racion), et = etapaDe(p.especie, p.edad[0]);
+    const pintar = () => { const kg = Math.min(+inp.max, Math.max(1, parseFloat(inp.value) || 0)); sal.textContent = `≈ ${num.format(gramos(kcalDia(kg, et.f), p))} g`; };
+    inp.addEventListener("input", pintar); pintar();
+    racion.insertAdjacentHTML("beforeend", `<p class="racion__nota">Para ${et.txt.toLowerCase()}. Ajústala según su actividad.</p>`);
   }
   cuerpo.scrollTop = 0;
   const q = new URLSearchParams(location.search); q.set("producto", id);
@@ -1973,6 +2240,8 @@ function initFicha() {
     }
     const c = e.target.closest("[data-consulta]");
     if (c) { const m = $("#c-mensaje"); if (!m.value) m.value = c.dataset.consulta + " "; cerrarFicha(); }
+    const g = e.target.closest("[data-guia]");
+    if (g) { cerrarFicha(); if (calcEspecie) calcEspecie(g.dataset.guia, g.dataset.edad); }
   });
   addEventListener("keydown", e => {
     if (ficha.hidden) return;
@@ -1984,6 +2253,106 @@ function initFicha() {
       else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
     }
   });
+}
+
+/* ---------- guía de alimentación: ración orientativa y cambio de alimento ---------- */
+// Energía diaria = 70 × peso^0,75 (energía en reposo) × factor de etapa, según las tablas veterinarias de uso común.
+// Los gramos salen de la energía de cada receta (analisis.kcal); sin ese dato, se remite a la tabla del empaque.
+const ETAPAS = {
+  perro: [
+    { id: "cachorro-4", txt: "Cachorro, hasta 4 meses", f: 3, edad: "cachorro", tomas: "Repártelo en 3 o 4 comidas." },
+    { id: "cachorro", txt: "Cachorro, 4 a 12 meses", f: 2, edad: "cachorro", tomas: "Repártelo en 3 comidas." },
+    { id: "esterilizado", txt: "Adulto esterilizado", f: 1.6, edad: "adulto", tomas: "Repártelo en 2 comidas." },
+    { id: "adulto", txt: "Adulto no esterilizado", f: 1.8, edad: "adulto", tomas: "Repártelo en 2 comidas." },
+    { id: "engorda", txt: "Adulto que engorda fácil", f: 1.4, edad: "adulto", tomas: "Repártelo en 2 comidas y usa su peso ideal." },
+    { id: "activo", txt: "Adulto muy activo", f: 2, edad: "adulto", tomas: "Repártelo en 2 comidas." },
+    { id: "senior", txt: "Senior, +7 años", f: 1.4, edad: "senior", tomas: "Repártelo en 2 comidas." }
+  ],
+  gato: [
+    { id: "gatito", txt: "Gatito, hasta 12 meses", f: 2.5, edad: "cachorro", tomas: "Repártelo en 3 o 4 comidas pequeñas." },
+    { id: "esterilizado", txt: "Adulto esterilizado", f: 1.2, edad: "adulto", tomas: "Repártelo en 2 a 4 comidas pequeñas." },
+    { id: "adulto", txt: "Adulto no esterilizado", f: 1.4, edad: "adulto", tomas: "Repártelo en 2 a 4 comidas pequeñas." },
+    { id: "engorda", txt: "Adulto que engorda fácil", f: 1, edad: "adulto", tomas: "Repártelo en 2 a 4 comidas y usa su peso ideal." },
+    { id: "senior", txt: "Senior, +7 años", f: 1.1, edad: "senior", tomas: "Repártelo en 2 a 4 comidas pequeñas." }
+  ]
+};
+const kcalDia = (kg, f) => Math.round(70 * Math.pow(kg, 0.75) * f / 10) * 10;
+const gramos = (kcal, p) => Math.round(kcal / p.analisis.kcal * 1000 / 5) * 5;
+const etapaDe = (especie, edad) => ETAPAS[especie].find(e => e.edad === edad && e.id !== "cachorro-4") || ETAPAS[especie][2];
+let calcEspecie = null;
+function initGuia() {
+  const sec = $("#guia"); if (!sec) return;
+  const tabs = $$(".pestanas [role=tab]", sec), paneles = tabs.map(t => $("#" + t.getAttribute("aria-controls")));
+  const elegir = i => {
+    tabs.forEach((t, k) => { t.setAttribute("aria-selected", String(k === i)); t.tabIndex = k === i ? 0 : -1; paneles[k].hidden = k !== i; });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => elegir(i));
+    t.addEventListener("keydown", e => { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { const j = (i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length; tabs[j].focus(); elegir(j); } });
+  });
+  $$("[data-guia-cambio]").forEach(a => a.addEventListener("click", () => elegir(1)));
+
+  const form = $("#calc"), peso = $("#c-peso"), pesoTxt = $("#c-peso-txt"), cajaEtapa = $("[data-calc=etapa]", form);
+  const res = $(".calc__res", sec);
+  let especie = "perro", etapa = "esterilizado";
+  const pintarEtapas = () => {
+    cajaEtapa.innerHTML = ETAPAS[especie].map(e => `<label><input type="radio" name="c-etapa" value="${e.id}"${e.id === etapa ? " checked" : ""}><span>${esc(e.txt)}</span></label>`).join("");
+  };
+  const calcular = () => {
+    const kg = parseFloat(peso.value), et = ETAPAS[especie].find(e => e.id === etapa);
+    pesoTxt.textContent = num.format(kg) + " kg";
+    const kcal = kcalDia(kg, et.f);
+    $(".calc__num", res).textContent = num.format(kcal);
+    $(".calc__tomas", res).textContent = et.tomas;
+    const propias = CAT.filter(p => p.especie === especie && p.edad.includes(et.edad) && (especie === "gato" || !p.tamano || p.tamano.includes(tamanoDe(kg))));
+    const conDato = propias.filter(p => p.analisis && p.analisis.kcal);
+    $(".calc__recetas", res).innerHTML = conDato.map(p => `<li><button type="button" class="calc__receta" data-id="${p.id}" style="--acento:${acentoDe(p)}"><span><small>${LINEA_TXT[p.linea]}</small>${esc(cap(p.nombre))}</span><b>≈ ${num.format(gramos(kcal, p))} g</b></button></li>`).join("");
+    const resto = propias.length - conDato.length;
+    const para = especie === "perro" ? "su tamaño y su etapa" : "su etapa";
+    const otras = !resto ? "" : resto === 1
+      ? `${conDato.length ? "La otra receta" : "La receta"} para ${para} trae su tabla de ración en el empaque. `
+      : `${conDato.length ? "Las otras" : "Las"} ${resto} recetas para ${para} traen su tabla de ración en el empaque. `;
+    $(".calc__nota", res).textContent = (conDato.length ? "Gramos de alimento seco al día. " : "") + otras +
+      "Es una referencia: ajústala según su condición y consulta a su veterinario.";
+  };
+  form.addEventListener("change", e => {
+    if (e.target.name === "c-especie") {
+      especie = e.target.value; etapa = "esterilizado";
+      peso.max = especie === "gato" ? 12 : 70; peso.value = especie === "gato" ? 4 : 10;
+      pintarEtapas();
+    }
+    if (e.target.name === "c-etapa") etapa = e.target.value;
+    calcular();
+  });
+  peso.addEventListener("input", calcular);
+  $(".calc__recetas", res).addEventListener("click", e => { const b = e.target.closest("[data-id]"); if (b) abrirFicha(b.dataset.id, b); });
+  // desde la ficha: abre la guía con su especie y su etapa
+  calcEspecie = (esp, edad) => {
+    const r = $(`input[name=c-especie][value=${esp}]`, form); r.checked = true;
+    especie = esp; etapa = etapaDe(esp, edad).id;
+    peso.max = esp === "gato" ? 12 : 70; if (esp === "gato" && +peso.value > 12) peso.value = 4;
+    pintarEtapas(); calcular(); elegir(0);
+  };
+  pintarEtapas(); calcular();
+}
+
+/* ---------- política de privacidad ---------- */
+function initPrivacidad() {
+  const dlg = $("#privacidad"); if (!dlg) return;
+  if (CFG.distribuidor) $$("[data-responsable]").forEach(n => { n.textContent = CFG.distribuidor; });
+  if (CFG.email) $$("[data-correo-priv]").forEach(n => { n.innerHTML = `<a href="mailto:${esc(CFG.email)}">${esc(CFG.email)}</a>`; });
+  let desde = null;
+  const cerrar = () => dlg.close();
+  $$("[data-privacidad]").forEach(b => b.addEventListener("click", () => {
+    desde = b;
+    if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+    document.body.classList.add("bloqueado");
+  }));
+  $("[data-cerrar-priv]", dlg).addEventListener("click", cerrar);
+  dlg.addEventListener("click", e => { if (e.target === dlg) cerrar(); });
+  dlg.addEventListener("close", () => { document.body.classList.remove("bloqueado"); if (desde) desde.focus(); });
+  const libro = $("[data-reclamaciones]");
+  if (CFG.libroReclamaciones && libro) { libro.href = CFG.libroReclamaciones; libro.target = "_blank"; libro.rel = "noopener"; libro.hidden = false; }
 }
 
 /* ---------- peludines: publicaciones de redes ---------- */
@@ -2034,12 +2403,21 @@ function initForm() {
     return !mal;
   };
   const campos = $$("input[type=text], input[type=email], input[type=tel], textarea", form);
+  const acepto = $("#c-acepto"), errAcepto = $("#e-acepto");
+  const validarAcepto = () => {
+    const ok = acepto.checked;
+    acepto.setAttribute("aria-invalid", String(!ok));
+    errAcepto.textContent = ok ? "" : "Necesitamos tu permiso para responderte.";
+    if (ok) acepto.removeAttribute("aria-describedby"); else acepto.setAttribute("aria-describedby", errAcepto.id);
+    return ok;
+  };
+  acepto.addEventListener("change", () => { if (acepto.getAttribute("aria-invalid") === "true") validarAcepto(); });
   campos.forEach(i => { i.addEventListener("blur", () => { if (i.value) validar(i); }); i.addEventListener("input", () => { if (i.getAttribute("aria-invalid") === "true") validar(i); }); });
   form.addEventListener("submit", async e => {
     e.preventDefault();
     estado.textContent = "";
-    const malos = campos.filter(i => !validar(i));
-    if (malos.length) { malos[0].focus(); estado.textContent = "Revisa los campos marcados."; return; }
+    const malos = campos.filter(i => !validar(i)), aceptado = validarAcepto();
+    if (malos.length || !aceptado) { (malos[0] || acepto).focus(); estado.textContent = "Revisa los campos marcados."; return; }
     const d = Object.fromEntries(new FormData(form));
     if (!CFG.formEndpoint) {
       if (!CFG.email) { estado.textContent = "El formulario aún no tiene un correo configurado (DIBAQ_CONFIG.email)."; return; }
@@ -2070,6 +2448,8 @@ initProteinas();
 initBuscador();
 initFicha();
 initComunidad();
+initGuia();
+initPrivacidad();
 initTiendas();
 initForm();
 initInicio();
