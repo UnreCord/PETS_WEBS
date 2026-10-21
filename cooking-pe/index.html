@@ -1066,21 +1066,22 @@ html{scroll-padding-top:var(--hb)}
 /* phone-only controls are hidden elsewhere */
 .plan__tabs,.planf__go,.planr__note,.mapviews{display:none}
 
-/* ============ Phones: one section per screen ============ */
-/* Each section fills the screen under the header and one swipe moves to the next one.
+/* ============ Phones: compact sections ============ */
+/* Each section is as tall as its content (no empty bands on tall phones) and fits within one screen;
+   its start settles under the header when the scroll stops nearby.
    What does not fit vertically moves sideways: recipes carousel, plan in two panels, map or list. */
 @media (max-width:767px){
-  html{scroll-snap-type:y mandatory}
+  html{scroll-snap-type:y proximity}
   .hero{scroll-snap-align:start}
-  .sec{min-height:calc(calc(100svh / var(--z,1)) - var(--hb));scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding-block:clamp(20px,calc(3.6svh / var(--z,1)),34px) clamp(16px,calc(2.8svh / var(--z,1)),28px)}
+  .sec{scroll-snap-align:start;display:flex;flex-direction:column;padding-block:clamp(24px,calc(3.6svh / var(--z,1)),36px) clamp(20px,calc(2.8svh / var(--z,1)),30px)}
   .footer{scroll-snap-align:end}
   .wave{height:clamp(16px,calc(2.6svh / var(--z,1)),26px)}
   .h2{font-size:clamp(1.55rem,min(calc(7.4vw / var(--z,1)),calc(4.5svh / var(--z,1))),2.15rem)}
   .h2 .script{font-size:1.3em}
   .lead{margin-top:min(8px,calc(1.2svh / var(--z,1)));font-size:clamp(.86rem,min(calc(3.9vw / var(--z,1)),calc(2.1svh / var(--z,1))),1rem);line-height:1.5}
 
-  /* hero + ribbon = first screen */
-  .hero{height:calc(calc(100svh / var(--z,1)) - var(--hb) - 44px);min-height:420px;display:flex;flex-direction:column;padding-top:clamp(10px,calc(2.4svh / var(--z,1)),26px)}
+  /* hero: title, then the bags standing on the table of the photo band */
+  .hero{display:flex;flex-direction:column;padding-top:clamp(22px,calc(3svh / var(--z,1)),34px)}
   .hero__title{flex:none}
   .hero__kicker{font-size:clamp(1.6rem,min(calc(8.4vw / var(--z,1)),calc(4.8svh / var(--z,1))),2.3rem)}
   .hero__script{font-size:clamp(2.3rem,min(calc(13.2vw / var(--z,1)),calc(8.2svh / var(--z,1))),3.6rem)}
@@ -1089,9 +1090,8 @@ html{scroll-padding-top:var(--hb)}
   .hero__ctas .btn{min-height:44px;padding:.45em .5em;font-size:.86rem}
   .hero__stage{flex:1;height:auto;min-height:110px;margin-top:min(10px,calc(1.2svh / var(--z,1)));container-type:size}
   /* the photo is wider than the phone: a larger band would hide the dog or the cat, so it stays a band,
-     the bags stand between them and the title sits centered in the space left above */
+     with the bags standing between them */
   .hero{--imw:calc(118vw / var(--z,1))}
-  .hero__title{margin-block:auto}
   .hero__stage{flex:none;height:calc(74vw / var(--z,1) * .5);min-height:0;margin-top:min(14px,calc(1.6svh / var(--z,1)))}
   .hero__bags{width:calc(74vw / var(--z,1))}
 
@@ -1287,7 +1287,7 @@ html{scroll-padding-top:var(--hb)}
   .field input,.field select{min-height:42px;padding:6px 10px;border-radius:12px}
   .field textarea{min-height:clamp(60px,calc(10svh / var(--z,1)),110px)}
   .form__foot .btn{width:100%}
-  .side{scroll-snap-align:start;scroll-margin-top:var(--hb);min-height:calc(calc(100svh / var(--z,1)) - var(--hb) - 40px);display:flex;flex-direction:column;justify-content:center;padding-top:20px}
+  .side{scroll-snap-align:start;scroll-margin-top:var(--hb);display:flex;flex-direction:column;padding-top:28px}
   .side__pets{width:min(calc(64vw / var(--z,1)),calc(34svh / var(--z,1)),300px)}
 }
 /* short phones (e.g. 375×667, 360×640) */
@@ -2682,7 +2682,9 @@ function initSteps() {
     for (const cv of [heapCv, flyCv]) { cv.width = Math.round(SW * dpr); cv.height = Math.round(SH * dpr); }
     hctx.setTransform(dpr, 0, 0, dpr, 0, 0); fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const bw = SW * (narrow ? .72 : .46);
-    bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - SH * (narrow ? .1 : .01), s: bw / 900 };
+    // below 700 px the day label runs along the bottom of the stage, so the bowl rests above it
+    const below = matchMedia("(max-width: 699px)").matches ? $(".pour__head", stage).offsetHeight + 6 : 0;
+    bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - Math.max(SH * (narrow ? .1 : .01), below), s: bw / 900 };
     Object.assign(bowlImg.style, { left: bowl.x + "px", top: bowl.y + "px", width: bw + "px" });
     const [rlx] = toStage(...RIM[RIM.length - 1]), [rrx] = toStage(...RIM[0]), [, rty] = toStage(...proj(0, .8, -.955));
     const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135, h = w * 236 / 170;

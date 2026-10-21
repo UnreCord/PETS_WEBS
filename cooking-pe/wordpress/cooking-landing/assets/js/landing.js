@@ -868,7 +868,9 @@ function initSteps() {
     for (const cv of [heapCv, flyCv]) { cv.width = Math.round(SW * dpr); cv.height = Math.round(SH * dpr); }
     hctx.setTransform(dpr, 0, 0, dpr, 0, 0); fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const bw = SW * (narrow ? .72 : .46);
-    bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - SH * (narrow ? .1 : .01), s: bw / 900 };
+    // below 700 px the day label runs along the bottom of the stage, so the bowl rests above it
+    const below = matchMedia("(max-width: 699px)").matches ? $(".pour__head", stage).offsetHeight + 6 : 0;
+    bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - Math.max(SH * (narrow ? .1 : .01), below), s: bw / 900 };
     Object.assign(bowlImg.style, { left: bowl.x + "px", top: bowl.y + "px", width: bw + "px" });
     const [rlx] = toStage(...RIM[RIM.length - 1]), [rrx] = toStage(...RIM[0]), [, rty] = toStage(...proj(0, .8, -.955));
     const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135, h = w * 236 / 170;

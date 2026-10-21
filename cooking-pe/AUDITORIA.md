@@ -65,13 +65,13 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - Las listas con scroll propio, como la de tiendas, se recorren primero.
   - **Con cualquier zoom del navegador.** Si la ventana mide más de 1920 × 940 px (monitores grandes, o el zoom alejado al 90, 75, 50 o 25 %), toda la página se muestra escalada desde ese tamaño. Así cada sección sigue llenando la pantalla, sin franjas vacías. Al acercar el zoom (125–150 %) se reorganiza como en una laptop más chica. En una pantalla Full HD, desde 175 % el desplazamiento es libre, para leer el contenido ampliado. Se verificó sección por sección del 25 % al 200 % sobre una ventana de 1905 × 1030, también en WordPress. Al 50 % y 75 % se probaron además la rueda, el plato, el plan, el cambio en 7 días y el mapa.
   - En pantallas bajas se ocultan detalles secundarios (el SKU del empaque, algunos subtítulos) para que todo siga entrando.
-  - **En celulares** (hasta 767 px de ancho) también es una sección por pantalla y cada deslizamiento lleva a la siguiente. Probado en 412×915, 390×844, 360×740, 375×667, 360×660 y 360×640. Lo que no entra a lo alto se mueve hacia los costados:
+  - **En celulares** (hasta 767 px de ancho) cada sección mide lo que su contenido y entra en una pantalla, sin franjas vacías en los celulares altos. El inicio de cada sección se acomoda debajo del menú cuando el scroll se detiene cerca. Probado en 440×956, 412×915, 393×852, 390×844, 360×740, 375×667, 360×660 y 360×640. Lo que no entra a lo alto se mueve hacia los costados:
     - las recetas en carrusel;
     - los filtros de edad y de tamaño de bolsa en dos filas, una debajo de la otra; los ingredientes y los puntos del plato en filas deslizables;
     - la calculadora en dos paneles, "Tu mascota" y "Su plan", con el botón "Ver su plan →";
     - el mapa con el selector "Mapa | Lista de tiendas"; al tocar una tienda de la lista se abre en el mapa.
   - El menú tiene las mismas opciones que en computadora y termina con el botón naranja "Encuentra tu tienda".
-  - En el hero, la foto de la cocina va como una franja al pie, con el perro a la izquierda y el gato a la derecha, y las bolsas entre los dos. El título queda centrado en el espacio de arriba. La foto no se agranda más porque se cortarían el perro o el gato.
+  - En el hero, la foto de la cocina va como una franja al pie, con el perro a la izquierda y el gato a la derecha, y las bolsas entre los dos. El título va justo encima. La foto no se agranda más porque se cortarían el perro o el gato.
   - En "Conócenos", las tres cifras llevan su ícono como en computadora, también en celulares bajos.
   - En "Lo que cuida cada receta", la foto del perro y el gato va en formato horizontal, a todo el ancho.
   - El contacto tiene dos paradas: primero el formulario y después los datos de Solpet con el pie de página.
