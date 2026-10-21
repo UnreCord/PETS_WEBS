@@ -165,8 +165,8 @@ main{overflow-x:clip}
   background:
     radial-gradient(46% 42% at 50% 30%, #FFF1E0 0%, rgba(255,241,224,0) 70%),
     #FEE3C3}
-/* the kitchen photo fills the hero: --imw is its width, --tbl how high the table edge sits above the hero bottom */
-.hero{--imw:calc(100vw / var(--z,1));--tbl:calc(var(--imw) / 2.06 * .24)}
+/* the kitchen photo fills the hero: --imw is its width, --tbl how high the front of the table sits above the hero bottom */
+.hero{--imw:calc(100vw / var(--z,1));--tbl:calc(var(--imw) / 2.06 * .07)}
 .hero__scene{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .hero__bg{position:absolute;left:50%;bottom:0;width:var(--imw);max-width:none;height:auto;translate:-50% 0;transform-origin:50% 100%;scale:1.08;opacity:0;transform:translate(calc(var(--px,0) * -8px),calc(var(--py,0) * -5px));transition:transform .8s cubic-bezier(.2,.8,.2,1)}
 .is-ready .hero__bg{scale:1.03;opacity:1;transition:scale 2.6s cubic-bezier(.2,.7,.2,1),opacity .9s,transform .8s cubic-bezier(.2,.8,.2,1)}
@@ -180,9 +180,10 @@ main{overflow-x:clip}
 @keyframes draw{to{clip-path:inset(-50% -2% -50% -2%)}}
 .hero__lead{position:relative;z-index:3;max-width:46ch;margin:14px auto 0;font-size:clamp(1.05rem,calc(.4vw / var(--z,1)) + 1rem,1.25rem);color:var(--cacao-2)}
 .hero__ctas{position:relative;z-index:4;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:30px}
-/* the stage ends at the table edge, so the bags stand on the table in the empty middle of the photo */
-.hero__stage{position:relative;z-index:2;margin-top:clamp(20px,calc(3vw / var(--z,1)),40px);margin-bottom:calc(var(--tbl) - var(--imw) * .012);height:clamp(220px,calc(26vw / var(--z,1)),380px)}
-.hero__bags{position:absolute;left:calc(50% + var(--imw) * .007);bottom:0;width:min(760px,calc(var(--imw) * .46));transform:translateX(-50%);z-index:3;filter:drop-shadow(0 18px 16px rgba(58,40,28,.28))}
+/* the stage ends near the front of the table: the bags stand large in the middle of the photo, over the ingredients
+   (and always above the ingredient ribbon, which overlaps the bottom of the hero by about 32 px) */
+.hero__stage{position:relative;z-index:2;margin-top:clamp(20px,calc(3vw / var(--z,1)),40px);margin-bottom:max(var(--tbl),36px);height:clamp(250px,calc(30vw / var(--z,1)),440px)}
+.hero__bags{position:absolute;left:calc(50% + var(--imw) * .007);bottom:0;width:min(1000px,calc(var(--imw) * .56));transform:translateX(-50%);z-index:3;filter:drop-shadow(0 18px 16px rgba(58,40,28,.28))}
 .hero__bags img{width:100%;height:auto;transform:translate(calc(var(--px,0) * 10px),calc(var(--py,0) * 6px));transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .is-ready .hero__bags img{animation:bag-float 6s 1.6s ease-in-out infinite}
 @keyframes bag-float{50%{translate:0 -8px}}
@@ -862,7 +863,7 @@ html{scroll-padding-top:var(--hb)}
   .hero__stage{flex:1;height:auto;min-height:min(200px,calc(25svh / var(--z,1)));margin-top:min(18px,calc(1.6svh / var(--z,1)));container-type:size}
   /* the photo covers the whole hero: as wide as the window or as tall as the hero, whichever is larger */
   .hero{--imw:max(calc(100vw / var(--z,1)),calc(max(470px,calc(calc(100svh / var(--z,1)) - var(--hb) - 46px)) * 2.06))}
-  .hero__bags{width:min(calc(var(--imw) * .46),198cqh)}
+  .hero__bags{width:min(calc(var(--imw) * .56),200cqh)}
 
   /* conócenos */
   .know__art{max-width:min(560px,calc(calc(100svh / var(--z,1)) - var(--hb) - 130px))}
@@ -1092,8 +1093,8 @@ html{scroll-padding-top:var(--hb)}
   /* the photo is wider than the phone: a larger band would hide the dog or the cat, so it stays a band,
      with the bags standing between them */
   .hero{--imw:calc(118vw / var(--z,1))}
-  .hero__stage{flex:none;height:calc(74vw / var(--z,1) * .5);min-height:0;margin-top:min(14px,calc(1.6svh / var(--z,1)))}
-  .hero__bags{width:calc(74vw / var(--z,1))}
+  .hero__stage{flex:none;height:calc(80vw / var(--z,1) * .5);min-height:0;margin-top:min(14px,calc(1.6svh / var(--z,1)))}
+  .hero__bags{width:calc(80vw / var(--z,1))}
 
   /* conócenos (its second paragraph repeats in "Los ingredientes", so it is shown there) */
   .know{gap:min(14px,calc(1.8svh / var(--z,1)))}
