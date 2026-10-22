@@ -93,7 +93,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - En pantallas muy anchas para su altura, el arco es un poco más angosto que la ventana y sus extremos se desvanecen en el fondo.
   - En celular van texto, olla y arco, uno debajo del otro.
 - **El plato de croquetas, restaurado y mejorado:**
-  - El plato es un render 3D generado para la propuesta (cerámica marrón con el logo CooKing). El montón de croquetas está armado con croquetas reales recortadas de las fotos de producto que entregó marketing.
+  - El plato es un render 3D generado para la propuesta (cerámica marrón con el logo CooKing). El montón es la foto real de las croquetas de la foto 1 de marketing, tomada de su centro, que es la zona enfocada, para que se vea nítida.
   - Las croquetas (las mismas fotos reales) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
     - Al tocar uno de los 4 puntos, se mueven y se reacomodan.
     - Al cerrar la tarjeta, vuelven a caer dentro del plato.
@@ -170,7 +170,8 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
    - La foto de la cocina del hero (`img/marca/hero-cocina.webp`) es la imagen que entregó marketing, en 1800 × 874 px. Si hay una versión más grande, conviene reemplazarla con el mismo nombre para monitores 4K.
    - El arco de ingredientes (`img/marca/ingredientes-arco.webp`) es la imagen original que entregó marketing.
 8. **Fotos de croquetas, renders 3D e íconos:**
-   - Las croquetas de CooKing son recortes de las 5 fotos de producto que entregó marketing (`img/render/kibble-*` y `kib-*`). Cada receta muestra las suyas en su tarjeta, en "Arma su plan" y en la animación de 7 días; el plato de "Lo que hace especial a cada croqueta" y las miniaturas de los 7 días usan las de la foto 1.
+   - Las croquetas de CooKing son recortes de las 5 fotos de producto que entregó marketing (`img/render/kibble-*` y `kib-*`). Cada receta muestra las suyas en su tarjeta, en "Arma su plan" y en la animación de 7 días. El plato de "Lo que hace especial a cada croqueta" y las miniaturas de los 7 días usan la foto 1.
+   - Cada producto usa una sola forma y un solo tono: se eligieron los recortes más nítidos de cada foto, con el mismo color, y se muestran girados para dar variedad. Las fotos son macro y solo el centro del montón está enfocado; para recortes más nítidos convendría una foto por producto con 8 a 10 croquetas separadas, sobre fondo blanco y todas enfocadas.
    - **Asignación provisional, por tamaño:** las croquetas más grandes son de perro y las más chicas de gato. Cachorro y Senior: cuadradas (foto 1). Adulto con cordero y Adulto con salmón: discos (foto 2). Gatito: cuadradas chicas (foto 3). Esterilizado: triangulares claras (foto 4). Gato adulto: triangulares oscuras (foto 5). Hay que confirmarla con marketing; se cambia en `KIBBLE`, al inicio del script.
    - Los platos son renders 3D propios (`img/render/`), incluidos el plato vacío y las croquetas del "alimento anterior" de la animación de 7 días. El logo de los renders y el de los marcadores del mapa vienen de una captura (el del mapa se pasó a vector). Si se entrega el logo oficial en SVG, se reemplazan y quedan más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más íconos propios en el mismo estilo para patata, habas, romero y "Hecho en Europa".
 9. **Mapa de calles:**
