@@ -93,7 +93,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - En pantallas muy anchas para su altura, el arco es un poco más angosto que la ventana y sus extremos se desvanecen en el fondo.
   - En celular van texto, olla y arco, uno debajo del otro.
 - **El plato de croquetas, restaurado y mejorado:**
-  - El plato es un render 3D generado para la propuesta, en cerámica beige con el logo CooKing en marrón, para que las croquetas resalten. Los platos de la animación de 7 días son iguales. El montón es la foto real de las croquetas de la foto 1 de marketing, tomada de su centro, que es la zona enfocada, para que se vea nítida.
+  - El plato es un render 3D generado para la propuesta, en cerámica beige mate (sin brillo) con el logo CooKing en marrón, para que las croquetas resalten. Los platos de la animación de 7 días son iguales. El montón es la foto real de las croquetas de la foto 1 de marketing, tomada de su centro, que es la zona enfocada, para que se vea nítida.
   - Las croquetas (las mismas fotos reales) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
     - Al tocar uno de los 4 puntos, se mueven y se reacomodan.
     - Al cerrar la tarjeta, vuelven a caer dentro del plato.
