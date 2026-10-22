@@ -85,7 +85,7 @@ Las tarjetas de “Recetas completas y balanceadas” y “Su receta ideal” de
 
 ### 4.3 Imágenes incluidas en el plugin
 
-El plato 3D, las croquetas, los platos de la transición de 7 días y el arco de ingredientes de “Los ingredientes marcan la diferencia” vienen dentro del plugin (`assets/img/`) en WebP. No hay que subirlas.
+El plato 3D, las croquetas (recortes de las fotos de producto, un juego por receta), los platos de la transición de 7 días y el arco de ingredientes de “Los ingredientes marcan la diferencia” vienen dentro del plugin (`assets/img/`) en WebP. No hay que subirlas.
 
 ### 4.4 Tipografías
 

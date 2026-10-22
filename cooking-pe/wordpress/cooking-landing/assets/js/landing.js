@@ -73,6 +73,12 @@ const COLORS = {
 
 // Fotos de producto: copia los PNG a assets/img/productos/ con estos nombres; si falta uno, se dibuja la bolsa.
 const PRODUCT_IMG = n => (DATA.productBase || "") + n;
+// Kibble photos for each recipe: the larger kibble is the dog food, the smaller the cat food.
+// "d1" is the default set (files kibble-1…10, also the bowl in "Lo que hace especial a cada croqueta").
+const KIBBLE = { puppy: "d1", senior: "d1", lamb: "d2", "dog-salmon": "d2", kitten: "c1", sterilized: "c2", "cat-salmon": "c3" };
+// relative size of each set, measured on the photos (all taken at the same scale), slightly compressed
+const KIB_SIZE = { d1: 1, d2: 1.4, c1: .78, c2: .84, c3: .9 };
+const kibSrc = (set, i) => RENDERS[set === "d1" ? `kibble-${i}` : `kib-${set}-${i}`];
 const RECIPES = [
   { id:"puppy", species:"perro", age:"cachorro", protein:"pollo", stage:"Cachorro", name:"Cachorro con pollo", for:"Para cachorros de todas las razas.", sku:"Dog Chicken Puppy All Breeds", bag:["CHICKEN","PUPPY"], img:PRODUCT_IMG("puppy-recipe-new1.png"), ing:["poultry-leg","carrot"],
     protein_:29, fat:17, fiber:1.5, ash:7, kcal:3936, formats:[2, 12],
@@ -486,16 +492,16 @@ function initRecipes() {
   const MAXP = 40;
   for (const species of ["perro", "gato"]) {
     $(`[data-grid="${species}"]`).innerHTML = RECIPES.filter(r => r.species === species).map((r, i) => {
-      const k = COLORS[r.protein];
+      const k = COLORS[r.protein], ks = KIBBLE[r.id], kz = `scale:${KIB_SIZE[ks]}`;
       const bars = [["Proteína", r.protein_], ["Grasa", r.fat], ["Fibra", r.fiber]].map(([l, v], j) =>
         `<div class="bar"><span>${l}</span><span class="bar__track" aria-hidden="true"><i style="--v:${(v / MAXP * 100).toFixed(1)}%;--i:${j}"></i></span><b>${nf1.format(v)}&nbsp;%</b></div>`).join("");
       return `<li class="rcard" data-id="${r.id}" style="--c:${k.c};--c2:${k.c2};--c3:${k.c3};--i:${i}">
         <div class="rcard__stage">
           <span class="rcard__pill">${esc(r.stage)}</span>
           <div class="rcard__bag">${bagSVG(r)}<img class="rcard__photo" data-src="${esc(r.img)}" alt="" loading="lazy" width="490" height="758"></div>
-          <img class="rcard__kib rcard__kib--a" src="${RENDERS["kibble-" + (1 + i % 10)]}" alt="" width="120" height="120">
-          <img class="rcard__kib rcard__kib--b" src="${RENDERS["kibble-" + (1 + (i + 4) % 10)]}" alt="" width="120" height="120">
-          <img class="rcard__kib rcard__kib--c" src="${RENDERS["kibble-" + (1 + (i + 7) % 10)]}" alt="" width="120" height="120">
+          <img class="rcard__kib rcard__kib--a" src="${kibSrc(ks, 1 + i % 10)}" style="${kz}" alt="" width="120" height="120">
+          <img class="rcard__kib rcard__kib--b" src="${kibSrc(ks, 1 + (i + 4) % 10)}" style="${kz}" alt="" width="120" height="120">
+          <img class="rcard__kib rcard__kib--c" src="${kibSrc(ks, 1 + (i + 7) % 10)}" style="${kz}" alt="" width="120" height="120">
         </div>
         <h3>${esc(r.name)}</h3>
         <p class="rcard__for">${esc(r.for)}</p>
@@ -676,7 +682,7 @@ function initPlan() {
     const tick = now => { const k = Math.min(1, (now - t0) / d), e = 1 - Math.pow(1 - k, 3); el.textContent = nf0.format(Math.round(from + (to - from) * e)); if (k < 1) requestAnimationFrame(tick); };
     requestAnimationFrame(tick);
   }
-  let shownId = null, pileN = 0, liveT = 0;
+  let shownId = null, pileN = 0, pileSet = "", liveT = 0;
   // "Cambia su alimento en 7 días" shows percentages until the visitor uses the plan, then this plan's grams
   let engaged = false, shared = null;
   const share = () => document.dispatchEvent(new CustomEvent("cooking:plan", { detail: shared }));
@@ -688,20 +694,21 @@ function initPlan() {
       productPhoto($(".planr__photo", O.bag), r.img, () => O.bag.classList.add("has-photo"));
       O.stage.style.cssText = `--c:${k.c};--c2:${k.c2};--c3:${k.c3}`;
       $$(".rcard__kib", O.stage).forEach(n => n.remove());
-      O.stage.insertAdjacentHTML("beforeend", [["a", 1], ["b", 5], ["c", 8]].map(([c, i]) => `<img class="rcard__kib rcard__kib--${c}" src="${RENDERS["kibble-" + i]}" alt="" width="120" height="120">`).join(""));
+      O.stage.insertAdjacentHTML("beforeend", [["a", 1], ["b", 5], ["c", 8]].map(([c, i]) => `<img class="rcard__kib rcard__kib--${c}" src="${kibSrc(KIBBLE[r.id], i)}" style="scale:${KIB_SIZE[KIBBLE[r.id]]}" alt="" width="120" height="120">`).join(""));
     };
     if (reduceMotion.matches || !shownId || !O.bag.animate) { paint(); return; }
     O.bag.animate([{ transform: "rotateY(0) translateY(0)" }, { transform: "rotateY(90deg) translateY(-10px)" }], { duration: 180, easing: "ease-in" }).finished
       .then(() => { paint(); return O.bag.animate([{ transform: "rotateY(-90deg) translateY(-10px)" }, { transform: "rotateY(0) translateY(0)" }], { duration: 320, easing: "cubic-bezier(.3,1.4,.5,1)" }).finished; })
       .catch(() => paint());
   }
-  function renderPile(g) {
+  function renderPile(g, set) {
     const n = Math.min(28, Math.max(3, Math.round(g / 9)));
-    if (n === pileN) return;
+    if (n === pileN && set === pileSet) return;
+    if (set !== pileSet) pileN = 0; // another recipe: its kibble piles up again
     const R = seeded(5), rows = [9, 7, 6, 4, 2], spots = [];
     rows.forEach((cap, row) => { for (let j = 0; j < cap; j++) spots.push({ x: 50 + (j - (cap - 1) / 2) * 9.4 + (R() - .5) * 3, y: Math.max(0, row / 4 + (R() - .5) * .06), r: Math.round(R() * 360) }); });
-    O.pile.innerHTML = spots.slice(0, n).map((p, i) => `<img${i < pileN ? ' class="is-old"' : ""} src="${RENDERS["kibble-" + (1 + i % 10)]}" alt="" width="120" height="120" style="--x:calc(${p.x.toFixed(1)}% - 11px);--y:${p.y.toFixed(3)};--r:${p.r}deg;--d:${((i - pileN) * 28)}ms">`).join("");
-    pileN = n;
+    O.pile.innerHTML = spots.slice(0, n).map((p, i) => `<img${i < pileN ? ' class="is-old"' : ""} src="${kibSrc(set, 1 + i % 10)}" alt="" width="120" height="120" style="--x:calc(${p.x.toFixed(1)}% - 11px);--y:${p.y.toFixed(3)};--r:${p.r}deg;--d:${((i - pileN) * 28)}ms;scale:${KIB_SIZE[set]}">`).join("");
+    pileN = n; pileSet = set;
   }
   function update() {
     const id = pick(), r = RECIPES.find(x => x.id === id), k = COLORS[r.protein];
@@ -720,11 +727,11 @@ function initPlan() {
     tween(O.g, g);
     O.meals.innerHTML = `en ${meals} comidas de unos ${nf0.format(round5(g / meals))}&nbsp;g`;
     O.meals.title = `${nf0.format(Math.round(kcal))} kcal al día`;
-    renderPile(g);
+    renderPile(g, KIBBLE[r.id]);
     const days = r.formats.map(f => Math.round(f * 1000 / g)), maxD = Math.max(...days);
     O.bags.innerHTML = r.formats.map((f, i) => `<li><span class="bags__kg">${f}&nbsp;kg</span><span class="bags__days">≈ ${nf0.format(days[i])}<small>días${days[i] >= 60 ? ` · ${nf1.format(days[i] / 30)} meses` : ""}</small></span><span class="bags__bar" style="--c:${k.c}"><i style="--w:0%"></i></span></li>`).join("");
     requestAnimationFrame(() => requestAnimationFrame(() => $$(".bags__bar i", O.bags).forEach((b, i) => b.style.setProperty("--w", Math.max(8, days[i] / maxD * 100).toFixed(0) + "%"))));
-    shared = { g, species: st.species, age: st.age, ageLabel: AGES[st.species].find(a => a[0] === st.age)[1], kg: st.kg, recipe: r.name };
+    shared = { g, species: st.species, age: st.age, ageLabel: AGES[st.species].find(a => a[0] === st.age)[1], kg: st.kg, recipe: r.name, id: r.id };
     if (engaged) share();
     $("#plan-peek-name").textContent = r.name; $("#plan-peek-g").innerHTML = `${nf0.format(g)}&nbsp;g al día · ${nf1.format(st.kg)}&nbsp;kg`;
     clearTimeout(liveT);
@@ -830,7 +837,10 @@ function initSteps() {
 
   // sprites
   const load = src => { const im = new Image(); im.src = src; return im; };
-  const SPR = { ck: Array.from({ length: 10 }, (_, i) => load(RENDERS["kibble-" + (i + 1)])), old: Array.from({ length: 6 }, (_, i) => load(RENDERS["old-" + (i + 1)])) };
+  const SPR = { ck: [], old: Array.from({ length: 6 }, (_, i) => load(RENDERS["old-" + (i + 1)])) }, ZS = { ck: 1, old: 1 };
+  let ckSet = "";
+  const useKibble = set => { ckSet = set; SPR.ck = Array.from({ length: 10 }, (_, i) => load(kibSrc(set, i + 1))); ZS.ck = KIB_SIZE[set]; };
+  useKibble("d1");
 
   // 3D → image projection of the empty-bowl render
   const VP = EMPTY.viewProj, [c0x, c0y, c1x] = EMPTY.crop, KS = EMPTY.out[0] / (c1x - c0x);
@@ -916,7 +926,7 @@ function initSteps() {
   };
   const paintSlot = (i, kind) => {
     const sl = slots[i], [x, y] = toStage(sl.ix, sl.iy), sp = SPR[kind];
-    hctx.save(); clipBowl(hctx); drawKib(hctx, sp[sl.spr % sp.length], x, y, sl.size * bowl.s, sl.rot); hctx.restore();
+    hctx.save(); clipBowl(hctx); drawKib(hctx, sp[sl.spr % sp.length], x, y, sl.size * bowl.s * ZS[kind], sl.rot); hctx.restore();
   };
   function redrawHeap() { hctx.clearRect(0, 0, SW, SH); landed.forEach(([i, kind]) => paintSlot(i, kind)); }
 
@@ -957,6 +967,10 @@ function initSteps() {
   document.addEventListener("cooking:plan", e => {
     const d = e.detail; if (!d) return;
     planMix = d;
+    if (d.id && KIBBLE[d.id] !== ckSet) {
+      useKibble(KIBBLE[d.id]);
+      Promise.all(SPR.ck.map(im => im.decode().catch(() => {}))).then(redrawHeap);
+    }
     tls.forEach((b, i) => { $(".tl__txt", b).innerHTML = stepText(STEPS[i]); });
     pillText();
     const who = d.species === "gato" ? (d.age === "cachorro" ? "gatito" : `gato ${d.ageLabel.toLowerCase()}`) : (d.age === "cachorro" ? "cachorro" : `perro ${d.ageLabel.toLowerCase()}`);
@@ -1013,7 +1027,7 @@ function initSteps() {
       f.t += dt;
       if (f.t >= f.T) { landed.push([f.i, f.kind]); paintSlot(f.i, f.kind); return false; }
       const x = f.x0 + f.vx * f.t, y = f.y0 + f.vy * f.t + .5 * g * f.t * f.t, sp = SPR[f.kind];
-      drawKib(fctx, sp[f.spr % sp.length], x, y, f.size * (.85 + .15 * Math.min(1, f.t / f.T)), f.rot + f.vr * f.t);
+      drawKib(fctx, sp[f.spr % sp.length], x, y, f.size * ZS[f.kind] * (.85 + .15 * Math.min(1, f.t / f.T)), f.rot + f.vr * f.t);
       return true;
     });
     // mix: the bowl gives a little shake and the layers turn into the real blend

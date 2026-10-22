@@ -93,8 +93,8 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - En pantallas muy anchas para su altura, el arco es un poco más angosto que la ventana y sus extremos se desvanecen en el fondo.
   - En celular van texto, olla y arco, uno debajo del otro.
 - **El plato de croquetas, restaurado y mejorado:**
-  - Es un render 3D generado para la propuesta: plato de cerámica marrón con el logo CooKing, croquetas con textura y volumen, y sombras suaves, como en la imagen original.
-  - Las croquetas (también renderizadas en 3D) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
+  - El plato es un render 3D generado para la propuesta (cerámica marrón con el logo CooKing). El montón de croquetas está armado con croquetas reales recortadas de las fotos de producto que entregó marketing.
+  - Las croquetas (las mismas fotos reales) salen disparadas del plato al entrar en pantalla y quedan flotando. Tienen física propia:
     - Al tocar uno de los 4 puntos, se mueven y se reacomodan.
     - Al cerrar la tarjeta, vuelven a caer dentro del plato.
     - Al tocar el plato, salen disparadas otra vez.
@@ -106,7 +106,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - Los íconos van sobre la línea punteada y cada texto se ubica hacia afuera. La línea se interrumpe alrededor de cada ícono y texto, así que nunca pasa por encima de la letra.
   - Al pasar el cursor, la característica crece y su ícono cambia a naranja.
 - **Recetas con pestañas Perros / Gatos:**
-  - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero), con croquetas 3D flotando alrededor. Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
+  - Cada bolsa está ilustrada con el color de su proteína (dorado pollo, naranja salmón, marrón cordero), con las croquetas reales de esa receta flotando alrededor. Si se copian las fotos reales a `img/`, reemplazan a la ilustración.
   - Barras animadas de proteína, grasa y fibra. Ceniza, kcal, tamaños de bolsa y el nombre del empaque están dentro de "Ver composición".
   - La bolsa queda centrada en su recuadro, con el mismo aire arriba y abajo. Al pasar el cursor sube apenas 5 px y se inclina, sin acercarse al borde.
   - Todas las tarjetas de una fila quedan alineadas, aunque el título o la descripción ocupen más líneas: las barras, los datos y "Ver composición" están a la misma altura.
@@ -133,7 +133,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - En perro adulto, la tarjeta tiene el selector "Sabor: Cordero | Salmón". Cambia la receta, las razones y los gramos, porque cada receta tiene distinta energía.
   - Al instante ve:
     - La receta recomendada del catálogo real, con 3 razones tomadas de su descripción.
-    - La ración diaria estimada en gramos y en comidas, con un montoncito de croquetas que crece.
+    - La ración diaria estimada en gramos y en comidas, con un montoncito de croquetas de la receta recomendada que crece.
     - Cuántos días le dura cada bolsa.
     - Un botón "Su cambio en 7 días" que lleva a la sección siguiente, ya calculada en gramos.
   - Lleva a "Encuentra tu tienda" y a "Ver la receta", que abre la pestaña correcta y resalta la tarjeta.
@@ -169,7 +169,10 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
 7. **Imágenes de marca tomadas de capturas:**
    - La foto de la cocina del hero (`img/marca/hero-cocina.webp`) es la imagen que entregó marketing, en 1800 × 874 px. Si hay una versión más grande, conviene reemplazarla con el mismo nombre para monitores 4K.
    - El arco de ingredientes (`img/marca/ingredientes-arco.webp`) es la imagen original que entregó marketing.
-8. **Renders 3D e íconos:** los platos y croquetas son renders 3D propios (`img/render/`), incluidos el plato vacío y las croquetas del "alimento anterior" de la animación de 7 días. El logo de los renders y el de los marcadores del mapa vienen de una captura (el del mapa se pasó a vector). Si se entrega el logo oficial en SVG, se reemplazan y quedan más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más íconos propios en el mismo estilo para patata, habas, romero y "Hecho en Europa".
+8. **Fotos de croquetas, renders 3D e íconos:**
+   - Las croquetas de CooKing son recortes de las 5 fotos de producto que entregó marketing (`img/render/kibble-*` y `kib-*`). Cada receta muestra las suyas en su tarjeta, en "Arma su plan" y en la animación de 7 días; el plato de "Lo que hace especial a cada croqueta" y las miniaturas de los 7 días usan las de la foto 1.
+   - **Asignación provisional, por tamaño:** las croquetas más grandes son de perro y las más chicas de gato. Cachorro y Senior: cuadradas (foto 1). Adulto con cordero y Adulto con salmón: discos (foto 2). Gatito: cuadradas chicas (foto 3). Esterilizado: triangulares claras (foto 4). Gato adulto: triangulares oscuras (foto 5). Hay que confirmarla con marketing; se cambia en `KIBBLE`, al inicio del script.
+   - Los platos son renders 3D propios (`img/render/`), incluidos el plato vacío y las croquetas del "alimento anterior" de la animación de 7 días. El logo de los renders y el de los marcadores del mapa vienen de una captura (el del mapa se pasó a vector). Si se entrega el logo oficial en SVG, se reemplazan y quedan más nítidos. Los íconos de línea son de [Lucide](https://lucide.dev) (licencia ISC, uso comercial permitido), más íconos propios en el mismo estilo para patata, habas, romero y "Hecho en Europa".
 9. **Mapa de calles:**
    - Revisarlo en un navegador normal antes de publicar. En el entorno de trabajo no hay acceso a OpenFreeMap, así que el estilo se validó con datos de prueba de OpenMapTiles, que es el mismo formato.
    - OpenFreeMap es un servicio comunitario sin garantía de servicio. Si se quiere una, sirve el mismo estilo con MapTiler o Stadia (requieren clave). Usar Google Maps con logos propios exige una clave de Maps JavaScript API con facturación.
