@@ -114,7 +114,7 @@ Encima de eso suma movimiento con propósito y todo el contenido real del sitio.
   - La composición completa se despliega sin modal. En celular, las tarjetas se deslizan como carrusel.
 - **Guía de cambio de alimento en 7 días** con una animación en loop:
   - Arranca sola desde los días 1 y 2 cuando la sección está a la vista.
-  - Primero vierte la bolsa del alimento anterior y después la de CooKing, al mismo ritmo, así el tiempo de cada una es proporcional a lo que aporta:
+  - Primero vierte la bolsa del alimento anterior y después la de CooKing (la foto real de la bolsa naranja, Adulto con salmón para perro), al mismo ritmo, así el tiempo de cada una es proporcional a lo que aporta:
     - Días 1 y 2: el anterior vierte tres veces más tiempo que CooKing.
     - Días 3 y 4: el mismo tiempo.
     - Días 5 y 6: CooKing vierte tres veces más.

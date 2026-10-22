@@ -830,7 +830,14 @@ function initSteps() {
     </button></li>`).join("");
   const tls = $$(".tl", list);
   $(".pbag__rot", bagEl.old).innerHTML = pourBagSVG("old");
-  $(".pbag__rot", bagEl.ck).innerHTML = pourBagSVG("ck");
+  // CooKing pours from the real orange bag (salmon, all breeds); the drawing stays as a fallback
+  $(".pbag__rot", bagEl.ck).innerHTML = pourBagSVG("ck") + `<img class="pbag__photo" alt="" width="499" height="762" draggable="false">`;
+  // drawing size and where the mouth of the bag is, as fractions of its height
+  const BAG = { old: { ar: 236 / 170, top: 18 / 236, k: 1 }, ck: { ar: 236 / 170, top: 18 / 236, k: 1 } };
+  productPhoto($(".pbag__photo", bagEl.ck), RECIPES.find(r => r.id === "dog-salmon").img, () => {
+    bagEl.ck.classList.add("has-photo"); Object.assign(BAG.ck, { ar: 762 / 499, top: 6 / 762, k: 1.18 });
+    measure(); if (!playing) placeBag("ck", bagPose("ck", 0, 0));
+  });
   const doneTag = document.createElement("span"); doneTag.className = "pour__done"; doneTag.textContent = "¡Listo!";
   const mixTag = document.createElement("p"); mixTag.className = "pour__mix"; mixTag.setAttribute("aria-hidden", "true");
   mixTag.innerHTML = `${icon("rotate-cw")}Mézclalo bien`; stage.appendChild(mixTag);
@@ -883,19 +890,19 @@ function initSteps() {
     bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - Math.max(SH * (narrow ? .1 : .01), below), s: bw / 900 };
     Object.assign(bowlImg.style, { left: bowl.x + "px", top: bowl.y + "px", width: bw + "px" });
     const [rlx] = toStage(...RIM[RIM.length - 1]), [rrx] = toStage(...RIM[0]), [, rty] = toStage(...proj(0, .8, -.955));
-    const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135, h = w * 236 / 170;
+    const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135;
     for (const k of ["old", "ck"]) {
-      const sgn = k === "old" ? -1 : 1;
-      Object.assign(bag[k], { w, h,
+      const sgn = k === "old" ? -1 : 1, bw = w * BAG[k].k, h = bw * BAG[k].ar;
+      Object.assign(bag[k], { w: bw, h,
         rest: { x: SW / 2 + sgn * (narrow ? SW * .33 : SW * .3), y: (narrow ? Math.max(SH * .2, 64) : SH * .3) + h * .5 },
         pourMouth: { x: SW / 2 + sgn * (rrx - rlx) * .3, y: rty - SH * (narrow ? .1 : .17) } });
-      bagEl[k].style.width = w + "px";
+      bagEl[k].style.width = bw + "px";
       pill[k].style.left = (k === "old" ? (narrow ? 2 : 7) : (narrow ? 70 : 77)) + "%";
     }
     redrawHeap();
   }
   // mouth of the bag (top center of the drawing) relative to its rotation pivot, in px
-  const mouthLocal = k => ({ x: 0, y: -(bag[k].h * (.55 - 18 / 236)) });
+  const mouthLocal = k => ({ x: 0, y: -(bag[k].h * (.55 - BAG[k].top)) });
   const rotate = (v, deg) => { const a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a); return { x: v.x * c - v.y * s, y: v.x * s + v.y * c }; };
   const bagPose = (k, e, tilt) => { // e: 0 at rest → 1 pouring
     const b = bag[k], ang = tilt * e, m = rotate(mouthLocal(k), tilt);

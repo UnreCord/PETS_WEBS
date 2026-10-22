@@ -607,6 +607,9 @@ main{overflow-x:clip}
 .pbag{position:absolute;z-index:3;left:0;top:0;filter:drop-shadow(0 18px 14px rgba(58,40,28,.28));will-change:transform;transition:opacity .4s}
 .pbag__rot{transform-origin:50% 55%;will-change:transform}
 .pbag svg{width:100%;height:auto;display:block}
+.pbag__photo{display:none;width:100%;height:auto}
+.pbag.has-photo svg{display:none}
+.pbag.has-photo .pbag__photo{display:block}
 .pbag.is-idle{opacity:.38}
 .ppill{position:absolute;z-index:5;top:2%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 16px 12px;overflow:hidden;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 10px 22px -16px rgba(58,40,28,.6);font-size:var(--fs-xs);font-weight:600;color:var(--cacao-2);text-align:center;line-height:1.2;transition:opacity .3s}
 .ppill b{font-family:var(--f-display);font-weight:400;font-size:clamp(1.3rem,calc(1.2vw / var(--z,1)) + .9rem,1.9rem);line-height:1;color:var(--cacao)}
@@ -2645,7 +2648,14 @@ function initSteps() {
     </button></li>`).join("");
   const tls = $$(".tl", list);
   $(".pbag__rot", bagEl.old).innerHTML = pourBagSVG("old");
-  $(".pbag__rot", bagEl.ck).innerHTML = pourBagSVG("ck");
+  // CooKing pours from the real orange bag (salmon, all breeds); the drawing stays as a fallback
+  $(".pbag__rot", bagEl.ck).innerHTML = pourBagSVG("ck") + `<img class="pbag__photo" alt="" width="499" height="762" draggable="false">`;
+  // drawing size and where the mouth of the bag is, as fractions of its height
+  const BAG = { old: { ar: 236 / 170, top: 18 / 236, k: 1 }, ck: { ar: 236 / 170, top: 18 / 236, k: 1 } };
+  productPhoto($(".pbag__photo", bagEl.ck), RECIPES.find(r => r.id === "dog-salmon").img, () => {
+    bagEl.ck.classList.add("has-photo"); Object.assign(BAG.ck, { ar: 762 / 499, top: 6 / 762, k: 1.18 });
+    measure(); if (!playing) placeBag("ck", bagPose("ck", 0, 0));
+  });
   const doneTag = document.createElement("span"); doneTag.className = "pour__done"; doneTag.textContent = "¡Listo!";
   const mixTag = document.createElement("p"); mixTag.className = "pour__mix"; mixTag.setAttribute("aria-hidden", "true");
   mixTag.innerHTML = `${icon("rotate-cw")}Mézclalo bien`; stage.appendChild(mixTag);
@@ -2698,19 +2708,19 @@ function initSteps() {
     bowl = { x: (SW - bw) / 2, y: SH - bw * 684 / 900 - Math.max(SH * (narrow ? .1 : .01), below), s: bw / 900 };
     Object.assign(bowlImg.style, { left: bowl.x + "px", top: bowl.y + "px", width: bw + "px" });
     const [rlx] = toStage(...RIM[RIM.length - 1]), [rrx] = toStage(...RIM[0]), [, rty] = toStage(...proj(0, .8, -.955));
-    const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135, h = w * 236 / 170;
+    const w = narrow ? Math.min(SW * .22, SH * .26) : SW * .135;
     for (const k of ["old", "ck"]) {
-      const sgn = k === "old" ? -1 : 1;
-      Object.assign(bag[k], { w, h,
+      const sgn = k === "old" ? -1 : 1, bw = w * BAG[k].k, h = bw * BAG[k].ar;
+      Object.assign(bag[k], { w: bw, h,
         rest: { x: SW / 2 + sgn * (narrow ? SW * .33 : SW * .3), y: (narrow ? Math.max(SH * .2, 64) : SH * .3) + h * .5 },
         pourMouth: { x: SW / 2 + sgn * (rrx - rlx) * .3, y: rty - SH * (narrow ? .1 : .17) } });
-      bagEl[k].style.width = w + "px";
+      bagEl[k].style.width = bw + "px";
       pill[k].style.left = (k === "old" ? (narrow ? 2 : 7) : (narrow ? 70 : 77)) + "%";
     }
     redrawHeap();
   }
   // mouth of the bag (top center of the drawing) relative to its rotation pivot, in px
-  const mouthLocal = k => ({ x: 0, y: -(bag[k].h * (.55 - 18 / 236)) });
+  const mouthLocal = k => ({ x: 0, y: -(bag[k].h * (.55 - BAG[k].top)) });
   const rotate = (v, deg) => { const a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a); return { x: v.x * c - v.y * s, y: v.x * s + v.y * c }; };
   const bagPose = (k, e, tilt) => { // e: 0 at rest → 1 pouring
     const b = bag[k], ang = tilt * e, m = rotate(mouthLocal(k), tilt);
