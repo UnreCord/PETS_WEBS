@@ -17,6 +17,7 @@ Lo que el plugin agrega al sitio:
 
 - WordPress 6.3 o superior y PHP 7.4 o superior.
 - Probado en WordPress 6.5 (PHP 8.4) con un tema de bloques (Twenty Twenty-Four) y con un tema clásico, a 1905×909, 1536×730 y 390×844 (celular).
+- La versión 1.8.0 se probó de punta a punta en WordPress 6.7 (PHP 8.3) con Twenty Twenty-Four: subir el `.zip`, activarlo, crear la página, publicarla como portada, recorrer todas las secciones en computadora (1440×900) y celular (393×852) y enviar el formulario (el mensaje llega a **Mensajes CooKing**). La landing en WordPress se ve igual que `index.html`.
 - **cooking.pe usa WordPress 7.1.2, Astra Pro y Elementor Pro.** El plugin solo usa funciones estándar de WordPress (plantillas de página, tipos de contenido, API REST, `wp_mail`). Aun así, **instálalo primero en un sitio de pruebas (staging)** y recorre la lista de la sección 10 antes de publicarlo.
 
 ## 2. Instalación (5 minutos)
@@ -85,7 +86,14 @@ Las tarjetas de “Recetas completas y balanceadas” y “Su receta ideal” de
 
 ### 4.3 Imágenes incluidas en el plugin
 
-El plato 3D, las croquetas (recortes de las fotos de producto, un juego por receta), los platos de la transición de 7 días y el arco de ingredientes de “Los ingredientes marcan la diferencia” vienen dentro del plugin (`assets/img/`) en WebP. No hay que subirlas.
+Vienen dentro del plugin (`assets/img/`) en WebP, así que no hay que subirlas:
+
+- la foto de la cocina del inicio, con el perro y el gato chefs (`marca/hero-cocina.webp`);
+- el arco de ingredientes de “Los ingredientes marcan la diferencia”;
+- el plato beige y los platos de la transición de 7 días;
+- las croquetas, recortadas de las fotos de producto, un juego por receta (`render/kibble-*` y `render/kib-*`).
+
+La bolsa naranja que vierte en “Cambia su alimento en 7 días” es la foto `productos/dog-salmon-allbreeds.webp`.
 
 ### 4.4 Tipografías
 
